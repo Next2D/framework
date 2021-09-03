@@ -3,3 +3,7 @@
 .nvmrc
 Thumbs.db
 node_modules
+Footer.build.file
+Header.build.file
+next2d-framework.js
+package-lock.json

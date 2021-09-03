@@ -11,17 +11,14 @@ const minimist    = require("minimist");
 const replace     = require("gulp-replace");
 const rename      = require("gulp-rename");
 const eslint      = require("gulp-eslint");
-const fs          = require("fs");
 
 const options = minimist(process.argv.slice(2), {
-    "boolean": ["debugBuild", "prodBuild", "glErrorCheck", "glTrace"],
+    "boolean": ["debugBuild", "prodBuild"],
     "string": ["distPath", "version"],
     "default": {
         "debugBuild": true,
         "prodBuild": false,
-        "glErrorCheck": false,
-        "glTrace": false,
-        "version": "1.1.4",
+        "version": "1.0.0",
         "distPath": "."
     }
 });
@@ -54,71 +51,13 @@ function buildHeaderVersion()
 }
 
 /**
- * @description Workerファイルをminifyにして書き出し
- * @public
- */
-function buildWorkerFile ()
-{
-    return gulp
-        .src([
-            "src/worker/*.js",
-            "!src/worker/*.min.js"
-        ])
-        .pipe(uglify())
-        .pipe(rename({ "extname": ".min.js" }))
-        .pipe(gulp.dest("src/worker"));
-}
-
-/**
- * @description Util.jsの書き出し
- * @public
- */
-function buildUtilFile ()
-{
-    return gulp
-        .src("src/util/Util.js")
-        .pipe(replace("###UNZIP_WORKER###",
-            fs.readFileSync("src/worker/UnzipWorker.min.js", "utf8")
-                .replace(/\\/g, "\\\\")
-                .replace(/"/g, "\\\"")
-                .replace(/\n/g, ""))
-        )
-        .pipe(rename("src/util/Util.replaced.js"))
-        .pipe(gulp.dest("."));
-}
-
-/**
  * @description ESLintを実行
  * @public
  */
 function lint ()
 {
     return gulp
-        .src([
-            "src/util/Util.js",
-            "src/next2d/events/*.js",
-            "src/next2d/geom/*.js",
-            "src/next2d/display/DisplayObject.js",
-            "src/next2d/display/InteractiveObject.js",
-            "src/next2d/display/DisplayObjectContainer.js",
-            "src/next2d/display/Sprite.js",
-            "src/next2d/display/MovieClip.js",
-            "src/next2d/display/*.js",
-            "src/next2d/filters/BitmapFilter.js",
-            "src/next2d/filters/BitmapFilterType.js",
-            "src/next2d/filters/BitmapFilterQuality.js",
-            "src/next2d/filters/DisplacementMapFilterMode.js",
-            "src/next2d/filters/BlurFilter.js",
-            "src/next2d/filters/*.js",
-            "src/next2d/text/TextFormatAlign.js",
-            "src/next2d/text/TextFieldAutoSize.js",
-            "src/next2d/text/*.js",
-            "src/next2d/**/*.js",
-            "src/util/CacheStore.js",
-            "src/webgl/**/*.js",
-            "src/player/Player.js",
-            "src/player/Next2D.js"
-        ])
+        .src("src/**/*.js")
         .pipe(eslint({ "useEslintrc": true }))
         .pipe(eslint.format())
         .pipe(eslint.failOnError());
@@ -137,49 +76,17 @@ function buildJavaScript()
         preprocessContext.DEBUG = true;
     }
 
-    if (options.glErrorCheck) {
-        preprocessContext.GL_ERROR_CHECK = true;
-    }
-
-    if (options.glTrace) {
-        preprocessContext.TRACE_GL = true;
-    }
-
     if (options.prodBuild) {
-        preprocessContext.DEBUG          = false;
-        preprocessContext.GL_ERROR_CHECK = false;
-        preprocessContext.TRACE_GL       = false;
+        preprocessContext.DEBUG = false;
     }
 
     const build = gulp
         .src([
             "src/Header.build.file",
-            "src/util/Util.replaced.js",
-            "src/next2d/events/*.js",
-            "src/next2d/geom/*.js",
-            "src/next2d/display/DisplayObject.js",
-            "src/next2d/display/InteractiveObject.js",
-            "src/next2d/display/DisplayObjectContainer.js",
-            "src/next2d/display/Sprite.js",
-            "src/next2d/display/MovieClip.js",
-            "src/next2d/display/*.js",
-            "src/next2d/filters/BitmapFilter.js",
-            "src/next2d/filters/BitmapFilterType.js",
-            "src/next2d/filters/BitmapFilterQuality.js",
-            "src/next2d/filters/DisplacementMapFilterMode.js",
-            "src/next2d/filters/BlurFilter.js",
-            "src/next2d/filters/*.js",
-            "src/next2d/text/TextFormatAlign.js",
-            "src/next2d/text/TextFieldAutoSize.js",
-            "src/next2d/text/*.js",
-            "src/next2d/**/*.js",
-            "src/util/CacheStore.js",
-            "src/webgl/**/*.js",
-            "src/player/Player.js",
-            "src/player/Next2D.js",
+            "src/**/*.js",
             "src/Footer.build.file"
         ])
-        .pipe(concat("next2d.js"))
+        .pipe(concat("next2d-framework.js"))
         .pipe(preprocess({ "context": preprocessContext }));
 
     if (options.prodBuild) {
@@ -226,15 +133,9 @@ function reload (done)
 function watchFiles ()
 {
     return gulp
-        .watch([
-            "src/**/*.js",
-            "!src/worker/**/*min.js",
-            "!src/util/Util.replaced.js"
-        ])
+        .watch("src/**/*.js")
         .on("change", gulp.series(
             lint,
-            buildWorkerFile,
-            buildUtilFile,
             buildJavaScript,
             reload
         ));
@@ -247,11 +148,7 @@ function createHTML (done)
 {
     return gulp
         .src([
-            "src/next2d/**/*.js",
-            "src/player/**/*.js",
-            "!src/util/*.js",
-            "!src/webgl/**/*.js",
-            "!src/worker/**/*.js",
+            "src/**/*.js",
             "README.md"
         ], { "read": false })
         .pipe(jsdoc({
@@ -264,7 +161,7 @@ function createHTML (done)
             "templates": {
                 "cleverLinks"   : false,
                 "monospaceLinks": false,
-                "applicationName": "Next2D",
+                "applicationName": "Next2D Framework",
                 "disqus": "",
                 "googleAnalytics": "",
                 "favicon": "",
@@ -290,7 +187,7 @@ function createHTML (done)
                 "recurse": true,
                 "private": false,
                 "lenient": true,
-                "destination": "../next2d/docs/player/",
+                "destination": "../next2d/docs/framework/",
                 "template": "node_modules/@pixi/jsdoc-template"
             }
         }, done));
@@ -315,8 +212,6 @@ function test (done)
 exports.default = gulp.series(
     buildHeaderVersion,
     buildFooterVersion,
-    buildWorkerFile,
-    buildUtilFile,
     buildJavaScript,
     browser,
     watchFiles

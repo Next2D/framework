@@ -8,7 +8,8 @@
     "lint": "gulp lint"
   },
   "keywords": [
-    "Next2D", "Next2D Framework"
+    "Next2D",
+    "Next2D Framework"
   ],
   "repository": {
     "type": "git",

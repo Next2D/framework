@@ -1,0 +1,19 @@
+{
+  "name": "@Next2D/Framework",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Next2D Framework",
+  "main": "index.js",
+  "author": "Toshiyuki Ienaga<ienaga@tvon.jp>",
+  "license": "MIT",
+  "publishConfig": {
+    "registry":"https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Next2D/Framework.git"
+  },
+  "keywords": [
+    "Next2D"
+  ]
+}

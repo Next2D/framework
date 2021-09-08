@@ -1,16 +1,19 @@
 {
   "name": "@next2d/framework",
   "description": "Next2D Framework",
+  "version": "0.0.2",
+  "homepage": "https://next2d.app",
+  "bugs": "https://github.com/Next2D/Framework/issues/new",
   "author": "Toshiyuki Ienaga<ienaga@tvon.jp>",
   "license": "MIT",
-  "scripts": {
-    "test": "gulp test",
-    "lint": "gulp lint"
-  },
   "keywords": [
     "Next2D",
     "Next2D Framework"
   ],
+  "scripts": {
+    "test": "gulp test",
+    "lint": "gulp lint"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Next2D/Framework.git"

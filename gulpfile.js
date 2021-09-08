@@ -13,10 +13,9 @@ const rename      = require("gulp-rename");
 const eslint      = require("gulp-eslint");
 
 const options = minimist(process.argv.slice(2), {
-    "boolean": ["debugBuild", "prodBuild"],
+    "boolean": ["prodBuild"],
     "string": ["distPath", "version"],
     "default": {
-        "debugBuild": true,
         "prodBuild": false,
         "version": "1.0.0",
         "distPath": "."
@@ -72,13 +71,7 @@ function buildJavaScript()
     // setup
     const preprocessContext = {};
 
-    if (options.debugBuild) {
-        preprocessContext.DEBUG = true;
-    }
-
-    if (options.prodBuild) {
-        preprocessContext.DEBUG = false;
-    }
+    preprocessContext.DEBUG = !options.prodBuild;
 
     const build = gulp
         .src([
@@ -135,7 +128,6 @@ function watchFiles ()
     return gulp
         .watch("src/**/*.js")
         .on("change", gulp.series(
-            lint,
             buildJavaScript,
             reload
         ));

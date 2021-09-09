@@ -4,6 +4,16 @@
 class ViewModel
 {
     /**
+     * @return {Application}
+     * @readonly
+     * @public
+     */
+    get app ()
+    {
+        return next2d.fw.application;
+    }
+
+    /**
      * @return {object}
      * @readonly
      * @public
@@ -44,16 +54,26 @@ class ViewModel
     }
 
     /**
-     * @param  {View} view
-     * @return {void}
-     * @abstract
+     * @return {Map}
+     * @readonly
+     * @public
      */
-    added (view) {}
+    get packages ()
+    {
+        return next2d.fw.packages;
+    }
 
     /**
      * @param  {View} view
      * @return {void}
      * @abstract
      */
-    removed (view) {}
+    bind (view) {}
+
+    /**
+     * @param  {View} view
+     * @return {void}
+     * @abstract
+     */
+    unbind (view) {}
 }

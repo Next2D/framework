@@ -1,11 +1,17 @@
 
         window.next2d.fw = {
             "Application": Application,
-            "Context": Context,
-            "View": View,
-            "ViewModel": ViewModel,
-            "packages": new Map(),
-            "config": {}
+            "Content":     Content,
+            "Context":     Context,
+            "View":        View,
+            "ViewModel":   ViewModel,
+            "application": null,
+            "context":     null,
+            "viewModel":   null,
+            "packages":    new Map(),
+            "response":    new Map(),
+            "loaderInfo":  new Map(),
+            "config":      {}
         };
 
         // output build version

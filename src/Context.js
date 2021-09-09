@@ -22,40 +22,88 @@ class Context
 
         const stage = this._$root.stage;
 
-        stage.addEventListener(Event.ADDED, function (event)
+        stage.addEventListener(Event.ADDED, (event) =>
         {
             const view = event.target;
 
-            const viewModelName = `${view.constructor.name}Model`;
-            if (next2d.fw.packages.has(viewModelName)) {
+            if (view instanceof View) {
 
-                const ViewModelClass = next2d.fw.packages.get(viewModelName);
-                new ViewModelClass().added(view);
+                const viewModelName = `${view.constructor.name}Model`;
 
+                if (next2d.fw.packages.has(viewModelName)) {
+
+                    const ViewModelClass = next2d.fw.packages.get(viewModelName);
+
+                    const viewModel = new ViewModelClass();
+                    viewModel.bind(view);
+
+                    next2d.fw.viewModel = viewModel;
+                }
             }
 
-        }.bind(this));
+        });
 
-        stage.addEventListener(Event.REMOVED, function (event)
+        stage.addEventListener(Event.REMOVED, (event) =>
         {
             const view = event.target;
 
-            const viewModelName = `${view.constructor.name}Model`;
-            if (next2d.fw.packages.has(viewModelName)) {
+            if (view instanceof View) {
 
-                const ViewModelClass = next2d.fw.packages.get(viewModelName);
-                new ViewModelClass().removed(view);
+                if (next2d.fw.viewModel) {
+                    next2d.fw.viewModel.unbind(view);
+                    next2d.fw.viewModel = null;
+                }
+
+                const viewName = view.constructor.name;
+
+                const name = viewName.slice(0, -4).toLowerCase();
+
+                const contentName = `${name.charAt(0).toUpperCase()}${name.slice(1)}Content`;
+                if (!next2d.fw.packages.has(contentName)) {
+                    return ;
+                }
+
+                const routing = next2d.fw.config.routing[name];
+                if (!routing || !routing.requests) {
+                    return ;
+                }
+
+                const loaderInfoMap = next2d.fw.loaderInfo;
+
+                const requests = routing.requests;
+                for (let idx = 0; idx < requests.length; ++idx) {
+
+                    const object = requests[idx];
+                    if (object.name === contentName) {
+
+                        if (!object.cache && loaderInfoMap.has(contentName)) {
+
+                            const loaderInfo = loaderInfoMap.get(contentName);
+                            const symbols    = loaderInfo._$data.symbols;
+                            if (symbols.size) {
+                                for (const name of symbols.keys()) {
+                                    loaderInfoMap.delete(
+                                        name.split(".").pop()
+                                    );
+                                }
+                            }
+
+                        }
+
+                        break;
+                    }
+                }
             }
-
-        }.bind(this));
+        });
     }
 
     /**
      * @param  {string} name
+     * @param  {array}  responses
      * @return {ViewModel}
      * @public
      */
-    addChild (name)
+    addChild (name, responses)
     {
         const viewName = name
             .charAt(0)
@@ -72,6 +120,17 @@ class Context
         if (this._$root.numChildren) {
             while (this._$root.numChildren) {
                 this._$root.removeChild(this._$root.getChildAt(0));
+            }
+        }
+
+        if (next2d.fw.response.size) {
+            next2d.fw.response.clear();
+        }
+
+        if (responses.length) {
+            for (let idx = 0; idx < responses.length; ++idx) {
+                const values = responses[idx];
+                next2d.fw.response.set(values[0], values[1]);
             }
         }
 

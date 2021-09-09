@@ -19,7 +19,7 @@ class Cache
      */
     get (key)
     {
-        return this._$store.has(key) ? this._$store.get(key) : null;
+        return this.has(key) ? this._$store.get(key) : null;
     }
 
     /**

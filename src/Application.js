@@ -19,9 +19,17 @@ class Application
          * @private
          */
         next2d.fw.context = new Context(
-            config.stage.width, config.stage.height,
-            config.stage.fps, config.stage.options
+            this.config.stage.width,
+            this.config.stage.height,
+            this.config.stage.fps,
+            this.config.stage.options
         );
+
+        /**
+         * @type {Cache}
+         * @private
+         */
+        next2d.fw.cache = new Cache();
     }
 
     /**
@@ -55,6 +63,16 @@ class Application
     }
 
     /**
+     * @return {Cache}
+     * @readonly
+     * @public
+     */
+    get cache ()
+    {
+        return next2d.fw.cache;
+    }
+
+    /**
      * @param  {string} [name="top"]
      * @return {void}
      * @method
@@ -69,51 +87,59 @@ class Application
         const endPoint = this.config.endPoint;
 
         const requests = [];
-        for (let idx = 0; idx < request.before.length; ++idx) {
+        if (request.before) {
 
-            const object = request.before[idx];
+            for (let idx = 0; idx < request.before.length; ++idx) {
 
-            if (object.type === "json") {
+                const object = request.before[idx];
 
-                requests.push(
-                    fetch(`${endPoint}${object.path}`, {
-                        "method": object.method.toUpperCase()
-                    })
-                        .then((response) => { return response.json() })
-                        .then((data) => { return [object.name, data] })
-                );
+                if (object.cache && this.cache.has(object.name)) {
+                    requests.push([object.name, this.cache.get(object.name)]);
+                    continue;
+                }
 
-            } else {
+                if (object.type === "json") {
 
-                requests.push(new Promise((resolve, reject) =>
-                {
-                    const { URLRequest } = next2d.net;
-                    const { Loader } = next2d.display;
-                    const { Event, IOErrorEvent } = next2d.events;
+                    requests.push(
+                        fetch(`${endPoint}${object.path}`, {
+                            "method": object.method.toUpperCase()
+                        })
+                            .then((response) => { return response.json() })
+                            .then((data) => { return [object.name, data] })
+                    );
 
-                    const urlRequest  = new URLRequest(`${endPoint}${object.path}`);
-                    urlRequest.method = object.method;
+                } else {
 
-                    const loader = new Loader();
-                    loader
-                        .contentLoaderInfo
-                        .addEventListener(Event.COMPLETE, function (event)
-                        {
-                            resolve([
-                                this.object.name,
-                                event.currentTarget.content.getChildAt(0)
-                            ]);
-                        }.bind({ "object": object }));
+                    requests.push(new Promise((resolve, reject) =>
+                    {
+                        const { URLRequest } = next2d.net;
+                        const { Loader } = next2d.display;
+                        const { Event, IOErrorEvent } = next2d.events;
 
-                    loader
-                        .contentLoaderInfo
-                        .addEventListener(IOErrorEvent.IO_ERROR, () =>
-                        {
-                            reject();
-                        });
+                        const urlRequest  = new URLRequest(`${endPoint}${object.path}`);
+                        urlRequest.method = object.method;
 
-                    loader.load(urlRequest);
-                }));
+                        const loader = new Loader();
+                        loader
+                            .contentLoaderInfo
+                            .addEventListener(Event.COMPLETE, function (event)
+                            {
+                                resolve([
+                                    this.object.name,
+                                    event.currentTarget.content.getChildAt(0)
+                                ]);
+                            }.bind({ "object": object }));
+
+                        loader
+                            .contentLoaderInfo
+                            .addEventListener(IOErrorEvent.IO_ERROR, () =>
+                            {
+                                reject();
+                            });
+
+                        loader.load(urlRequest);
+                    }));
+                }
             }
         }
 
@@ -126,7 +152,67 @@ class Application
             })
             .then(() =>
             {
-                console.log("after");
+                if (request.after) {
+
+                    const requests = [];
+
+                    for (let idx = 0; idx < request.after.length; ++idx) {
+
+                        const object = request.after[idx];
+
+                        if (object.type === "json") {
+
+                            requests.push(
+                                fetch(`${endPoint}${object.path}`, {
+                                    "method": object.method.toUpperCase()
+                                })
+                                    .then((response) => { return response.json() })
+                                    .then((data) => { return [object.name, data] })
+                            );
+
+                        } else {
+
+                            requests.push(new Promise((resolve, reject) =>
+                            {
+                                const { URLRequest } = next2d.net;
+                                const { Loader } = next2d.display;
+                                const { Event, IOErrorEvent } = next2d.events;
+
+                                const urlRequest  = new URLRequest(`${endPoint}${object.path}`);
+                                urlRequest.method = object.method;
+
+                                const loader = new Loader();
+                                loader
+                                    .contentLoaderInfo
+                                    .addEventListener(Event.COMPLETE, function (event)
+                                    {
+                                        resolve([
+                                            this.object.name,
+                                            event.currentTarget.content.getChildAt(0)
+                                        ]);
+                                    }.bind({ "object": object }));
+
+                                loader
+                                    .contentLoaderInfo
+                                    .addEventListener(IOErrorEvent.IO_ERROR, () =>
+                                    {
+                                        reject();
+                                    });
+
+                                loader.load(urlRequest);
+                            }));
+                        }
+                    }
+
+                    if (requests.length) {
+                        Promise
+                            .all(requests)
+                            .then((response) =>
+                            {
+                                console.log(response);
+                            });
+                    }
+                }
             });
 
     }

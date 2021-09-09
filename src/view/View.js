@@ -45,6 +45,16 @@ class View extends next2d.display.MovieClip
     }
 
     /**
+     * @return {Cache}
+     * @readonly
+     * @public
+     */
+    get cache ()
+    {
+        return next2d.fw.cache;
+    }
+
+    /**
      * @return {void}
      * @abstract
      */

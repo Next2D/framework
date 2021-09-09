@@ -34,6 +34,16 @@ class ViewModel
     }
 
     /**
+     * @return {Cache}
+     * @readonly
+     * @public
+     */
+    get cache ()
+    {
+        return next2d.fw.cache;
+    }
+
+    /**
      * @param  {View} view
      * @return {void}
      * @abstract

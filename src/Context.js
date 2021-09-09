@@ -52,7 +52,7 @@ class Context
 
     /**
      * @param  {string} name
-     * @return {void}
+     * @return {ViewModel}
      * @public
      */
     addChild (name)

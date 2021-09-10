@@ -107,5 +107,6 @@ class Content extends next2d.display.MovieClip
      * @return {void}
      * @abstract
      */
+    // eslint-disable-next-line no-empty-function
     initialize () {}
 }

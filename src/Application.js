@@ -110,7 +110,10 @@ class Application
             const object = routing.requests[idx];
 
             if (object.cache && this.cache.has(object.name)) {
-                promises.push([object.name, this.cache.get(object.name)]);
+                promises.push({
+                    "name": object.name,
+                    "response": this.cache.get(object.name)
+                });
                 continue;
             }
 
@@ -137,7 +140,17 @@ class Application
                 : "GET"
         })
             .then((response) => { return response.json() })
-            .then((data) => { return [object.name, data] });
+            .then((data) =>
+            {
+                if (object.callback) {
+                    object.callback(data);
+                }
+
+                return {
+                    "name": object.name,
+                    "response": data
+                };
+            });
     }
 
     /**
@@ -176,7 +189,14 @@ class Application
                         }
                     }
 
-                    this.resolve([this.object.name, content]);
+                    if (this.object.callback) {
+                        this.object.callback(content);
+                    }
+
+                    this.resolve({
+                        "name": this.object.name,
+                        "response": content
+                    });
 
                 }.bind({ "object": object, "resolve": resolve }));
 

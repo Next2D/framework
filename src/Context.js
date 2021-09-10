@@ -129,8 +129,13 @@ class Context
 
         if (responses.length) {
             for (let idx = 0; idx < responses.length; ++idx) {
-                const values = responses[idx];
-                next2d.fw.response.set(values[0], values[1]);
+
+                const object = responses[idx];
+                if (!object.name) {
+                    continue;
+                }
+
+                next2d.fw.response.set(object.name, object.response);
             }
         }
 

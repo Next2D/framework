@@ -1,19 +1,8 @@
 /**
  * @class
- * @extends {next2d.display.MovieClip}
  */
-class View extends next2d.display.MovieClip
+class ViewModel
 {
-    /**
-     * @constructor
-     * @public
-     */
-    constructor ()
-    {
-        super();
-        this.initialize();
-    }
-
     /**
      * @return {Application}
      * @readonly
@@ -75,8 +64,16 @@ class View extends next2d.display.MovieClip
     }
 
     /**
+     * @param  {View} view
      * @return {void}
      * @abstract
      */
-    initialize () {}
+    bind (view) {}
+
+    /**
+     * @param  {View} view
+     * @return {void}
+     * @abstract
+     */
+    unbind (view) {}
 }

@@ -68,6 +68,7 @@ class ViewModel
      * @return {void}
      * @abstract
      */
+    // eslint-disable-next-line no-unused-vars,no-empty-function
     bind (view) {}
 
     /**
@@ -75,5 +76,6 @@ class ViewModel
      * @return {void}
      * @abstract
      */
+    // eslint-disable-next-line no-unused-vars,no-empty-function
     unbind (view) {}
 }

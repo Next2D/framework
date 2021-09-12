@@ -5,6 +5,8 @@
 
 Next2D Framework for the Model-View-ViewModel(MVVM) pattern.
 
+## Directory Configuration
+
 ```sh
 ├── dist // Destination of built sources. 
 │   ├── index.html
@@ -31,6 +33,9 @@ Next2D Framework for the Model-View-ViewModel(MVVM) pattern.
             ├── HomeView.js
             └── HomeViewModel.js
 ```
+
+## Chat Flow
+![Chat Flow](./Framework_Chart_Flow.svg)
 
 ## Quick Start
 

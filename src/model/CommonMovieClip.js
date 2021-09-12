@@ -64,4 +64,14 @@ class CommonMovieClip extends next2d.display.MovieClip
     {
         return next2d.fw.response;
     }
+
+    /**
+     * @return {Map}
+     * @readonly
+     * @public
+     */
+    get variable ()
+    {
+        return next2d.fw.variable;
+    }
 }

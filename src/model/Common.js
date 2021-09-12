@@ -63,4 +63,14 @@ class Common
     {
         return next2d.fw.response;
     }
+
+    /**
+     * @return {Map}
+     * @readonly
+     * @public
+     */
+    get variable ()
+    {
+        return next2d.fw.variable;
+    }
 }

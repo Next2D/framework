@@ -39,6 +39,12 @@ class Application extends Common
          * @private
          */
         next2d.fw.cache = new Cache();
+
+        /**
+         * @type {Variable}
+         * @private
+         */
+        next2d.fw.variable = new Variable();
     }
 
     /**
@@ -81,8 +87,8 @@ class Application extends Common
             }
 
             promises.push(object.type === "json"
-                ? this._$loadJSON(object)
-                : this._$loadContent(object)
+                ? this._$loadJSON(object, idx)
+                : this._$loadContent(object, idx)
             );
         }
 
@@ -91,22 +97,29 @@ class Application extends Common
 
     /**
      * @param  {object} object
+     * @param  {number} index
      * @return {Promise}
      * @method
      * @private
      */
-    _$loadJSON (object)
+    _$loadJSON (object, index)
     {
+        const method = object.method ? object.method.toUpperCase() : "GET";
+        const body   = object.body && (method === "POST" || method === "PUT")
+            ? object.body
+            : null;
+
         return fetch(`${this.config.endPoint}${object.path}`, {
-            "method": object.method
-                ? object.method.toUpperCase()
-                : "GET"
+            "method": method,
+            "headers": object.headers ? object.headers : {},
+            "body": body
         })
             .then((response) => { return response.json() })
             .then((data) =>
             {
-                if (object.callback) {
-                    object.callback(data);
+                if (object.callback && this.packages.has(object.callback)) {
+                    const CallbackClass = this.packages.get(object.callback);
+                    new CallbackClass(data, index);
                 }
 
                 return {
@@ -118,15 +131,16 @@ class Application extends Common
 
     /**
      * @param  {object} object
+     * @param  {number} index
      * @return {Promise}
      * @method
      * @private
      */
-    _$loadContent (object)
+    _$loadContent (object, index)
     {
         return new Promise((resolve, reject) =>
         {
-            const { URLRequest, URLRequestMethod } = next2d.net;
+            const { URLRequest, URLRequestHeader, URLRequestMethod } = next2d.net;
             const { Loader } = next2d.display;
             const { Event, IOErrorEvent } = next2d.events;
 
@@ -134,6 +148,16 @@ class Application extends Common
             request.method = object.method
                 ? object.method.toUpperCase()
                 : URLRequestMethod.GET;
+
+            if (object.headers) {
+                for (const [name, value] of Object.entries(object.headers)) {
+                    request.requestHeaders.push(new URLRequestHeader(name, value));
+                }
+            }
+
+            if (object.body) {
+                request.data = JSON.stringify(object.body);
+            }
 
             const loader = new Loader();
             loader
@@ -152,8 +176,9 @@ class Application extends Common
                         }
                     }
 
-                    if (this.object.callback) {
-                        this.object.callback(content);
+                    if (this.object.callback && this.packages.has(object.callback)) {
+                        const CallbackClass = this.packages.get(object.callback);
+                        new CallbackClass(content, index);
                     }
 
                     this.resolve({
@@ -161,7 +186,12 @@ class Application extends Common
                         "response": content
                     });
 
-                }.bind({ "object": object, "resolve": resolve }));
+                }.bind({
+                    "object": object,
+                    "index": index,
+                    "packages": this.packages,
+                    "resolve": resolve
+                }));
 
             loader
                 .contentLoaderInfo

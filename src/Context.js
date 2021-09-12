@@ -1,5 +1,6 @@
 /**
  * @class
+ * @private
  */
 class Context
 {

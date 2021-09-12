@@ -1,66 +1,16 @@
 /**
  * @class
+ * @extends {Common}
  */
-class ViewModel
+class ViewModel extends Common
 {
     /**
-     * @return {Application}
-     * @readonly
+     * @constructor
      * @public
      */
-    get app ()
+    constructor()
     {
-        return next2d.fw.application;
-    }
-
-    /**
-     * @return {object}
-     * @readonly
-     * @public
-     */
-    get config ()
-    {
-        return next2d.fw.config;
-    }
-
-    /**
-     * @return {Context}
-     * @readonly
-     * @public
-     */
-    get context ()
-    {
-        return next2d.fw.context;
-    }
-
-    /**
-     * @return {Map}
-     * @readonly
-     * @public
-     */
-    get response ()
-    {
-        return next2d.fw.response;
-    }
-
-    /**
-     * @return {Cache}
-     * @readonly
-     * @public
-     */
-    get cache ()
-    {
-        return next2d.fw.cache;
-    }
-
-    /**
-     * @return {Map}
-     * @readonly
-     * @public
-     */
-    get packages ()
-    {
-        return next2d.fw.packages;
+        super();
     }
 
     /**

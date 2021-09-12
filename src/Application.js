@@ -1,7 +1,8 @@
 /**
  * @class
+ * @extends {Common}
  */
-class Application
+class Application extends Common
 {
     /**
      * @param {object} [config=null]
@@ -10,6 +11,8 @@ class Application
      */
     constructor (config = null)
     {
+        super ();
+
         if (config) {
             next2d.fw.config = config;
         }
@@ -36,46 +39,6 @@ class Application
          * @private
          */
         next2d.fw.cache = new Cache();
-    }
-
-    /**
-     * @return {object}
-     * @readonly
-     * @public
-     */
-    get config ()
-    {
-        return next2d.fw.config;
-    }
-
-    /**
-     * @return {Map}
-     * @readonly
-     * @public
-     */
-    get response ()
-    {
-        return next2d.fw.response;
-    }
-
-    /**
-     * @return {Context}
-     * @readonly
-     * @public
-     */
-    get context ()
-    {
-        return next2d.fw.context;
-    }
-
-    /**
-     * @return {Cache}
-     * @readonly
-     * @public
-     */
-    get cache ()
-    {
-        return next2d.fw.cache;
     }
 
     /**

@@ -76,6 +76,8 @@ function buildJavaScript()
     const build = gulp
         .src([
             "src/Header.build.file",
+            "src/Common.js",
+            "src/CommonMovieClip.js",
             "src/**/*.js",
             "src/Footer.build.file"
         ])

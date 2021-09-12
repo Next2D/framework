@@ -119,7 +119,7 @@ class Application extends Common
             {
                 if (object.callback && this.packages.has(object.callback)) {
                     const CallbackClass = this.packages.get(object.callback);
-                    new CallbackClass(data, index);
+                    new CallbackClass(data, index).execute();
                 }
 
                 return {
@@ -178,7 +178,7 @@ class Application extends Common
 
                     if (this.object.callback && this.packages.has(object.callback)) {
                         const CallbackClass = this.packages.get(object.callback);
-                        new CallbackClass(content, index);
+                        new CallbackClass(content, index).execute();
                     }
 
                     this.resolve({

@@ -5,12 +5,25 @@
 
 Next2D Framework for the Model-View-ViewModel(MVVM) pattern.
 
+## Quick Start
+
+Create Next2D apps with no build configuration.
 ```sh
+npx create-next2d-app app-test
+cd app-test
+npm start
+```
+
+## Directory Configuration
+
+```sh
+project
 ├── dist // Destination of built sources. 
 │   ├── index.html
 │   └── app.js
 ├── test // Unit Test directory
 │   └── model
+│       └── default empty
 └── src
     ├── App.js
     ├── Header.file
@@ -19,10 +32,13 @@ Next2D Framework for the Model-View-ViewModel(MVVM) pattern.
     │   ├── config.json // Configuration files for each environment.
     │   ├── routing.json // Request settings before loading the view.
     │   └── stage.json // Display(Stage) area setting. 
-    ├── content
+    ├── content // Symbolic access to JSON created with NoCode Tool
     │   └── top
     │       └── TopContent.js
+    │   └── home
+    │       └── HomeContent.js
     ├── model // business logic
+    │       └── default empty
     └── view // Per-page View, ViewModel files.
         ├── top
         │   ├── TopView.js
@@ -32,14 +48,8 @@ Next2D Framework for the Model-View-ViewModel(MVVM) pattern.
             └── HomeViewModel.js
 ```
 
-## Quick Start
-
-Create Next2D apps with no build configuration.
-```sh
-npx create-next2d-app app-test
-cd app-test
-npm start
-```
+## Chat Flow
+![Chat Flow](./Framework_Chart_Flow.svg)
 
 ## Commands
 

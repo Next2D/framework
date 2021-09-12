@@ -48,8 +48,8 @@ project
             └── HomeViewModel.js
 ```
 
-## Chat Flow
-![Chat Flow](./Framework_Chart_Flow.svg)
+## Chart Flow
+![Chart Flow](./Framework_Chart_Flow.svg)
 
 ## Commands
 

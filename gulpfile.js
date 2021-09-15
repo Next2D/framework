@@ -213,3 +213,4 @@ exports.default = gulp.series(
 exports.test  = gulp.series(test);
 exports.jsdoc = gulp.series(createHTML);
 exports.lint  = gulp.series(lint);
+exports.build = gulp.series(buildHeaderVersion, buildFooterVersion, buildJavaScript);

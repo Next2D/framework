@@ -78,6 +78,7 @@ function buildJavaScript()
             "src/Header.build.file",
             "src/model/Common.js",
             "src/model/CommonMovieClip.js",
+            "src/cache/Cache.js",
             "src/**/*.js",
             "src/Footer.build.file"
         ])

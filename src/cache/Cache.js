@@ -1,7 +1,7 @@
 /**
  * @class
  */
-class Cache
+export class Cache
 {
     /**
      * @constructor

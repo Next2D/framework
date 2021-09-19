@@ -1,9 +1,0 @@
-/*!
- * licenses: MIT Licenses.
- * version: ###BUILD_VERSION###
- * author: Toshiyuki Ienaga <ienaga@tvon.jp>
- * copyright: (c) 2020-###BUILD_YEAR### Toshiyuki Ienaga.
- */
-if (!("fw" in window.next2d)) {
-    (function(window) {
-        "use strict";

@@ -1,8 +1,10 @@
+import { Cache } from "../../cache/Cache";
+
 /**
  * @class
  * @extends {Cache}
  */
-class Variable extends Cache
+export class Variable extends Cache
 {
     /**
      * @constructor

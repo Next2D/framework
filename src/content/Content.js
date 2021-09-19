@@ -1,8 +1,10 @@
+import { CommonMovieClip } from "../model/common/CommonMovieClip";
+
 /**
  * @class
  * @extends {CommonMovieClip}
  */
-class Content extends CommonMovieClip
+export class Content extends CommonMovieClip
 {
     /**
      * @constructor

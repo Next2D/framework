@@ -1,8 +1,10 @@
+import { Common } from "../model/common/Common";
+
 /**
  * @class
  * @extends {Common}
  */
-class ViewModel extends Common
+export class ViewModel extends Common
 {
     /**
      * @constructor

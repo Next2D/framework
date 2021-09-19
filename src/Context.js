@@ -2,7 +2,7 @@
  * @class
  * @private
  */
-class Context
+export class Context
 {
     /**
      * @param {number} [width=240]
@@ -27,7 +27,7 @@ class Context
         {
             const view = event.target;
 
-            if (view instanceof View) {
+            if (view instanceof next2d.fw.View) {
 
                 const viewModelName = `${view.constructor.name}Model`;
 
@@ -48,7 +48,7 @@ class Context
         {
             const view = event.target;
 
-            if (view instanceof View) {
+            if (view instanceof next2d.fw.View) {
 
                 if (next2d.fw.viewModel) {
                     next2d.fw.viewModel.unbind(view);

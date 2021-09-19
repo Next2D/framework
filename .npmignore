@@ -5,7 +5,4 @@
 .github
 node_modules
 Framework_Chart_Flow.svg
-gulpfile.js
-karma.conf.js
-src
 test

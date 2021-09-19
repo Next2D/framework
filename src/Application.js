@@ -1,31 +1,45 @@
+import { Common } from "./model/common/Common";
+import { Context } from "./Context";
+import { Cache } from "./cache/Cache";
+import { Variable } from "./model/common/Variable";
+
 /**
  * @class
  * @extends {Common}
  */
-class Application extends Common
+export class Application extends Common
 {
     /**
-     * @param {object} [config=null]
+     * @param {object} config
+     * @param {array} packages
      * @constructor
      * @public
      */
-    constructor (config = null)
+    constructor (config, packages)
     {
         super ();
 
-        if (config) {
-            next2d.fw.config = config;
-        }
+        /**
+         * @type {object}
+         * @static
+         */
+        next2d.fw.config = config;
+
+        /**
+         * @type {Map}
+         * @static
+         */
+        next2d.fw.packages = new Map(packages);
 
         /**
          * @type {Application}
-         * @private
+         * @static
          */
         next2d.fw.application = this;
 
         /**
          * @type {Context}
-         * @private
+         * @static
          */
         next2d.fw.context = new Context(
             this.config.stage.width,
@@ -36,13 +50,13 @@ class Application extends Common
 
         /**
          * @type {Cache}
-         * @private
+         * @static
          */
         next2d.fw.cache = new Cache();
 
         /**
          * @type {Variable}
-         * @private
+         * @static
          */
         next2d.fw.variable = new Variable();
     }

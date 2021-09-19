@@ -1,9 +1,8 @@
 /**
  * @class
  * @private
- * @extends {next2d.display.MovieClip}
  */
-class CommonMovieClip extends next2d.display.MovieClip
+export class Common
 {
     /**
      * @return {Application}

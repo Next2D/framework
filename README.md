@@ -18,34 +18,32 @@ npm start
 
 ```sh
 project
-├── dist // Destination of built sources. 
-│   ├── index.html
-│   └── app.js
-├── test // Unit Test directory
-│   └── model
-│       └── default empty
-└── src
-    ├── App.js
-    ├── Header.file
-    ├── Footer.file
-    ├── config
-    │   ├── config.json // Configuration files for each environment.
-    │   ├── routing.json // Request settings before loading the view.
-    │   └── stage.json // Display(Stage) area setting. 
-    ├── content // Symbolic access to JSON created with NoCode Tool
-    │   └── top
-    │       └── TopContent.js
-    │   └── home
-    │       └── HomeContent.js
-    ├── model // business logic
-    │       └── default empty
-    └── view // Per-page View, ViewModel files.
-        ├── top
-        │   ├── TopView.js
-        │   └── TopViewModel.js
-        └── home
-            ├── HomeView.js
-            └── HomeViewModel.js
+├── src
+│   ├── index.js
+│   ├── App.js
+│   ├── Packages.js
+│   ├── config
+│   │   ├── config.json // Configuration files for each environment.
+│   │   ├── routing.json // Request settings before loading the view.
+│   │   ├── stage.json // Display(Stage) area setting. 
+│   │   └── Config.js
+│   ├── content // Symbolic access to JSON created with NoCode Tool
+│   │   └── top
+│   │       └── TopContent.js
+│   │   └── home
+│   │       └── HomeContent.js
+│   ├── model // business logic
+│   │       └── default empty
+│   └── view // Per-page View, ViewModel files.
+│       ├── top
+│       │   ├── TopView.js
+│       │   └── TopViewModel.js
+│       └── home
+│           ├── HomeView.js
+│           └── HomeViewModel.js
+└── test // Unit Test directory
+    └── model
+        └── default empty
 ```
 
 ## Chart Flow

@@ -106,9 +106,16 @@ export class Context
      */
     addChild (name, responses)
     {
-        const viewName = name
-            .charAt(0)
-            .toUpperCase() + name.slice(1) + "View";
+        const names = name.split(/[-_/]/);
+
+        let viewName = "";
+        for (let idx = 0; names.length > idx; ++idx) {
+            name = names[idx];
+            viewName += name
+                .charAt(0)
+                .toUpperCase() + name.slice(1);
+        }
+        viewName += "View";
 
         const viewModelName = `${viewName}Model`;
 

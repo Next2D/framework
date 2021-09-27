@@ -1,6 +1,6 @@
 /**
  * @class
- * @private
+ * @memberOf next2d.fw
  * @extends {next2d.display.MovieClip}
  */
 export class CommonMovieClip extends next2d.display.MovieClip

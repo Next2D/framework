@@ -2,6 +2,7 @@ import { Common } from "../model/common/Common";
 
 /**
  * @class
+ * @memberOf next2d.fw
  * @extends {Common}
  */
 export class ViewModel extends Common

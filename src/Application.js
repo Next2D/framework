@@ -5,7 +5,8 @@ import { Variable } from "./model/common/Variable";
 
 /**
  * @class
- * @extends {Common}
+ * @memberOf next2d.fw
+ * @extends  {Common}
  */
 export class Application extends Common
 {

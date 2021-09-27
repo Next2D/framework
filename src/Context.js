@@ -1,6 +1,6 @@
 /**
  * @class
- * @private
+ * @memberOf next2d.fw
  */
 export class Context
 {

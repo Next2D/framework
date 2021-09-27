@@ -1,5 +1,9 @@
 /**
+ * ルーティングで設定したリクエスト結果(レスポンス)をキャッシュします。
+ * Caches the request result (response) set in routing.
+ *
  * @class
+ * @memberOf next2d.fw
  */
 export class Cache
 {

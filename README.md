@@ -1,6 +1,6 @@
 Next2D Framework
 =============
-<img src="https://next2d.app/assets/img/framework/logo.svg" width="200" height="200" alt="Next2D Player Logo">
+<img src="https://next2d.app/assets/img/framework/logo.svg" width="200" height="200" alt="Next2D Framework Logo">
 
 [![CodeQL](https://github.com/Next2D/Framework/actions/workflows/codeql-analysis.yml/badge.svg?branch=main)](https://github.com/Next2D/Framework/actions/workflows/codeql-analysis.yml)
 [![license](https://img.shields.io/github/license/Next2D/Framework)](https://github.com/Next2D/Framework/blob/main/LICENSE)

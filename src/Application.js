@@ -60,7 +60,17 @@ export class Application extends Common
          * @static
          */
         next2d.fw.variable = new Variable();
+
+        // initial processing
+        this.initialize();
     }
+
+    /**
+     * @return {void}
+     * @abstract
+     */
+    // eslint-disable-next-line no-empty-function
+    initialize () {}
 
     /**
      * @param  {string} [name="top"]

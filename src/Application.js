@@ -5,7 +5,8 @@ import { Variable } from "./model/common/Variable";
 
 /**
  * @class
- * @extends {Common}
+ * @memberOf next2d.fw
+ * @extends  {Common}
  */
 export class Application extends Common
 {
@@ -59,7 +60,17 @@ export class Application extends Common
          * @static
          */
         next2d.fw.variable = new Variable();
+
+        // initial processing
+        this.initialize();
     }
+
+    /**
+     * @return {void}
+     * @abstract
+     */
+    // eslint-disable-next-line no-empty-function
+    initialize () {}
 
     /**
      * @param  {string} [name="top"]

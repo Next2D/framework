@@ -1,7 +1,10 @@
 import { CommonMovieClip } from "../model/common/CommonMovieClip";
 
 /**
+ *
+ *
  * @class
+ * @memberOf next2d.fw
  * @extends {CommonMovieClip}
  */
 export class Content extends CommonMovieClip

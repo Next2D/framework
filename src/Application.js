@@ -2,6 +2,7 @@ import { Common } from "./model/common/Common";
 import { Context } from "./Context";
 import { Cache } from "./cache/Cache";
 import { Variable } from "./model/common/Variable";
+import { Query } from "./model/common/Query";
 
 /**
  * @class
@@ -94,24 +95,17 @@ export class Application extends Common
             name = location.pathname.slice(1) || "top";
         }
 
-        let path = "top";
-        if (name.indexOf("?") > -1) {
-            
-            const names = name.split("?");
-
-            path = names[0];
-            if (names.length > 1) {
-                const parameters = names[1].split("&");
-                for (let idx = 0; idx < parameters.length; ++idx) {
-                    const pair = parameters[idx].split("=");
-                    this.query.set(pair[0], pair[1]);
-                }
+        if (location.search) {
+            const parameters = location.search.slice(1).split("&");
+            for (let idx = 0; idx < parameters.length; ++idx) {
+                const pair = parameters[idx].split("=");
+                this.query.set(pair[0], pair[1]);
             }
         }
 
         Promise
-            .all(this._$requests(path))
-            .then((responses) => { this.context.addChild(path, responses) });
+            .all(this._$requests(name))
+            .then((responses) => { this.context.addChild(name, responses) });
     }
 
     /**

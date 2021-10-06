@@ -2,6 +2,7 @@ import { Common } from "./model/common/Common";
 import { Context } from "./Context";
 import { Cache } from "./cache/Cache";
 import { Variable } from "./model/common/Variable";
+import { Query } from "./model/common/Query";
 
 /**
  * @class
@@ -61,6 +62,12 @@ export class Application extends Common
          */
         next2d.fw.variable = new Variable();
 
+        /**
+         * @type {Query}
+         * @static
+         */
+        next2d.fw.query = new Query();
+
         // initial processing
         this.initialize();
     }
@@ -73,13 +80,29 @@ export class Application extends Common
     initialize () {}
 
     /**
-     * @param  {string} [name="top"]
+     * @param  {string} [name=null]
      * @return {void}
      * @method
      * @public
      */
-    gotoView (name = "top")
+    gotoView (name = null)
     {
+        if (this.query.length) {
+            this.query.clear();
+        }
+
+        if (!name) {
+            name = location.pathname.slice(1) || "top";
+        }
+
+        if (location.search) {
+            const parameters = location.search.slice(1).split("&");
+            for (let idx = 0; idx < parameters.length; ++idx) {
+                const pair = parameters[idx].split("=");
+                this.query.set(pair[0], pair[1]);
+            }
+        }
+
         Promise
             .all(this._$requests(name))
             .then((responses) => { this.context.addChild(name, responses) });

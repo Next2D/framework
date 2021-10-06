@@ -61,6 +61,12 @@ export class Application extends Common
          */
         next2d.fw.variable = new Variable();
 
+        /**
+         * @type {Query}
+         * @static
+         */
+        next2d.fw.query = new Query();
+
         // initial processing
         this.initialize();
     }
@@ -73,16 +79,39 @@ export class Application extends Common
     initialize () {}
 
     /**
-     * @param  {string} [name="top"]
+     * @param  {string} [name=null]
      * @return {void}
      * @method
      * @public
      */
-    gotoView (name = "top")
+    gotoView (name = null)
     {
+        if (this.query.length) {
+            this.query.clear();
+        }
+
+        if (!name) {
+            name = location.pathname.slice(1) || "top";
+        }
+
+        let path = "top";
+        if (name.indexOf("?") > -1) {
+            
+            const names = name.split("?");
+
+            path = names[0];
+            if (names.length > 1) {
+                const parameters = names[1].split("&");
+                for (let idx = 0; idx < parameters.length; ++idx) {
+                    const pair = parameters[idx].split("=");
+                    this.query.set(pair[0], pair[1]);
+                }
+            }
+        }
+
         Promise
-            .all(this._$requests(name))
-            .then((responses) => { this.context.addChild(name, responses) });
+            .all(this._$requests(path))
+            .then((responses) => { this.context.addChild(path, responses) });
     }
 
     /**

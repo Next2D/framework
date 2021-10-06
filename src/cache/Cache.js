@@ -68,4 +68,14 @@ export class Cache
     {
         this._$store.clear();
     }
+
+    /**
+     * @return {number}
+     * @method
+     * @public
+     */
+    get length ()
+    {
+        return this._$store.size;
+    }
 }

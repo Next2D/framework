@@ -73,4 +73,14 @@ export class Common
     {
         return next2d.fw.variable;
     }
+
+    /**
+     * @return {Map}
+     * @readonly
+     * @public
+     */
+    get query ()
+    {
+        return next2d.fw.query;
+    }
 }

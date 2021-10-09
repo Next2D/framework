@@ -99,6 +99,16 @@ export class Context
     }
 
     /**
+     * @return {Sprite}
+     * @readonly
+     * @public
+     */
+    get root ()
+    {
+        return this._$root;
+    }
+
+    /**
      * @param  {string} name
      * @param  {array}  responses
      * @return {ViewModel}
@@ -123,6 +133,15 @@ export class Context
             || !next2d.fw.packages.has(viewModelName)
         ) {
             return ;
+        }
+
+        if (next2d.fw.config.loading) {
+            const element = document
+                .getElementById("__next2d__framework_loading");
+
+            if (element) {
+                element.style.display = "none";
+            }
         }
 
         if (this._$root.numChildren) {
@@ -153,4 +172,5 @@ export class Context
         this._$root.addChild(view);
 
     }
+
 }

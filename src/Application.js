@@ -125,8 +125,8 @@ export class Application extends Common
 
         const ratio = window.devicePixelRatio;
 
-        const {Sprite, Shape, BitmapData} = next2d.display;
-        const {Matrix} = next2d.geom;
+        const { Sprite, Shape, BitmapData } = next2d.display;
+        const { Matrix } = next2d.geom;
 
         const bitmapData = new BitmapData(
             root.stage.stageWidth  * ratio,

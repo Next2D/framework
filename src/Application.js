@@ -126,7 +126,7 @@ export class Application extends Common
 
             const object = routing.requests[idx];
 
-            if (object.cache && this.cache.has(object.name)) {
+            if (object.cache && object.name && this.cache.has(object.name)) {
                 promises.push({
                     "name": object.name,
                     "response": this.cache.get(object.name)
@@ -168,6 +168,10 @@ export class Application extends Common
                 if (object.callback && this.packages.has(object.callback)) {
                     const CallbackClass = this.packages.get(object.callback);
                     new CallbackClass(data, index).execute();
+                }
+
+                if (object.cache && object.name) {
+                    next2d.fw.cache.set(object.name, data);
                 }
 
                 return {
@@ -227,6 +231,10 @@ export class Application extends Common
                     if (this.object.callback && this.packages.has(object.callback)) {
                         const CallbackClass = this.packages.get(object.callback);
                         new CallbackClass(content, index).execute();
+                    }
+
+                    if (this.object.cache && this.object.name) {
+                        next2d.fw.cache.set(this.object.name, content);
                     }
 
                     this.resolve({

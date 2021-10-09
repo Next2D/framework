@@ -87,6 +87,12 @@ export class Application extends Common
      */
     gotoView (name = null)
     {
+        const root = this.context.root;
+        if (this.config.loading && root.numChildren) {
+            this._$createSnapshot();
+            this._$startLoading();
+        }
+
         if (this.query.length) {
             this.query.clear();
         }
@@ -106,6 +112,153 @@ export class Application extends Common
         Promise
             .all(this._$requests(name))
             .then((responses) => { this.context.addChild(name, responses) });
+
+    }
+
+    /**
+     * @return {void}
+     * @private
+     */
+    _$createSnapshot ()
+    {
+        const root = this.context.root;
+
+        const ratio = window.devicePixelRatio;
+
+        const {Sprite, Shape, BitmapData} = next2d.display;
+        const {Matrix} = next2d.geom;
+
+        const bitmapData = new BitmapData(
+            root.stage.stageWidth  * ratio,
+            root.stage.stageHeight * ratio,
+            true, 0
+        );
+
+        bitmapData.draw(root, new Matrix(ratio, 0, 0, ratio, 0, 0));
+
+        // remove all
+        while (root.numChildren) {
+            root.removeChild(root.getChildAt(0));
+        }
+
+        const sprite  = root.addChild(new Sprite());
+        sprite.scaleX = 1 / ratio;
+        sprite.scaleY = 1 / ratio;
+
+        const snapshot = sprite.addChild(new Shape());
+        snapshot
+            .graphics
+            .beginBitmapFill(bitmapData)
+            .drawRect(0, 0, bitmapData.width, bitmapData.height)
+            .endFill();
+
+        const width  = this.config.stage.width;
+        const height = this.config.stage.height;
+
+        const mask = root.addChild(new Shape());
+        mask
+            .graphics
+            .beginFill(0, 0.8)
+            .drawRect(0, 0, width, height)
+            .endFill();
+
+        const player = root.stage._$player;
+        const matrix = player._$matrix;
+
+        const tx = matrix[4];
+        if (tx) {
+            const scaleX = matrix[0];
+            mask.scaleX = (width + tx * 2 / scaleX) / width;
+            mask.x = -tx / scaleX;
+        }
+
+        const ty = matrix[5];
+        if (ty) {
+            const scaleY = matrix[3];
+            mask.scaleY = (height + ty * 2 / scaleY) / height;
+            mask.y = -ty / scaleY;
+        }
+    }
+
+    /**
+     * @return {void}
+     * @private
+     */
+    _$startLoading ()
+    {
+        const root   = this.context.root;
+        const player = root.stage._$player;
+
+        const elementId = "__next2d__framework_loading";
+
+        const element = document.getElementById(elementId);
+        if (!element) {
+
+            const parent = document.getElementById(player.contentElementId);
+
+            const loader = document.createElement("div");
+
+            loader.id = elementId;
+
+            loader.innerHTML = `<div></div><div></div><div></div><style>
+@keyframes __next2d__framework_loading {
+  0% {
+    transform: scale(1);
+    opacity: 1; 
+  }
+  45% {
+    transform: scale(0.1);
+    opacity: 0.7; 
+  }
+  80% {
+    transform: scale(1);
+    opacity: 1; 
+  } 
+}
+    
+#__next2d__framework_loading > div:nth-child(1) {
+  animation: __next2d__framework_loading 0.75s -0.24s infinite cubic-bezier(0.2, 0.68, 0.18, 1.08); 
+}
+
+#__next2d__framework_loading > div:nth-child(2) {
+  animation: __next2d__framework_loading 0.75s -0.12s infinite cubic-bezier(0.2, 0.68, 0.18, 1.08); 
+}
+
+#__next2d__framework_loading > div:nth-child(3) {
+  animation: __next2d__framework_loading 0.75s 0s infinite cubic-bezier(0.2, 0.68, 0.18, 1.08); 
+}
+
+#__next2d__framework_loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -24px 0 0 -24px;
+  width: 57px;
+  height: 19px;
+  z-index: 9999;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+#__next2d__framework_loading > div {
+  background-color: #fff;
+  width: 15px;
+  height: 15px;
+  border-radius: 100%;
+  margin: 2px;
+  animation-fill-mode: both;
+  display: inline-block; 
+}
+</style>`;
+
+            parent.insertBefore(loader, parent.children[0]);
+
+        } else {
+
+            element.style.display = "";
+
+        }
+
     }
 
     /**

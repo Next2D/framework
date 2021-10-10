@@ -3,6 +3,7 @@ import { Context } from "./Context";
 import { Cache } from "./cache/Cache";
 import { Variable } from "./model/common/Variable";
 import { Query } from "./model/common/Query";
+import { Config } from "./Config";
 
 /**
  * @class
@@ -189,7 +190,7 @@ export class Application extends Common
         const root   = this.context.root;
         const player = root.stage._$player;
 
-        const elementId = "__next2d__framework_loading";
+        const elementId = `${Config.$PREFIX}_loading`;
 
         const element = document.getElementById(elementId);
         if (!element) {

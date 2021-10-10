@@ -1,3 +1,5 @@
+import { Config } from "./Config";
+
 /**
  * @class
  * @memberOf next2d.fw
@@ -137,7 +139,7 @@ export class Context
 
         if (next2d.fw.config.loading) {
             const element = document
-                .getElementById("__next2d__framework_loading");
+                .getElementById(`${Config.$PREFIX}_loading`);
 
             if (element) {
                 element.style.display = "none";

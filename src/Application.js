@@ -1,4 +1,4 @@
-import { Common } from "./model/common/Common";
+import { Model } from "./model/common/Model";
 import { Context } from "./Context";
 import { Cache } from "./cache/Cache";
 import { Variable } from "./model/common/Variable";
@@ -8,9 +8,9 @@ import { Config } from "./Config";
 /**
  * @class
  * @memberOf next2d.fw
- * @extends  {Common}
+ * @extends  {Model}
  */
-export class Application extends Common
+export class Application extends Model
 {
     /**
      * @param {object} config
@@ -112,7 +112,8 @@ export class Application extends Common
 
         Promise
             .all(this._$requests(name))
-            .then((responses) => { this.context.addChild(name, responses) });
+            .then((responses) => { this.context.addChild(name, responses) })
+            .then(() => { this._$callback(this.config.gotoView.callback, this.context.view) });
 
     }
 
@@ -319,10 +320,7 @@ export class Application extends Common
             .then((response) => { return response.json() })
             .then((data) =>
             {
-                if (object.callback && this.packages.has(object.callback)) {
-                    const CallbackClass = this.packages.get(object.callback);
-                    new CallbackClass(data, index).execute();
-                }
+                this._$callback(object.callback, data);
 
                 if (object.cache && object.name) {
                     next2d.fw.cache.set(object.name, data);
@@ -382,10 +380,7 @@ export class Application extends Common
                         }
                     }
 
-                    if (this.object.callback && this.packages.has(object.callback)) {
-                        const CallbackClass = this.packages.get(object.callback);
-                        new CallbackClass(content, index).execute();
-                    }
+                    this.callback(object.callback, content);
 
                     if (this.object.cache && this.object.name) {
                         next2d.fw.cache.set(this.object.name, content);
@@ -400,7 +395,8 @@ export class Application extends Common
                     "object": object,
                     "index": index,
                     "packages": this.packages,
-                    "resolve": resolve
+                    "resolve": resolve,
+                    "callback": this._$callback
                 }));
 
             loader
@@ -414,4 +410,31 @@ export class Application extends Common
         });
     }
 
+    /**
+     * @param  {string|array} [callback=null]
+     * @param  {*} [value=null]
+     * @return {void}
+     * @private
+     */
+    _$callback (callback = null, value = null)
+    {
+        if (!callback) {
+            return ;
+        }
+
+        const callbacks = (typeof callback === "string")
+            ? [callback]
+            : callback;
+
+        for (let idx = 0; idx < callbacks.length; ++idx) {
+
+            const name = callbacks[idx];
+            if (!this.packages.has(name)) {
+                continue;
+            }
+
+            const CallbackClass = this.packages.get(name);
+            new CallbackClass(value).execute();
+        }
+    }
 }

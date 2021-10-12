@@ -1,11 +1,11 @@
-import { Common } from "../model/common/Common";
+import { Model } from "../model/common/Model";
 
 /**
  * @class
  * @memberOf next2d.fw
- * @extends {Common}
+ * @extends {Model}
  */
-export class ViewModel extends Common
+export class ViewModel extends Model
 {
     /**
      * @constructor

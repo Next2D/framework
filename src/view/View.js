@@ -1,11 +1,11 @@
-import { CommonMovieClip } from "../model/common/CommonMovieClip";
+import { MovieClip } from "../model/common/MovieClip";
 
 /**
  * @class
  * @memberOf next2d.fw
- * @extends {CommonMovieClip}
+ * @extends {MovieClip}
  */
-export class View extends CommonMovieClip
+export class View extends MovieClip
 {
     /**
      * @constructor

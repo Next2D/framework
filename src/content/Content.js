@@ -1,13 +1,13 @@
-import { CommonMovieClip } from "../model/common/CommonMovieClip";
+import { MovieClip } from "../model/common/MovieClip";
 
 /**
  *
  *
  * @class
  * @memberOf next2d.fw
- * @extends {CommonMovieClip}
+ * @extends {MovieClip}
  */
-export class Content extends CommonMovieClip
+export class Content extends MovieClip
 {
     /**
      * @constructor
@@ -31,6 +31,7 @@ export class Content extends CommonMovieClip
             this._$sync();
         }
 
+        // initial processing
         this.initialize();
     }
 

@@ -1,3 +1,5 @@
+import { Config } from "./Config";
+
 /**
  * @class
  * @memberOf next2d.fw
@@ -15,6 +17,16 @@ export class Context
      */
     constructor (width = 240, height = 240, fps = 30, options = null)
     {
+        /**
+         * @type {next2d.display.DisplayObject}
+         * @private
+         */
+        this._$view = null;
+
+        /**
+         * @type {next2d.display.Sprite}
+         * @private
+         */
         this._$root = next2d.createRootMovieClip(
             width, height, fps, options
         );
@@ -99,7 +111,7 @@ export class Context
     }
 
     /**
-     * @return {Sprite}
+     * @return {next2d.display.Sprite}
      * @readonly
      * @public
      */
@@ -109,9 +121,19 @@ export class Context
     }
 
     /**
+     * @return {next2d.display.DisplayObject}
+     * @readonly
+     * @public
+     */
+    get view ()
+    {
+        return this._$view;
+    }
+
+    /**
      * @param  {string} name
      * @param  {array}  responses
-     * @return {ViewModel}
+     * @return {ViewModel|null}
      * @public
      */
     addChild (name, responses)
@@ -132,12 +154,12 @@ export class Context
         if (!next2d.fw.packages.has(viewName)
             || !next2d.fw.packages.has(viewModelName)
         ) {
-            return ;
+            return null;
         }
 
         if (next2d.fw.config.loading) {
             const element = document
-                .getElementById("__next2d__framework_loading");
+                .getElementById(`${Config.$PREFIX}_loading`);
 
             if (element) {
                 element.style.display = "none";
@@ -167,10 +189,9 @@ export class Context
         }
 
         const ViewClass = next2d.fw.packages.get(viewName);
-        const view = new ViewClass();
+        this._$view = this._$root.addChild(new ViewClass());
 
-        this._$root.addChild(view);
-
+        return this._$view;
     }
 
 }

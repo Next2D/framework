@@ -1,15 +1,16 @@
-import { Common } from "./model/common/Common";
+import { Model } from "./model/common/Model";
 import { Context } from "./Context";
 import { Cache } from "./cache/Cache";
 import { Variable } from "./model/common/Variable";
 import { Query } from "./model/common/Query";
+import { Config } from "./Config";
 
 /**
  * @class
  * @memberOf next2d.fw
- * @extends  {Common}
+ * @extends  {Model}
  */
-export class Application extends Common
+export class Application extends Model
 {
     /**
      * @param {object} config
@@ -111,7 +112,8 @@ export class Application extends Common
 
         Promise
             .all(this._$requests(name))
-            .then((responses) => { this.context.addChild(name, responses) });
+            .then((responses) => { this.context.addChild(name, responses) })
+            .then(() => { this._$callback(this.config.gotoView.callback, this.context.view) });
 
     }
 
@@ -189,7 +191,7 @@ export class Application extends Common
         const root   = this.context.root;
         const player = root.stage._$player;
 
-        const elementId = "__next2d__framework_loading";
+        const elementId = `${Config.$PREFIX}_loading`;
 
         const element = document.getElementById(elementId);
         if (!element) {
@@ -288,8 +290,8 @@ export class Application extends Common
             }
 
             promises.push(object.type === "json"
-                ? this._$loadJSON(object, idx)
-                : this._$loadContent(object, idx)
+                ? this._$loadJSON(object)
+                : this._$loadContent(object)
             );
         }
 
@@ -298,12 +300,11 @@ export class Application extends Common
 
     /**
      * @param  {object} object
-     * @param  {number} index
      * @return {Promise}
      * @method
      * @private
      */
-    _$loadJSON (object, index)
+    _$loadJSON (object)
     {
         const method = object.method ? object.method.toUpperCase() : "GET";
         const body   = object.body && (method === "POST" || method === "PUT")
@@ -318,10 +319,7 @@ export class Application extends Common
             .then((response) => { return response.json() })
             .then((data) =>
             {
-                if (object.callback && this.packages.has(object.callback)) {
-                    const CallbackClass = this.packages.get(object.callback);
-                    new CallbackClass(data, index).execute();
-                }
+                this._$callback(object.callback, data);
 
                 if (object.cache && object.name) {
                     next2d.fw.cache.set(object.name, data);
@@ -336,12 +334,11 @@ export class Application extends Common
 
     /**
      * @param  {object} object
-     * @param  {number} index
      * @return {Promise}
      * @method
      * @private
      */
-    _$loadContent (object, index)
+    _$loadContent (object)
     {
         return new Promise((resolve, reject) =>
         {
@@ -369,22 +366,22 @@ export class Application extends Common
                 .contentLoaderInfo
                 .addEventListener(Event.COMPLETE, function (event)
                 {
-                    const content = event.currentTarget.content;
-
+                    const content    = event.currentTarget.content;
                     const loaderInfo = content._$loaderInfo;
-                    const symbols    = loaderInfo._$data.symbols;
-                    if (symbols.size) {
-                        for (const name of symbols.keys()) {
-                            next2d.fw.loaderInfo.set(
-                                name.split(".").pop(), loaderInfo
-                            );
+
+                    // DisplayObjectContainer
+                    if (loaderInfo._$data) {
+                        const symbols = loaderInfo._$data.symbols;
+                        if (symbols.size) {
+                            for (const name of symbols.keys()) {
+                                next2d.fw.loaderInfo.set(
+                                    name.split(".").pop(), loaderInfo
+                                );
+                            }
                         }
                     }
 
-                    if (this.object.callback && this.packages.has(object.callback)) {
-                        const CallbackClass = this.packages.get(object.callback);
-                        new CallbackClass(content, index).execute();
-                    }
+                    this.callback(object.callback, content);
 
                     if (this.object.cache && this.object.name) {
                         next2d.fw.cache.set(this.object.name, content);
@@ -397,9 +394,9 @@ export class Application extends Common
 
                 }.bind({
                     "object": object,
-                    "index": index,
                     "packages": this.packages,
-                    "resolve": resolve
+                    "resolve": resolve,
+                    "callback": this._$callback
                 }));
 
             loader
@@ -409,8 +406,43 @@ export class Application extends Common
                     this.reject();
                 }.bind({ "reject": reject }));
 
-            loader.load(request);
+            if (object.type === "image") {
+
+                loader.loadImage(request);
+
+            } else {
+
+                loader.load(request);
+
+            }
         });
     }
 
+    /**
+     * @param  {string|array} [callback=null]
+     * @param  {*} [value=null]
+     * @return {void}
+     * @private
+     */
+    _$callback (callback = null, value = null)
+    {
+        if (!callback) {
+            return ;
+        }
+
+        const callbacks = typeof callback === "string"
+            ? [callback]
+            : callback;
+
+        for (let idx = 0; idx < callbacks.length; ++idx) {
+
+            const name = callbacks[idx];
+            if (!this.packages.has(name)) {
+                continue;
+            }
+
+            const CallbackClass = this.packages.get(name);
+            new CallbackClass(value).execute();
+        }
+    }
 }

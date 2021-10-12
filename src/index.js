@@ -5,6 +5,8 @@ import { Context } from "./Context";
 import { Content } from "./content/Content";
 import { View } from "./view/View";
 import { ViewModel } from "./view/ViewModel";
+import { Model } from "./model/common/Model";
+import { MovieClip } from "./model/common/MovieClip";
 
 if (!("fw" in window.next2d)) {
 
@@ -12,6 +14,8 @@ if (!("fw" in window.next2d)) {
         "Application": Application,
         "Content":     Content,
         "Context":     Context,
+        "Model":       Model,
+        "MovieClip":   MovieClip,
         "View":        View,
         "ViewModel":   ViewModel,
         "application": null,

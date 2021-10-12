@@ -2,7 +2,7 @@
  * @class
  * @memberOf next2d.fw
  */
-export class Common
+export class Model
 {
     /**
      * @return {Application}

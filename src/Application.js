@@ -430,7 +430,7 @@ export class Application extends Model
             return ;
         }
 
-        const callbacks = (typeof callback === "string")
+        const callbacks = typeof callback === "string"
             ? [callback]
             : callback;
 

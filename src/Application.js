@@ -290,8 +290,8 @@ export class Application extends Model
             }
 
             promises.push(object.type === "json"
-                ? this._$loadJSON(object, idx)
-                : this._$loadContent(object, idx)
+                ? this._$loadJSON(object)
+                : this._$loadContent(object)
             );
         }
 
@@ -366,15 +366,18 @@ export class Application extends Model
                 .contentLoaderInfo
                 .addEventListener(Event.COMPLETE, function (event)
                 {
-                    const content = event.currentTarget.content;
-
+                    const content    = event.currentTarget.content;
                     const loaderInfo = content._$loaderInfo;
-                    const symbols    = loaderInfo._$data.symbols;
-                    if (symbols.size) {
-                        for (const name of symbols.keys()) {
-                            next2d.fw.loaderInfo.set(
-                                name.split(".").pop(), loaderInfo
-                            );
+
+                    // DisplayObjectContainer
+                    if (loaderInfo._$data) {
+                        const symbols = loaderInfo._$data.symbols;
+                        if (symbols.size) {
+                            for (const name of symbols.keys()) {
+                                next2d.fw.loaderInfo.set(
+                                    name.split(".").pop(), loaderInfo
+                                );
+                            }
                         }
                     }
 
@@ -391,7 +394,6 @@ export class Application extends Model
 
                 }.bind({
                     "object": object,
-                    "index": index,
                     "packages": this.packages,
                     "resolve": resolve,
                     "callback": this._$callback
@@ -404,7 +406,15 @@ export class Application extends Model
                     this.reject();
                 }.bind({ "reject": reject }));
 
-            loader.load(request);
+            if (object.type === "image") {
+
+                loader.loadImage(request);
+
+            } else {
+
+                loader.load(request);
+
+            }
         });
     }
 

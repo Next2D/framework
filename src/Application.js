@@ -300,12 +300,11 @@ export class Application extends Model
 
     /**
      * @param  {object} object
-     * @param  {number} index
      * @return {Promise}
      * @method
      * @private
      */
-    _$loadJSON (object, index)
+    _$loadJSON (object)
     {
         const method = object.method ? object.method.toUpperCase() : "GET";
         const body   = object.body && (method === "POST" || method === "PUT")
@@ -335,12 +334,11 @@ export class Application extends Model
 
     /**
      * @param  {object} object
-     * @param  {number} index
      * @return {Promise}
      * @method
      * @private
      */
-    _$loadContent (object, index)
+    _$loadContent (object)
     {
         return new Promise((resolve, reject) =>
         {

@@ -110,6 +110,20 @@ export class Application extends Model
             }
         }
 
+        if (name.indexOf("?") > -1) {
+
+            const names = name.split("?");
+
+            name = names[0];
+            const query = names[1];
+
+            const parameters = query.split("&");
+            for (let idx = 0; idx < parameters.length; ++idx) {
+                const pair = parameters[idx].split("=");
+                this.query.set(pair[0], pair[1]);
+            }
+        }
+
         Promise
             .all(this._$requests(name))
             .then((responses) => { this.context.addChild(name, responses) })

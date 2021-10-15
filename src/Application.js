@@ -378,7 +378,7 @@ export class Application extends Model
             const loader = new Loader();
             loader
                 .contentLoaderInfo
-                .addEventListener(Event.COMPLETE, function (event)
+                .addEventListener(Event.COMPLETE, (event) =>
                 {
                     const content    = event.currentTarget.content;
                     const loaderInfo = content._$loaderInfo;
@@ -395,30 +395,21 @@ export class Application extends Model
                         }
                     }
 
-                    this.callback(object.callback, content);
+                    callback(object.callback, content);
 
-                    if (this.object.cache && this.object.name) {
-                        next2d.fw.cache.set(this.object.name, content);
+                    if (object.cache && object.name) {
+                        next2d.fw.cache.set(object.name, content);
                     }
 
-                    this.resolve({
-                        "name": this.object.name,
+                    resolve({
+                        "name": object.name,
                         "response": content
                     });
-
-                }.bind({
-                    "object": object,
-                    "packages": this.packages,
-                    "resolve": resolve,
-                    "callback": this._$callback
-                }));
+                });
 
             loader
                 .contentLoaderInfo
-                .addEventListener(IOErrorEvent.IO_ERROR, function ()
-                {
-                    this.reject();
-                }.bind({ "reject": reject }));
+                .addEventListener(IOErrorEvent.IO_ERROR, reject);
 
             if (object.type === "image") {
 

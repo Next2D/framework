@@ -69,6 +69,21 @@ export class Application extends Model
          */
         next2d.fw.query = new Query();
 
+        if (this.config.spa) {
+            window.addEventListener("popstate", (event) =>
+            {
+                this._$popstate = true;
+                this.gotoView();
+            });
+        }
+
+        /**
+         * @type {boolean}
+         * @default false
+         * @private
+         */
+        this._$popstate = false;
+
         // initial processing
         this.initialize();
     }
@@ -123,6 +138,17 @@ export class Application extends Model
                 this.query.set(pair[0], pair[1]);
             }
         }
+
+        if (this.config.spa && !this._$popstate) {
+            const url = name === "top"
+                ? `${location.origin}${location.search}`
+                : `${location.origin}/${name}${location.search}`;
+
+            history.pushState("", "", url);
+        }
+
+        // update
+        this._$popstate = false;
 
         Promise
             .all(this._$requests(name))

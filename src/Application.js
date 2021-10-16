@@ -152,8 +152,8 @@ export class Application extends Model
 
         Promise
             .all(this._$requests(name))
-            .then((responses) => { this.context.addChild(name, responses) })
-            .then(() => { this._$callback(this.config.gotoView.callback, this.context.view) });
+            .then((responses) => { return this.context.addChild(name, responses) })
+            .then((view) => { this._$callback(this.config.gotoView.callback, view) });
 
     }
 
@@ -322,9 +322,14 @@ export class Application extends Model
             const object = routing.requests[idx];
 
             if (object.cache && object.name && this.cache.has(object.name)) {
+
+                const cache = this.cache.get(object.name);
+
+                this._$callback(object.callback, cache);
+
                 promises.push({
                     "name": object.name,
-                    "response": this.cache.get(object.name)
+                    "response": cache
                 });
                 continue;
             }

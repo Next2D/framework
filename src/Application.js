@@ -70,7 +70,7 @@ export class Application extends Model
         next2d.fw.query = new Query();
 
         if (this.config.spa) {
-            window.addEventListener("popstate", (event) =>
+            window.addEventListener("popstate", () =>
             {
                 this._$popstate = true;
                 this.gotoView();

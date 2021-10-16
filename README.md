@@ -23,19 +23,28 @@ project
 ├── src
 │   ├── index.js
 │   ├── App.js
-│   ├── Packages.js
+│   ├── Packages.js // ignore file
+│   │
 │   ├── config
-│   │   ├── config.json // Configuration files for each environment.
+│   │   ├── config.json  // Configuration files for each environment.
 │   │   ├── routing.json // Request settings before loading the view.
-│   │   ├── stage.json // Display(Stage) area setting. 
-│   │   └── Config.js
+│   │   ├── stage.json   // Display(Stage) area setting. 
+│   │   └── Config.js    // ignore file
+│   │
 │   ├── content // Symbolic access to JSON created with NoCode Tool
-│   │   └── top
-│   │       └── TopContent.js
+│   │   ├── top
+│   │   │   └── TopContent.js
 │   │   └── home
 │   │       └── HomeContent.js
+│   │
+│   ├── image
+│   │   └── default empty
+│   │
 │   ├── model // business logic
-│   │       └── default empty
+│   │   ├── callbask
+│   │   │   └── default empty
+│   │   └── default empty
+│   │
 │   └── view // Per-page View, ViewModel files.
 │       ├── top
 │       │   ├── TopView.js
@@ -43,7 +52,8 @@ project
 │       └── home
 │           ├── HomeView.js
 │           └── HomeViewModel.js
-└── test // Unit Test directory
+│
+└── __tests__ // Unit Test directory
     └── model
         └── default empty
 ```
@@ -58,9 +68,9 @@ project
 npm start
 ```
 
-* Bundles the app into static files for develop.
+* Generate the necessary View and ViewModel classes from the routing JSON file.
 ```sh
-npm run build
+npm run generate
 ```
 
 * Bundles the app into static files for production.

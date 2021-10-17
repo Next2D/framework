@@ -117,8 +117,11 @@ export class Application extends Model
             name = location.pathname.slice(1) || "top";
         }
 
+        let query = "";
+
         if (location.search) {
-            const parameters = location.search.slice(1).split("&");
+            query = location.search;
+            const parameters = query.slice(1).split("&");
             for (let idx = 0; idx < parameters.length; ++idx) {
                 const pair = parameters[idx].split("=");
                 this.query.set(pair[0], pair[1]);
@@ -129,10 +132,10 @@ export class Application extends Model
 
             const names = name.split("?");
 
-            name = names[0];
-            const query = names[1];
+            name  = names[0];
+            query = `?${names[1]}`;
 
-            const parameters = query.split("&");
+            const parameters = names[1].split("&");
             for (let idx = 0; idx < parameters.length; ++idx) {
                 const pair = parameters[idx].split("=");
                 this.query.set(pair[0], pair[1]);
@@ -142,7 +145,7 @@ export class Application extends Model
         if (this.config.spa && !this._$popstate) {
             const url = name === "top"
                 ? `${location.origin}${location.search}`
-                : `${location.origin}/${name}${location.search}`;
+                : `${location.origin}/${name}${query}`;
 
             history.pushState("", "", url);
         }

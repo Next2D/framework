@@ -429,7 +429,7 @@ export class Application extends Model
                         }
                     }
 
-                    callback(object.callback, content);
+                    this._$callback(object.callback, content);
 
                     if (object.cache && object.name) {
                         next2d.fw.cache.set(object.name, content);

@@ -23,13 +23,13 @@ project
 ├── src
 │   ├── index.js
 │   ├── App.js
-│   ├── Packages.js // ignore file
+│   ├── Packages.js // It will be generated automatically.
 │   │
 │   ├── config
 │   │   ├── config.json  // Configuration files for each environment.
 │   │   ├── routing.json // Request settings before loading the view.
 │   │   ├── stage.json   // Display(Stage) area setting. 
-│   │   └── Config.js    // ignore file
+│   │   └── Config.js    // It will be generated automatically.
 │   │
 │   ├── content // Symbolic access to JSON created with NoCode Tool
 │   │   ├── top

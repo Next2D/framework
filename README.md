@@ -95,6 +95,8 @@ npm test
 
 #### Option settings
 
+| name | value | description |
+| --- | --- | --- |
 | `base` | string(default:.) | The value to be set if the URL is not set at the time of the request. |
 | `fullScreen` | boolean(default:true) | It will be drawn beyond the width and height set in the fullscreen setting and stage. |
 | `tagId` | string(default:empty) | Set value of the ID of the DOM where you want to set the drawing. |

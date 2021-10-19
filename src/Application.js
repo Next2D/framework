@@ -502,8 +502,7 @@ export class Application extends Model
                 const value = values[idx];
 
                 const name = value
-                    .replace("\{\{", "")
-                    .replace("\}\}", "");
+                    .replace(/\{|\{|\}|\}/g, "");
 
                 if (name in this.config) {
                     url = url.replace(value, this.config[name]);

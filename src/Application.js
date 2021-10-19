@@ -117,8 +117,11 @@ export class Application extends Model
             name = location.pathname.slice(1) || "top";
         }
 
+        let query = "";
+
         if (location.search) {
-            const parameters = location.search.slice(1).split("&");
+            query = location.search;
+            const parameters = query.slice(1).split("&");
             for (let idx = 0; idx < parameters.length; ++idx) {
                 const pair = parameters[idx].split("=");
                 this.query.set(pair[0], pair[1]);
@@ -129,10 +132,10 @@ export class Application extends Model
 
             const names = name.split("?");
 
-            name = names[0];
-            const query = names[1];
+            name  = names[0];
+            query = `?${names[1]}`;
 
-            const parameters = query.split("&");
+            const parameters = names[1].split("&");
             for (let idx = 0; idx < parameters.length; ++idx) {
                 const pair = parameters[idx].split("=");
                 this.query.set(pair[0], pair[1]);
@@ -142,7 +145,7 @@ export class Application extends Model
         if (this.config.spa && !this._$popstate) {
             const url = name === "top"
                 ? `${location.origin}${location.search}`
-                : `${location.origin}/${name}${location.search}`;
+                : `${location.origin}/${name}${query}`;
 
             history.pushState("", "", url);
         }
@@ -356,7 +359,7 @@ export class Application extends Model
             ? object.body
             : null;
 
-        return fetch(`${this.config.endPoint}${object.path}`, {
+        return fetch(`${this._$parseURL(object.path)}`, {
             "method": method,
             "headers": object.headers ? object.headers : {},
             "body": body
@@ -391,7 +394,7 @@ export class Application extends Model
             const { Loader } = next2d.display;
             const { Event, IOErrorEvent } = next2d.events;
 
-            const request  = new URLRequest(`${this.config.endPoint}${object.path}`);
+            const request  = new URLRequest(`${this._$parseURL(object.path)}`);
             request.method = object.method
                 ? object.method.toUpperCase()
                 : URLRequestMethod.GET;
@@ -426,7 +429,7 @@ export class Application extends Model
                         }
                     }
 
-                    callback(object.callback, content);
+                    this._$callback(object.callback, content);
 
                     if (object.cache && object.name) {
                         next2d.fw.cache.set(object.name, content);
@@ -480,5 +483,34 @@ export class Application extends Model
             const CallbackClass = this.packages.get(name);
             new CallbackClass(value).execute();
         }
+    }
+
+    /**
+     * @param  {string} path
+     * @return {string}
+     * @private
+     */
+    _$parseURL (path)
+    {
+        let url = path;
+
+        const values = path.match(/\{\{(.*?)\}\}/g);
+        if (values) {
+
+            for (let idx = 0; idx < values.length; ++idx) {
+
+                const value = values[idx];
+
+                const name = value
+                    .replace(/\{|\{|\}|\}/g, "");
+
+                if (name in this.config) {
+                    url = url.replace(value, this.config[name]);
+                }
+            }
+
+        }
+
+        return url;
     }
 }

@@ -359,7 +359,7 @@ export class Application extends Model
             ? object.body
             : null;
 
-        return fetch(`${this.config.endPoint}${object.path}`, {
+        return fetch(`${this._$parseURL(object.path)}`, {
             "method": method,
             "headers": object.headers ? object.headers : {},
             "body": body
@@ -394,7 +394,7 @@ export class Application extends Model
             const { Loader } = next2d.display;
             const { Event, IOErrorEvent } = next2d.events;
 
-            const request  = new URLRequest(`${this.config.endPoint}${object.path}`);
+            const request  = new URLRequest(`${this._$parseURL(object.path)}`);
             request.method = object.method
                 ? object.method.toUpperCase()
                 : URLRequestMethod.GET;
@@ -483,5 +483,35 @@ export class Application extends Model
             const CallbackClass = this.packages.get(name);
             new CallbackClass(value).execute();
         }
+    }
+
+    /**
+     * @param  {string} path
+     * @return {string}
+     * @private
+     */
+    _$parseURL (path)
+    {
+        let url = path;
+
+        const values = path.match(/\{\{(.*?)\}\}/g);
+        if (values) {
+
+            for (let idx = 0; idx < values.length; ++idx) {
+
+                const value = values[idx];
+
+                const name = value
+                    .replace("\{\{", "")
+                    .replace("\}\}", "");
+
+                if (name in this.config) {
+                    url = url.replace(value, this.config[name]);
+                }
+            }
+
+        }
+
+        return url;
     }
 }

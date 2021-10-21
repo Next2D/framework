@@ -1,10 +1,14 @@
-import { Cache } from "../../src/cache/Cache";
+import {ViewModel} from "../../src/view/ViewModel";
 
-describe("Cache", () =>
+describe("ViewModelTest", () =>
 {
-    test("sample", () => {
-        const cache = new Cache();
-        expect(cache._$store.size).toBe(0);
+    test("bind call", () => {
+        const viewModel = new ViewModel();
+        expect(viewModel.bind()).toBe(undefined);
     });
 
+    test("unbind call", () => {
+        const viewModel = new ViewModel();
+        expect(viewModel.unbind()).toBe(undefined);
+    });
 });

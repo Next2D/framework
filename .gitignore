@@ -2,6 +2,7 @@
 .idea
 .nvmrc
 Thumbs.db
+coverage
 node_modules
 Footer.build.file
 Header.build.file

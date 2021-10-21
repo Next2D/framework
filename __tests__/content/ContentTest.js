@@ -1,10 +1,22 @@
-import { Cache } from "../../src/cache/Cache";
+import { Content } from "../../src/content/Content";
 
-describe("Cache", () =>
+describe("ContentTest", () =>
 {
-    test("sample", () => {
-        const cache = new Cache();
-        expect(cache._$store.size).toBe(0);
+    test("namespace test case1", () => {
+        const content = new Content();
+        expect(content.namespace).toBe(null);
+    });
+
+    test("namespace test case2", () => {
+
+        // setup
+        next2d.fw.loaderInfo.set("Content", Content);
+
+        const content = new Content();
+        expect(content.namespace).toBe("next2d.fw.packages.Content");
+
+        // reset
+        next2d.fw.loaderInfo.delete("Content");
     });
 
 });

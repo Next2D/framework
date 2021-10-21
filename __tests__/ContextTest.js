@@ -1,10 +1,10 @@
-import { Cache } from "../src/cache/Cache";
+import { Context } from "../src/Context";
 
-describe("Cache", () =>
+describe("ContextTest", () =>
 {
     test("sample", () => {
-        const cache = new Cache();
-        expect(cache._$store.size).toBe(0);
+        const context = new Context();
+        expect(context._$view).toBe(null);
     });
 
 });

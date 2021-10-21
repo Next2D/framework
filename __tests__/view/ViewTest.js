@@ -1,10 +1,9 @@
-import { Cache } from "../../src/cache/Cache";
+import { View } from "../../src/view/View";
 
-describe("Cache", () =>
+describe("ViewTest", () =>
 {
-    test("sample", () => {
-        const cache = new Cache();
-        expect(cache._$store.size).toBe(0);
+    test("initialize call", () => {
+        const view = new View();
+        expect(view.initialize()).toBe(undefined);
     });
-
 });

@@ -45,10 +45,10 @@ export class Application extends Model
          * @static
          */
         next2d.fw.context = new Context(
-            this.config.stage.width,
-            this.config.stage.height,
-            this.config.stage.fps,
-            this.config.stage.options
+            config.stage.width,
+            config.stage.height,
+            config.stage.fps,
+            config.stage.options
         );
 
         /**

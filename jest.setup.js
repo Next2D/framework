@@ -41,3 +41,7 @@ global.next2d = {
         "query": new Map([["query", "query"]])
     }
 };
+
+global.location = {
+    "pathname": "/"
+};

@@ -10,6 +10,9 @@ describe("ApplicationTest", () =>
                 "height": 240,
                 "fps": 12,
                 "options": {}
+            },
+            "routing": {
+                "test": {}
             }},
             [
                 ["app", "app"]
@@ -17,6 +20,7 @@ describe("ApplicationTest", () =>
         );
 
         expect(app.initialize()).toBe(undefined);
+        expect(app.gotoView()).toBe(undefined);
     });
 
     test("_$parseURL test", () => {
@@ -71,7 +75,7 @@ describe("ApplicationTest", () =>
 
     });
 
-    test("_$callback test case1", () => {
+    test("_$callback test case2", () => {
 
         let result = null;
         const app = new Application({

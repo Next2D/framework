@@ -5,4 +5,9 @@
 .github
 node_modules
 Framework_Chart_Flow.svg
-test
+__tests__
+babel.config.js
+jest.config.js
+jest.setup.js
+webpack.config.js
+coverage

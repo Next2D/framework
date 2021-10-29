@@ -125,6 +125,9 @@ export class Application extends Model
 
         if (!name) {
             name = location.pathname.slice(1) || "top";
+            if (name.indexOf(".") > -1) {
+                name = name.split("/").slice(1).join("/") || "top";
+            }
         }
 
         if (name.indexOf("?") > -1) {

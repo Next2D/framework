@@ -18,10 +18,25 @@ export class Context
     constructor (width = 240, height = 240, fps = 30, options = null)
     {
         /**
-         * @type {next2d.display.DisplayObject}
+         * @type {next2d.fw.View}
+         * @default null
          * @private
          */
         this._$view = null;
+
+        /**
+         * @type {next2d.fw.ViewModel}
+         * @default null
+         * @private
+         */
+        this._$viewModel = null;
+
+        /**
+         * @type {string}
+         * @default "top"
+         * @private
+         */
+        this._$viewName = "Top";
 
         /**
          * @type {next2d.display.Sprite}
@@ -41,20 +56,19 @@ export class Context
 
             if (view instanceof next2d.fw.View) {
 
-                const viewModelName = `${view.constructor.name}Model`;
-
+                const name = this.viewName;
+                const viewModelName = `${name}ViewModel`;
                 if (next2d.fw.packages.has(viewModelName)) {
 
                     const ViewModelClass = next2d.fw.packages.get(viewModelName);
 
-                    const viewModel = new ViewModelClass();
-                    viewModel.bind(view);
+                    this._$viewModel = new ViewModelClass();
+                    this._$viewModel.bind(view);
 
-                    next2d.fw.viewModel = viewModel;
                 }
             }
 
-        });
+        }, true);
 
         stage.addEventListener(Event.REMOVED, (event) =>
         {
@@ -62,21 +76,26 @@ export class Context
 
             if (view instanceof next2d.fw.View) {
 
-                if (next2d.fw.viewModel) {
-                    next2d.fw.viewModel.unbind(view);
-                    next2d.fw.viewModel = null;
+                if (this._$viewModel) {
+                    this._$viewModel.unbind(view);
+                    this._$viewModel = null;
                 }
 
-                const viewName = view.constructor.name;
+                const name = this.viewName;
 
-                const name = viewName.slice(0, -4).toLowerCase();
-
-                const contentName = `${name.charAt(0).toUpperCase()}${name.slice(1)}Content`;
+                const contentName = `${name}Content`;
                 if (!next2d.fw.packages.has(contentName)) {
                     return ;
                 }
 
-                const routing = next2d.fw.config.routing[name];
+                const routing = next2d.fw.config.routing[
+                    name
+                        .replace(/[A-Z]/g, (s) =>
+                        {
+                            return `/${s.charAt(0).toLowerCase()}`;
+                        })
+                        .slice(1)
+                ];
                 if (!routing || !routing.requests) {
                     return ;
                 }
@@ -107,7 +126,7 @@ export class Context
                     }
                 }
             }
-        });
+        }, true);
     }
 
     /**
@@ -121,13 +140,34 @@ export class Context
     }
 
     /**
-     * @return {next2d.display.DisplayObject}
+     * @return {next2d.fw.View}
      * @readonly
      * @public
      */
     get view ()
     {
         return this._$view;
+    }
+
+    /**
+     * @return {next2d.fw.ViewModel}
+     * @readonly
+     * @public
+     */
+    get viewModel ()
+    {
+        return this._$viewModel;
+    }
+
+    /**
+     * @return {string}
+     * @default "top"
+     * @readonly
+     * @public
+     */
+    get viewName ()
+    {
+        return this._$viewName;
     }
 
     /**
@@ -147,6 +187,7 @@ export class Context
                 .charAt(0)
                 .toUpperCase() + name.slice(1);
         }
+        this._$viewName = viewName;
         viewName += "View";
 
         const viewModelName = `${viewName}Model`;

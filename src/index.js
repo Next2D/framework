@@ -28,7 +28,7 @@ if (!("fw" in window.next2d)) {
     };
 
     // output build version
-    console.log("%c Next2D Framework %c 0.0.25 %c https://next2d.app",
+    console.log("%c Next2D Framework %c 0.1.0 %c https://next2d.app",
         "color: #fff; background: #5f5f5f",
         "color: #fff; background: #4bc729",
         "");

@@ -18,8 +18,8 @@ Next2D Framework for the Model-View-ViewModel(MVVM) pattern.
 
 Create Next2D apps with no build configuration.
 ```sh
-npx create-next2d-app app-test
-cd app-test
+npx create-next2d-app app-name
+cd app-name
 npm start
 ```
 

@@ -113,19 +113,21 @@ export class Application extends Model
             this.query.clear();
         }
 
-        if (!name) {
-            name = location.pathname.slice(1) || "top";
-        }
-
         let query = "";
-
-        if (location.search) {
+        if (!name && location.search) {
             query = location.search;
             const parameters = query.slice(1).split("&");
             for (let idx = 0; idx < parameters.length; ++idx) {
                 const pair = parameters[idx].split("=");
                 this.query.set(pair[0], pair[1]);
             }
+        }
+
+        if (!name) {
+            name = location.pathname.slice(1) || "top";
+            // if (name.indexOf(".") > -1) {
+            //     name = name.split("/").slice(1).join("/") || "top";
+            // }
         }
 
         if (name.indexOf("?") > -1) {
@@ -140,6 +142,10 @@ export class Application extends Model
                 const pair = parameters[idx].split("=");
                 this.query.set(pair[0], pair[1]);
             }
+        }
+
+        if (name.indexOf(".") > -1) {
+            name = name.split("/").slice(1).join("/") || "top";
         }
 
         if (this.config.spa && !this._$popstate) {

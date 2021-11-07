@@ -1,4 +1,4 @@
-import { Model } from "./Model";
+import { Model } from "../common/Model";
 import { Config } from "../../Config";
 
 /**

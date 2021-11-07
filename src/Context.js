@@ -1,5 +1,3 @@
-import { Config } from "./Config";
-
 /**
  * @class
  * @memberOf next2d.fw

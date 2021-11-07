@@ -94,11 +94,11 @@ npm test
 
 ### stage.json
 
-| name | value | description |
-| --- | --- | --- |
-| `width` | int(default:240) | This is the setting for the width of the display area. |
-| `height` | int(default:240) | This is the setting for the height of the display area. |
-| `fps` | int(default:12) | The number of times to draw per second. |
+| name | value | default | description |
+| --- | --- | --- | --- |
+| `width` | number | 240 | This is the setting for the width of the display area. |
+| `height` | number | 240 | This is the setting for the height of the display area. |
+| `fps` | number | 12 | The number of times to draw per second. |
 
 #### Option settings
 

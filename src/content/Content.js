@@ -17,17 +17,9 @@ export class Content extends MovieClip
     {
         super();
 
-        /**
-         * @type {null}
-         * @default null
-         * @private
-         */
-        this._$namespace = null;
-
-        const className = this.constructor.name;
-        if (next2d.fw.loaderInfo.has(className)) {
-            this._$namespace  = `next2d.fw.packages.${className}`;
-            this._$loaderInfo = next2d.fw.loaderInfo.get(className);
+        const loaderInfo = next2d.fw.loaderInfo;
+        if (loaderInfo.has(this.namespace)) {
+            this._$loaderInfo = loaderInfo.get(this.namespace);
             this._$sync();
         }
 
@@ -46,7 +38,7 @@ export class Content extends MovieClip
      */
     get namespace ()
     {
-        return this._$namespace;
+        return null;
     }
 
     /**

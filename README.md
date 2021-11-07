@@ -127,7 +127,7 @@ Properties that can be set in the `requests` property.
 | name | value | default | description |
 | --- | --- | --- | --- |
 | `path` | {{endPoint}}path/to/api | empty | Get the value of the string enclosed in {{***}} from config.json. |
-| `type` | `json` or `content` or `image` | json | The value is fixed as described. |
+| `type` | `json` or `content` or `image` | `content` | The value is fixed as described. |
 | `name` | string | empty | When the name is set, the data retrieved with the name as the key will be set in the Response Map. |
 | `cache` | boolean | false | Caches the retrieved data using the value set in name as a key. |
 | `callback` | string or array | null | You can specify the class to call back after the request is completed. The value will be set to the first argument of the contractor of the specified class and will be taken over. |

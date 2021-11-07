@@ -7,7 +7,7 @@ import { View } from "./view/View";
 import { ViewModel } from "./view/ViewModel";
 import { Model } from "./model/common/Model";
 import { MovieClip } from "./model/common/MovieClip";
-import { Loading } from "./model/common/Loading";
+import { Loading } from "./model/callback/Loading";
 
 if (!("fw" in window.next2d)) {
 
@@ -23,14 +23,13 @@ if (!("fw" in window.next2d)) {
         "application": null,
         "context":     null,
         "viewModel":   null,
-        "packages":    new Map(),
         "response":    new Map(),
         "loaderInfo":  new Map(),
         "config":      {}
     };
 
     // output build version
-    console.log("%c Next2D Framework %c 0.1.1 %c https://next2d.app",
+    console.log("%c Next2D Framework %c 0.1.4 %c https://next2d.app",
         "color: #fff; background: #5f5f5f",
         "color: #fff; background: #4bc729",
         "");

@@ -363,9 +363,7 @@ export class Application extends Model
                         const symbols = loaderInfo._$data.symbols;
                         if (symbols.size) {
                             for (const name of symbols.keys()) {
-                                next2d.fw.loaderInfo.set(
-                                    name.split(".").pop(), loaderInfo
-                                );
+                                next2d.fw.loaderInfo.set(name, loaderInfo);
                             }
                         }
                     }

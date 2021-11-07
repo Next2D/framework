@@ -236,16 +236,14 @@ export class Application extends Model
             return ;
         }
 
-        const name = this.config.loading.callback;
-        if (!name) {
+        const callback = this.config.loading.callback;
+        if (!callback) {
             return ;
         }
 
-        if (!this.packages.has(name)) {
-            return ;
-        }
-
-        const CallbackClass = this.packages.get(name);
+        const CallbackClass = this.packages.has(callback)
+            ? this.packages.get(callback)
+            : next2d.fw.Loading;
         new CallbackClass().start();
     }
 

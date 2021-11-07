@@ -13,7 +13,7 @@ describe("ContentTest", () =>
         next2d.fw.loaderInfo.set("Content", Content);
 
         const content = new Content();
-        expect(content.namespace).toBe("next2d.fw.packages.Content");
+        expect(content.namespace).toBe(null);
 
         // reset
         next2d.fw.loaderInfo.delete("Content");

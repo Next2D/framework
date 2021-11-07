@@ -3,7 +3,6 @@ import { Context } from "./Context";
 import { Cache } from "./cache/Cache";
 import { Variable } from "./model/common/Variable";
 import { Query } from "./model/common/Query";
-import { Config } from "./Config";
 
 /**
  * @class
@@ -125,9 +124,6 @@ export class Application extends Model
 
         if (!name) {
             name = location.pathname.slice(1) || "top";
-            // if (name.indexOf(".") > -1) {
-            //     name = name.split("/").slice(1).join("/") || "top";
-            // }
         }
 
         if (name.indexOf("?") > -1) {
@@ -163,7 +159,6 @@ export class Application extends Model
             .all(this._$requests(name))
             .then((responses) => { return this.context.addChild(name, responses) })
             .then((view) => { this._$callback(this.config.gotoView.callback, view) });
-
     }
 
     /**
@@ -237,79 +232,21 @@ export class Application extends Model
      */
     _$startLoading ()
     {
-        const root   = this.context.root;
-        const player = root.stage._$player;
-
-        const elementId = `${Config.$PREFIX}_loading`;
-
-        const element = document.getElementById(elementId);
-        if (!element) {
-
-            const parent = document.getElementById(player.contentElementId);
-
-            const loader = document.createElement("div");
-
-            loader.id = elementId;
-
-            loader.innerHTML = `<div></div><div></div><div></div><style>
-@keyframes __next2d__framework_loading {
-  0% {
-    transform: scale(1);
-    opacity: 1; 
-  }
-  45% {
-    transform: scale(0.1);
-    opacity: 0.7; 
-  }
-  80% {
-    transform: scale(1);
-    opacity: 1; 
-  } 
-}
-    
-#__next2d__framework_loading > div:nth-child(1) {
-  animation: __next2d__framework_loading 0.75s -0.24s infinite cubic-bezier(0.2, 0.68, 0.18, 1.08); 
-}
-
-#__next2d__framework_loading > div:nth-child(2) {
-  animation: __next2d__framework_loading 0.75s -0.12s infinite cubic-bezier(0.2, 0.68, 0.18, 1.08); 
-}
-
-#__next2d__framework_loading > div:nth-child(3) {
-  animation: __next2d__framework_loading 0.75s 0s infinite cubic-bezier(0.2, 0.68, 0.18, 1.08); 
-}
-
-#__next2d__framework_loading {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin: -24px 0 0 -24px;
-  width: 57px;
-  height: 19px;
-  z-index: 9999;
-  opacity: 0.5;
-  pointer-events: none;
-}
-
-#__next2d__framework_loading > div {
-  background-color: #fff;
-  width: 15px;
-  height: 15px;
-  border-radius: 100%;
-  margin: 2px;
-  animation-fill-mode: both;
-  display: inline-block; 
-}
-</style>`;
-
-            parent.insertBefore(loader, parent.children[0]);
-
-        } else {
-
-            element.style.display = "";
-
+        if (!this.config.loading) {
+            return ;
         }
 
+        const name = this.config.loading.callback;
+        if (!name) {
+            return ;
+        }
+
+        if (!this.packages.has(name)) {
+            return ;
+        }
+
+        const CallbackClass = this.packages.get(name);
+        new CallbackClass().start();
     }
 
     /**

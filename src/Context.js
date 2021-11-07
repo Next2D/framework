@@ -1,5 +1,3 @@
-import { Config } from "./Config";
-
 /**
  * @class
  * @memberOf next2d.fw
@@ -199,12 +197,7 @@ export class Context
         }
 
         if (next2d.fw.config.loading) {
-            const element = document
-                .getElementById(`${Config.$PREFIX}_loading`);
-
-            if (element) {
-                element.style.display = "none";
-            }
+            this._$endLoading();
         }
 
         if (this._$root.numChildren) {
@@ -235,4 +228,28 @@ export class Context
         return this._$view;
     }
 
+    /**
+     * @return {void}
+     * @private
+     */
+    _$endLoading ()
+    {
+        const config = next2d.fw.config;
+        if (!config.loading) {
+            return ;
+        }
+
+        const callback = config.loading.callback;
+        if (!callback) {
+            return ;
+        }
+
+        const packages = next2d.fw.packages;
+        if (!packages.has(callback)) {
+            return ;
+        }
+
+        const CallbackClass = packages.get(callback);
+        new CallbackClass().end();
+    }
 }

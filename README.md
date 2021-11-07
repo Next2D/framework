@@ -94,43 +94,43 @@ npm test
 
 ### stage.json
 
-| name | value | description |
-| --- | --- | --- |
-| `width` | int(default:240) | This is the setting for the width of the display area. |
-| `height` | int(default:240) | This is the setting for the height of the display area. |
-| `fps` | int(default:12) | The number of times to draw per second. |
+| name | value | default | description |
+| --- | --- | --- | --- |
+| `width` | number | 240 | This is the setting for the width of the display area. |
+| `height` | number | 240 | This is the setting for the height of the display area. |
+| `fps` | number | 12 | The number of times to draw per second. |
 
 #### Option settings
 
-| name | value | description |
-| --- | --- | --- |
-| `base` | string(default:.) | The value to be set if the URL is not set at the time of the request. |
-| `fullScreen` | boolean(default:true) | It will be drawn beyond the width and height set in the fullscreen setting and stage. |
-| `tagId` | string(default:empty) | Set value of the ID of the DOM where you want to set the drawing. |
-| `bgColor` | array [R,G,B,A] or false(default:false) | RGBA can be specified from 0-255. |
+| name | value | default | description |
+| --- | --- | --- | --- |
+| `base` | string | . |  The value to be set if the URL is not set at the time of the request. |
+| `fullScreen` | boolean | true |  It will be drawn beyond the width and height set in the fullscreen setting and stage. |
+| `tagId` | string | empty | Set value of the ID of the DOM where you want to set the drawing. |
+| `bgColor` | array [R,G,B,A] or false | false | RGBA can be specified from 0-255. |
 
 ### config.json
 
 You can set a common value for each environment.\
 The values below all are available for all environments.
 
-| name | value | description |
-| --- | --- | --- |
-| `spa` | boolean(default:true) | As a Single Page Application, the scene can be controlled by URL. |
-| `loading` | boolean(default:true) | Setting whether or not to display the loading screen until the preparation for screen transition is complete. |
-| `gotoView`.`callback` | string or array (default:null) | You can specify the class to call back after the `gotoView` function finishes. |
+| name | value | default | description |
+| --- | --- | --- | --- |
+| `spa` | boolean | true | As a Single Page Application, the scene can be controlled by URL. |
+| `loading`.`callback` | string | "Loading" | Sets whether or not to display the loading screen until the preparation for screen transition is complete. Call the start and end functions of the class set as callback. |
+| `gotoView`.`callback` | string or array | null | You can specify the class to call back after the `gotoView` function finishes. |
 
 ### routing.json
 
 Properties that can be set in the `requests` property.
 
-| name | value | description |
-| --- | --- | --- |
-| `type` | `json` or `content` or `image` | The value is fixed as described. |
-| `path` | {{endPoint}}path/to/api | Get the value of the string enclosed in {{***}} from config.json. |
-| `name` | string | When the name is set, the data retrieved with the name as the key will be set in the Response Map. |
-| `cache` | boolean(default:false) | Caches the retrieved data using the value set in name as a key. |
-| `callback` | string or array | You can specify the class to call back after the request is completed. The value will be set to the first argument of the contractor of the specified class and will be taken over. |
+| name | value | default | description |
+| --- | --- | --- | --- |
+| `path` | {{endPoint}}path/to/api | empty | Get the value of the string enclosed in {{***}} from config.json. |
+| `type` | `json` or `content` or `image` | json | The value is fixed as described. |
+| `name` | string | empty | When the name is set, the data retrieved with the name as the key will be set in the Response Map. |
+| `cache` | boolean | false | Caches the retrieved data using the value set in name as a key. |
+| `callback` | string or array | null | You can specify the class to call back after the request is completed. The value will be set to the first argument of the contractor of the specified class and will be taken over. |
 
 ## License
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT) - see the [LICENSE](LICENSE) file for details.

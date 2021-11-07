@@ -7,6 +7,7 @@ import { View } from "./view/View";
 import { ViewModel } from "./view/ViewModel";
 import { Model } from "./model/common/Model";
 import { MovieClip } from "./model/common/MovieClip";
+import { Loading } from "./model/common/Loading";
 
 if (!("fw" in window.next2d)) {
 
@@ -16,6 +17,7 @@ if (!("fw" in window.next2d)) {
         "Context":     Context,
         "Model":       Model,
         "MovieClip":   MovieClip,
+        "Loading":     Loading,
         "View":        View,
         "ViewModel":   ViewModel,
         "application": null,

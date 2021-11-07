@@ -245,11 +245,10 @@ export class Context
         }
 
         const packages = next2d.fw.packages;
-        if (!packages.has(callback)) {
-            return ;
-        }
 
-        const CallbackClass = packages.get(callback);
+        const CallbackClass = packages.has(callback)
+            ? packages.get(callback)
+            : next2d.fw.Loading;
         new CallbackClass().end();
     }
 }

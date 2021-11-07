@@ -1,10 +1,11 @@
+import { Model } from "./Model";
 import { Config } from "../../Config";
 
 /**
  * @class
- * @extends {next2d.fw.Model}
+ * @extends {Model}
  */
-export class Loading extends next2d.fw.Model
+export class Loading extends Model
 {
     /**
      * @constructor

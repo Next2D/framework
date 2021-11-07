@@ -117,7 +117,7 @@ The values below all are available for all environments.
 | name | value | default | description |
 | --- | --- | --- | --- |
 | `spa` | boolean | true | As a Single Page Application, the scene can be controlled by URL. |
-| `loading`.`callback` | string | "Loading" | Sets whether or not to display the loading screen until the preparation for screen transition is complete. Call the start and end functions of the class set as callback. |
+| `loading` | object | { "callback": "Loading" } | Sets whether or not to display the loading screen until the preparation for screen transition is complete. Call the start and end functions of the class set as callback. |
 | `gotoView`.`callback` | string or array | null | You can specify the class to call back after the `gotoView` function finishes. |
 
 ### routing.json

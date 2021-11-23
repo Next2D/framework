@@ -1,7 +1,7 @@
 {
   "name": "@next2d/framework",
   "description": "Next2D Framework",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "homepage": "https://next2d.app",
   "bugs": "https://github.com/Next2D/Framework/issues/new",
   "author": "Toshiyuki Ienaga <ienaga@tvon.jp>",
@@ -22,12 +22,12 @@
     "url": "git+https://github.com/Next2D/Framework.git"
   },
   "devDependencies": {
-    "@babel/core": "^7.15.8",
-    "@babel/preset-env": "^7.15.8",
-    "eslint": "^7.32.0",
-    "eslint-webpack-plugin": "^3.0.1",
-    "webpack": "^5.53.0",
-    "webpack-cli": "^4.8.0",
-    "webpack-dev-server": "^4.2.1"
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
+    "eslint": "^8.3.0",
+    "eslint-webpack-plugin": "^3.1.1",
+    "webpack": "^5.64.2",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.5.0"
   }
 }

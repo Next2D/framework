@@ -32,6 +32,9 @@ project
 │   ├── App.js
 │   ├── Packages.js // It will be generated automatically.
 │   │
+│   ├── component
+│   │   └── default empty
+│   │
 │   ├── config
 │   │   ├── config.json  // Configuration files for each environment.
 │   │   ├── routing.json // Request settings before loading the view.
@@ -49,7 +52,9 @@ project
 │   │
 │   ├── model // business logic
 │   │   ├── callbask
-│   │   │   └── default empty
+│   │   │   └── Background.js
+│   │   ├── api
+│   │   │   └── HomeText.js
 │   │   └── default empty
 │   │
 │   └── view // Per-page View, ViewModel files.
@@ -126,11 +131,14 @@ Properties that can be set in the `requests` property.
 
 | name | value | default | description |
 | --- | --- | --- | --- |
-| `path` | {{endPoint}}path/to/api | empty | Get the value of the string enclosed in {{***}} from config.json. |
-| `type` | `json` or `content` or `image` | `content` | The value is fixed as described. |
+| `type` | `json` or `content` or `image` or `custom` | `content` | The value is fixed as described. |
+| `path` | {{ api.endPoint }}path/to/api | empty | Get the value of the string enclosed in {{***}} from config.json. |
 | `name` | string | empty | When the name is set, the data retrieved with the name as the key will be set in the Response Map. |
 | `cache` | boolean | false | Caches the retrieved data using the value set in name as a key. |
 | `callback` | string or array | null | You can specify the class to call back after the request is completed. The value will be set to the first argument of the contractor of the specified class and will be taken over. |
+| `class` | string | empty | You can specify the class that will execute the request. (it will only be invoked when type is custom) |
+| `access` | `public` or `static` | `public` | Allows you to specify access to the function that will perform the request. You can specify `public` or `static`. (Only invoked when type is custom). |
+| `method` | string | empty | You can specify a function to execute the request. (only fired when type is custom). |
 
 ## License
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT) - see the [LICENSE](LICENSE) file for details.

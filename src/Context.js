@@ -214,7 +214,7 @@ export class Context
             for (let idx = 0; idx < responses.length; ++idx) {
 
                 const object = responses[idx];
-                if (!object.name) {
+                if (!object || !object.name) {
                     continue;
                 }
 

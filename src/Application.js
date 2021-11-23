@@ -102,8 +102,7 @@ export class Application extends Model
      */
     gotoView (name = null)
     {
-        const root = this.context.root;
-        if (this.config.loading && root.numChildren) {
+        if (this.config.loading) {
             this._$createSnapshot();
             this._$startLoading();
         }
@@ -278,13 +277,56 @@ export class Application extends Model
                 continue;
             }
 
-            promises.push(object.type === "json"
-                ? this._$loadJSON(object)
-                : this._$loadContent(object)
-            );
+            switch (object.type) {
+
+                case "custom":
+                    promises.push(this._$loadCustom(object));
+                    break;
+
+                case "json":
+                    promises.push(this._$loadJSON(object));
+                    break;
+
+                default:
+                    promises.push(this._$loadContent(object));
+                    break;
+
+            }
         }
 
         return promises;
+    }
+
+    /**
+     * @param  {object} object
+     * @return {Promise}
+     * @method
+     * @private
+     */
+    _$loadCustom (object)
+    {
+        return new Promise(async (resolve) =>
+        {
+            if (!this.packages.has(object.class)) {
+                return resolve(null);
+            }
+
+            const CallbackClass = this.packages.get(object.class);
+            const value = object.access === "static"
+                ? await CallbackClass[object.method]()
+                : await new CallbackClass()[object.method]();
+
+            this._$callback(object.callback, value);
+
+            if (object.cache && object.name) {
+                next2d.fw.cache.set(object.name, value);
+            }
+
+            resolve({
+                "name": object.name,
+                "response": value
+            });
+        });
     }
 
     /**
@@ -305,19 +347,26 @@ export class Application extends Model
             "headers": object.headers ? object.headers : {},
             "body": body
         })
-            .then((response) => { return response.json() })
-            .then((data) =>
+            .then((response) =>
             {
-                this._$callback(object.callback, data);
+                return response.json();
+            })
+            .then((value) =>
+            {
+                this._$callback(object.callback, value);
 
                 if (object.cache && object.name) {
-                    next2d.fw.cache.set(object.name, data);
+                    next2d.fw.cache.set(object.name, value);
                 }
 
                 return {
                     "name": object.name,
-                    "response": data
+                    "response": value
                 };
+            })
+            .catch((error) =>
+            {
+                console.error(error);
             });
     }
 
@@ -431,23 +480,34 @@ export class Application extends Model
      */
     _$parseURL (path)
     {
-        let url = path;
-
         const values = path.match(/\{\{(.*?)\}\}/g);
-        if (values) {
+        if (!values) {
+            return path;
+        }
 
-            for (let idx = 0; idx < values.length; ++idx) {
+        let url = path;
+        for (let idx = 0; idx < values.length; ++idx) {
 
-                const value = values[idx];
+            const value = values[idx];
 
-                const name = value
-                    .replace(/\{|\{|\}|\}/g, "");
+            const names = value
+                .replace(/\{|\{|\}|\}/g, "")
+                .replace(/ /g, "")
+                .split(".");
 
-                if (name in this.config) {
-                    url = url.replace(value, this.config[name]);
+            let config = this.config;
+            for (let idx = 0; idx < names.length; ++idx) {
+                const name = names[idx];
+                if (name in config) {
+                    config = config[name];
                 }
             }
 
+            if (!config) {
+                continue;
+            }
+
+            url = url.replace(value, config);
         }
 
         return url;

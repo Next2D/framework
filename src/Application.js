@@ -305,27 +305,31 @@ export class Application extends Model
      */
     _$loadCustom (object)
     {
-        return new Promise(async (resolve) =>
+        return new Promise((resolve) =>
         {
             if (!this.packages.has(object.class)) {
                 return resolve(null);
             }
 
             const CallbackClass = this.packages.get(object.class);
-            const value = object.access === "static"
-                ? await CallbackClass[object.method]()
-                : await new CallbackClass()[object.method]();
+            const promise = object.access === "static"
+                ? Promise.resolve(CallbackClass[object.method]())
+                : Promise.resolve(new CallbackClass()[object.method]());
 
-            this._$callback(object.callback, value);
+            promise
+                .then((value) =>
+                {
+                    this._$callback(object.callback, value);
 
-            if (object.cache && object.name) {
-                next2d.fw.cache.set(object.name, value);
-            }
+                    if (object.cache && object.name) {
+                        next2d.fw.cache.set(object.name, value);
+                    }
 
-            resolve({
-                "name": object.name,
-                "response": value
-            });
+                    resolve({
+                        "name": object.name,
+                        "response": value
+                    });
+                });
         });
     }
 

@@ -23,7 +23,7 @@ describe("ApplicationTest", () =>
         expect(app.gotoView()).toBe(undefined);
     });
 
-    test("_$parseURL test", () => {
+    test("_$parseConfig test case1", () => {
 
         const app = new Application({
                 "stage": {
@@ -40,7 +40,32 @@ describe("ApplicationTest", () =>
             ]
         );
 
-        expect(app._$parseURL("{{endPoint}}/{{v1}}/test"))
+        expect(app._$parseConfig("{{endPoint}}/{{v1}}/test"))
+            .toBe("localhost/version/1/test");
+    });
+
+    test("_$parseConfig test case2", () => {
+
+        const app = new Application({
+                "stage": {
+                    "width": 240,
+                    "height": 240,
+                    "fps": 12,
+                    "options": {}
+                },
+                "api": {
+                    "platform": {
+                        "endPoint": "localhost"
+                    }
+                },
+                "v1": "version/1"
+            },
+            [
+                ["app", "app"]
+            ]
+        );
+
+        expect(app._$parseConfig("{{ api.platform.endPoint }}/{{v1}}/test"))
             .toBe("localhost/version/1/test");
     });
 

@@ -156,8 +156,16 @@ export class Application extends Model
 
         Promise
             .all(this._$requests(name))
-            .then((responses) => { return this.context.addChild(name, responses) })
-            .then((view) => { this._$callback(this.config.gotoView.callback, view) });
+            .then((responses) =>
+            {
+                return this.context.addChild(name, responses);
+            })
+            .then((view) =>
+            {
+                if (this.config.gotoView) {
+                    this._$callback(this.config.gotoView.callback, view);
+                }
+            });
     }
 
     /**
@@ -479,7 +487,7 @@ export class Application extends Model
 
         for (let idx = 0; idx < callbacks.length; ++idx) {
 
-            const name = callbacks[idx];
+            const name = this._$parseConfig(callbacks[idx]);
             if (!this.packages.has(name)) {
                 continue;
             }

@@ -2,6 +2,7 @@
 
 import { Application } from "./Application";
 import { Context } from "./Context";
+import { Util } from "./Util";
 import { Content } from "./content/Content";
 import { View } from "./view/View";
 import { ViewModel } from "./view/ViewModel";
@@ -20,6 +21,7 @@ if (!("fw" in window.next2d)) {
         "Loading":     Loading,
         "View":        View,
         "ViewModel":   ViewModel,
+        "Util":        Util,
         "application": null,
         "context":     null,
         "viewModel":   null,

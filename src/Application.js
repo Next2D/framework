@@ -263,21 +263,25 @@ export class Application extends Model
         for (let idx = 0; idx < routing.requests.length; ++idx) {
 
             const object = routing.requests[idx];
+            if (object.cache && object.name) {
 
-            if (object.cache && object.name && this.cache.has(object.name)) {
+                const name = this._$parseConfig(object.name);
+                if (this.cache.has(name)) {
 
-                const cache = this.cache.get(object.name);
+                    const cache = this.cache.get(name);
 
-                this._$callback(object.callback, cache);
+                    this._$callback(this._$parseConfig(object.callback), cache);
 
-                promises.push({
-                    "name": object.name,
-                    "response": cache
-                });
-                continue;
+                    promises.push({
+                        "name": name,
+                        "response": cache
+                    });
+
+                    continue;
+                }
             }
 
-            switch (object.type) {
+            switch (this._$parseConfig(object.type)) {
 
                 case "custom":
                     promises.push(this._$loadCustom(object));
@@ -307,26 +311,27 @@ export class Application extends Model
     {
         return new Promise((resolve) =>
         {
-            if (!this.packages.has(object.class)) {
+            const className = this._$parseConfig(object.class);
+            if (!this.packages.has(className)) {
                 return resolve(null);
             }
 
-            const CallbackClass = this.packages.get(object.class);
-            const promise = object.access === "static"
-                ? Promise.resolve(CallbackClass[object.method]())
-                : Promise.resolve(new CallbackClass()[object.method]());
+            const CallbackClass = this.packages.get(className);
+            const promise = this._$parseConfig(object.access) === "static"
+                ? Promise.resolve(CallbackClass[this._$parseConfig(object.method)]())
+                : Promise.resolve(new CallbackClass()[this._$parseConfig(object.method)]());
 
             promise
                 .then((value) =>
                 {
-                    this._$callback(object.callback, value);
+                    this._$callback(this._$parseConfig(object.callback), value);
 
                     if (object.cache && object.name) {
-                        next2d.fw.cache.set(object.name, value);
+                        next2d.fw.cache.set(this._$parseConfig(object.name), value);
                     }
 
                     resolve({
-                        "name": object.name,
+                        "name": this._$parseConfig(object.name),
                         "response": value
                     });
                 })
@@ -345,12 +350,15 @@ export class Application extends Model
      */
     _$loadJSON (object)
     {
-        const method = object.method ? object.method.toUpperCase() : "GET";
+        const method = object.method
+            ? this._$parseConfig(object.method).toUpperCase()
+            : "GET";
+
         const body   = object.body && (method === "POST" || method === "PUT")
             ? object.body
             : null;
 
-        return fetch(`${this._$parseURL(object.path)}`, {
+        return fetch(`${this._$parseConfig(object.path)}`, {
             "method": method,
             "headers": object.headers ? object.headers : {},
             "body": body
@@ -361,14 +369,14 @@ export class Application extends Model
             })
             .then((value) =>
             {
-                this._$callback(object.callback, value);
+                this._$callback(this._$parseConfig(object.callback), value);
 
                 if (object.cache && object.name) {
-                    next2d.fw.cache.set(object.name, value);
+                    next2d.fw.cache.set(this._$parseConfig(object.name), value);
                 }
 
                 return {
-                    "name": object.name,
+                    "name": this._$parseConfig(object.name),
                     "response": value
                 };
             })
@@ -392,9 +400,9 @@ export class Application extends Model
             const { Loader } = next2d.display;
             const { Event, IOErrorEvent } = next2d.events;
 
-            const request  = new URLRequest(`${this._$parseURL(object.path)}`);
+            const request  = new URLRequest(`${this._$parseConfig(object.path)}`);
             request.method = object.method
-                ? object.method.toUpperCase()
+                ? this._$parseConfig(object.method).toUpperCase()
                 : URLRequestMethod.GET;
 
             if (object.headers) {
@@ -428,11 +436,11 @@ export class Application extends Model
                     this._$callback(object.callback, content);
 
                     if (object.cache && object.name) {
-                        next2d.fw.cache.set(object.name, content);
+                        next2d.fw.cache.set(this._$parseConfig(object.name), content);
                     }
 
                     resolve({
-                        "name": object.name,
+                        "name": this._$parseConfig(object.name),
                         "response": content
                     });
                 });
@@ -441,7 +449,7 @@ export class Application extends Model
                 .contentLoaderInfo
                 .addEventListener(IOErrorEvent.IO_ERROR, reject);
 
-            if (object.type === "image") {
+            if (this._$parseConfig(object.type) === "image") {
 
                 loader.loadImage(request);
 
@@ -482,18 +490,22 @@ export class Application extends Model
     }
 
     /**
-     * @param  {string} path
+     * @param  {string} [value=null]
      * @return {string}
      * @private
      */
-    _$parseURL (path)
+    _$parseConfig (value)
     {
-        const values = path.match(/\{\{(.*?)\}\}/g);
-        if (!values) {
-            return path;
+        if (typeof value !== "string" || value.indexOf("{{") === -1) {
+            return value;
         }
 
-        let url = path;
+        const values = value.match(/\{\{(.*?)\}\}/g);
+        if (!values) {
+            return value;
+        }
+
+        let returnValue = value;
         for (let idx = 0; idx < values.length; ++idx) {
 
             const value = values[idx];
@@ -515,9 +527,9 @@ export class Application extends Model
                 continue;
             }
 
-            url = url.replace(value, config);
+            returnValue = returnValue.replace(value, config);
         }
 
-        return url;
+        return returnValue;
     }
 }

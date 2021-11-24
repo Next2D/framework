@@ -139,7 +139,7 @@ export class Application extends Model
             }
         }
 
-        if (name.indexOf(".") > -1) {
+        if (name.slice(0, 1) === ".") {
             name = name.split("/").slice(1).join("/") || "top";
         }
 

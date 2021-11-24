@@ -5,6 +5,22 @@
 export class Model
 {
     /**
+     * @param {object} [object=null]
+     * @constructor
+     * @public
+     */
+    constructor(object = null)
+    {
+        if (object) {
+            const keys = Object.keys(object);
+            for (let idx = 0; idx < keys.length; ++idx) {
+                const name = keys[idx];
+                this[name] = object[name];
+            }
+        }
+    }
+
+    /**
      * @return {Application}
      * @readonly
      * @public

@@ -329,6 +329,10 @@ export class Application extends Model
                         "name": object.name,
                         "response": value
                     });
+                })
+                .catch((error) =>
+                {
+                    console.error(error);
                 });
         });
     }

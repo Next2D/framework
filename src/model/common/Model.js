@@ -21,6 +21,24 @@ export class Model
     }
 
     /**
+     * @param  {object} schema
+     * @return {string}
+     * @public
+     */
+    toJSON (schema)
+    {
+        const object = {};
+
+        const keys = Object.keys(schema);
+        for (let idx = 0; idx < keys.length; ++idx) {
+            const name = keys[idx];
+            object[name] = this[name];
+        }
+
+        return JSON.stringify(object);
+    }
+
+    /**
      * @return {Application}
      * @readonly
      * @public

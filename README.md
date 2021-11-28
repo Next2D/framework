@@ -136,7 +136,7 @@ The values below all are available for all environments.
 
 | name | value | default | description |
 | --- | --- | --- | --- |
-| `type` | `json` or `content` or `image` or `custom` | `content` | The value is fixed as described. |
+| `type` | string | `content` | The following fixed values are available for this property. `json`, `content`, `image` and `custom` |
 | `path` | {{ api.endPoint }}path/to/api | empty | Get the value of the string enclosed in {{***}} from config.json. |
 | `name` | string | empty | When the name is set, the data retrieved with the name as the key will be set in the Response Map. |
 | `cache` | boolean | false | Caches the retrieved data using the value set in name as a key. |

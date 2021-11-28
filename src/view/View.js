@@ -2,7 +2,6 @@ import { MovieClip } from "../model/common/MovieClip";
 
 /**
  * @class
- * @memberOf next2d.fw
  * @extends {MovieClip}
  */
 export class View extends MovieClip
@@ -18,6 +17,8 @@ export class View extends MovieClip
     }
 
     /**
+     * constructorが起動した後にコールされます。
+     * Called after the constructor is invoked.
      * @return {void}
      * @abstract
      */

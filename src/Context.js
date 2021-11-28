@@ -1,6 +1,5 @@
 /**
  * @class
- * @memberOf next2d.fw
  */
 export class Context
 {
@@ -169,6 +168,8 @@ export class Context
     }
 
     /**
+     * ViewクラスをrootのSpriteにアタッチします。
+     * Attach the View class to the root Sprite.
      * @param  {string} name
      * @param  {array}  responses
      * @return {ViewModel|null}

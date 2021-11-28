@@ -1,6 +1,5 @@
 /**
  * @class
- * @memberOf next2d.fw
  */
 export class Model
 {

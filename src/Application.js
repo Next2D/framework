@@ -6,14 +6,13 @@ import { Query } from "./model/common/Query";
 
 /**
  * @class
- * @memberOf next2d.fw
- * @extends  {Model}
+ * @extends {Model}
  */
 export class Application extends Model
 {
     /**
      * @param {object} config
-     * @param {array} packages
+     * @param {array}  packages
      * @constructor
      * @public
      */
@@ -88,6 +87,8 @@ export class Application extends Model
     }
 
     /**
+     * constructorが起動した後にコールされます。(初回起動時のみコールされます。)
+     * Called after the constructor is invoked. (Called only the first time it is invoked.)
      * @return {void}
      * @abstract
      */
@@ -95,6 +96,10 @@ export class Application extends Model
     initialize () {}
 
     /**
+     * 指定のViewを起動して、描画を開始します。引数を指定しない場合はURLをパースしてViewを起動します。
+     * Launches the specified View and starts drawing. If no argument is specified,
+     * the URL will be parsed and the View will be launched.
+     *
      * @param  {string} [name=null]
      * @return {void}
      * @method

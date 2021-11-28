@@ -2,7 +2,6 @@ import { Model } from "../model/common/Model";
 
 /**
  * @class
- * @memberOf next2d.fw
  * @extends {Model}
  */
 export class ViewModel extends Model
@@ -17,6 +16,8 @@ export class ViewModel extends Model
     }
 
     /**
+     * rootのSpriteにアタッチされたタイミングでコールされます。
+     * Called at the timing when the root Sprite is attached.
      * @param  {View} view
      * @return {void}
      * @abstract
@@ -25,6 +26,8 @@ export class ViewModel extends Model
     bind (view) {}
 
     /**
+     * 新しいViewクラスがアタッチされる前にコールされます。
+     * Called before a new View class is attached.
      * @param  {View} view
      * @return {void}
      * @abstract

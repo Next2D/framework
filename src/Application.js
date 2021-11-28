@@ -122,7 +122,17 @@ export class Application extends Model
         }
 
         if (!name) {
-            name = location.pathname.slice(1) || "top";
+            name = location.pathname.slice(1);
+            if (name) {
+                const routing = this.config.routing[name];
+                if (routing && routing.private) {
+                    name = "top";
+                }
+            }
+
+            if (!name) {
+                name = "top";
+            }
         }
 
         if (name.indexOf("?") > -1) {

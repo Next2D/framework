@@ -127,7 +127,12 @@ The values below all are available for all environments.
 
 ### routing.json
 
-Properties that can be set in the `requests` property.
+| name | value | default | description |
+| --- | --- | --- | --- |
+| `private` | boolean | false | Controls direct access; if set to true, TopView will be activated. |
+| `requests` | array | null | Send a request to the specified location before accessing the View. The information received will be set in next2d.fw.response with name as the key. |
+
+#### Properties that can be set in the `requests` property.
 
 | name | value | default | description |
 | --- | --- | --- | --- |

@@ -137,12 +137,12 @@ The values below all are available for all environments.
 | name | value | default | description |
 | --- | --- | --- | --- |
 | `type` | string | `content` | The following fixed values are available for this property. `json`, `content`, `image` and `custom` |
-| `path` | {{ api.endPoint }}path/to/api | empty | Get the value of the string enclosed in {{***}} from config.json. |
+| `path` | string | empty | Get the value of the string enclosed in {{***}} from config.json. e.g. {{ api.endPoint }}path/to/api |
 | `name` | string | empty | When the name is set, the data retrieved with the name as the key will be set in the Response Map. |
 | `cache` | boolean | false | Caches the retrieved data using the value set in name as a key. |
 | `callback` | string or array | null | You can specify the class to call back after the request is completed. The value will be set to the first argument of the contractor of the specified class and will be taken over. |
 | `class` | string | empty | You can specify the class that will execute the request. (it will only be invoked when type is custom) |
-| `access` | `public` or `static` | `public` | Allows you to specify access to the function that will perform the request. You can specify `public` or `static`. (Only invoked when type is custom). |
+| `access` | string | `public` | Allows you to specify access to the function that will perform the request. You can specify `public` or `static`. (Only invoked when type is custom). |
 | `method` | string | empty | You can specify a function to execute the request. (only fired when type is custom). |
 
 ## License

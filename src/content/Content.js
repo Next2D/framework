@@ -1,10 +1,7 @@
 import { MovieClip } from "../model/common/MovieClip";
 
 /**
- *
- *
  * @class
- * @memberOf next2d.fw
  * @extends {MovieClip}
  */
 export class Content extends MovieClip
@@ -33,8 +30,7 @@ export class Content extends MovieClip
      *
      * @return  {string}
      * @default null
-     * @const
-     * @static
+     * @public
      */
     get namespace ()
     {
@@ -42,6 +38,8 @@ export class Content extends MovieClip
     }
 
     /**
+     * constructorが起動した後にコールされます。
+     * Called after the constructor is invoked.
      * @return {void}
      * @abstract
      */

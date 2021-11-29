@@ -1,6 +1,5 @@
 /**
  * @class
- * @memberOf next2d.fw
  * @extends {next2d.display.MovieClip}
  */
 export class MovieClip extends next2d.display.MovieClip

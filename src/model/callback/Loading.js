@@ -8,15 +8,6 @@ import { Config } from "../../Config";
 export class Loading extends Model
 {
     /**
-     * @constructor
-     * @public
-     */
-    constructor()
-    {
-        super();
-    }
-
-    /**
      * @return {void}
      * @public
      */

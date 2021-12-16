@@ -11,7 +11,6 @@ Next2D Framework
 [![Discord](https://img.shields.io/discord/812136803506716713?label=Discord&logo=discord)](https://discord.gg/6c9rv5Uns5)
 [![Follow us on Twitter](https://img.shields.io/twitter/follow/Next2D?label=Follow&style=social)](https://twitter.com/intent/user?screen_name=Next2D)
 
-
 Next2D Framework for the Model-View-ViewModel(MVVM) pattern.
 
 ## Quick Start
@@ -126,6 +125,21 @@ The values below all are available for all environments.
 | `gotoView`.`callback` | string or array | ["callback.Background"] | You can specify the class to call back after the `gotoView` function finishes. |
 
 ### routing.json
+The top properties that can be set for routing are alphanumeric characters, slashes, hyphens, and underscores. Access the View class in CamelCase using the slash, hyphen, and underscore as keys.
+
+#### Example
+In this case, you will access QuestListView.js.\
+The URL can be accessed at `https://example.com/quest/list`
+
+```json
+{
+    "quest/list": {
+        "requests": []
+    }
+}
+````
+
+#### Second level property settings
 
 | name | value | default | description |
 | --- | --- | --- | --- |

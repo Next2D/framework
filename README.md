@@ -128,8 +128,7 @@ The values below all are available for all environments.
 The top properties that can be set for routing are alphanumeric characters, slashes, hyphens, and underscores. Access the View class in CamelCase using the slash, hyphen, and underscore as keys.
 
 #### Example
-In this case, you will access QuestListView.js.\
-The URL can be accessed at `https://example.com/quest/list`
+In the case of the sample below, access is enabled at `https://example.com/quest/list` and the context is set to `QuestListView.js`.
 
 ```json
 {

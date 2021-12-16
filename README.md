@@ -111,8 +111,8 @@ npm test
 | --- | --- | --- | --- |
 | `base` | string | empty | When acquiring JSON by relative path, the URL set here will be applied as the root. For absolute paths, the URL set here will not be applied. |
 | `fullScreen` | boolean | false | It will be drawn on the entire screen beyond the width and height set in the Stage class. |
-| `tagId` | string | empty | When an ID is specified, drawing will be performed within the element with the specified ID. |
-| `bgColor` | The [R,G,B,A] array of background colors can be specified from 0 to 255. false is colorless and transparent. |
+| `tagId` | string | null | When an ID is specified, drawing will be performed within the element with the specified ID. |
+| `bgColor` | array | null | The [R,G,B,A] array of background colors can be specified from 0 to 255. false is colorless and transparent. |
 
 ### config.json
 
@@ -123,7 +123,7 @@ The values below all are available for all environments.
 | --- | --- | --- | --- |
 | `spa` | boolean | true | As a Single Page Application, the scene can be controlled by URL. |
 | `loading`.`callback` | string | Loading | Sets whether or not to display the loading screen until the preparation for screen transition is complete. Call the start and end functions of the class set as callback. |
-| `gotoView`.`callback` | string or array | null | You can specify the class to call back after the `gotoView` function finishes. |
+| `gotoView`.`callback` | string or array | ["callback.Background"] | You can specify the class to call back after the `gotoView` function finishes. |
 
 ### routing.json
 

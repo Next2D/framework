@@ -151,11 +151,10 @@ export class Context
      * Attach the View class to the root Sprite.
      * @param  {string} name
      * @param  {array}  responses
-     * @param  {function} resolve
      * @return {ViewModel|null}
      * @public
      */
-    addChild (name, responses, resolve)
+    addChild (name, responses)
     {
         const names = name.split(/[-_/]/);
 
@@ -174,7 +173,7 @@ export class Context
         if (!next2d.fw.packages.has(viewName)
             || !next2d.fw.packages.has(viewModelName)
         ) {
-            return resolve(null);
+            return null;
         }
 
         if (next2d.fw.response.size) {
@@ -200,25 +199,23 @@ export class Context
         this._$viewModel = new ViewModelClass();
 
         return Promise
-                .resolve(this._$viewModel.bind(this._$view))
-                .then(() =>
-                {
-                    if (next2d.fw.config.loading) {
-                        this._$endLoading();
-                    }
+            .resolve(this._$viewModel.bind(this._$view))
+            .then(() =>
+            {
+                if (next2d.fw.config.loading) {
+                    this._$endLoading();
+                }
 
-                    if (this._$root.numChildren) {
-                        while (this._$root.numChildren) {
-                            this._$root.removeChild(this._$root.getChildAt(0));
-                        }
-                    }
+                while (this._$root.numChildren) {
+                    this._$root.removeChild(this._$root.getChildAt(0));
+                }
 
-                    return resolve(this._$root.addChild(this._$view));
-                })
-                .catch((error) =>
-                {
-                    console.error(error);
-                });
+                return this._$root.addChild(this._$view);
+            })
+            .catch((error) =>
+            {
+                console.error(error);
+            });
     }
 
     /**

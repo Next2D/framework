@@ -19,7 +19,7 @@ export class ViewModel extends Model
      * rootのSpriteにアタッチされたタイミングでコールされます。
      * Called at the timing when the root Sprite is attached.
      * @param  {View} view
-     * @return {void}
+     * @return {Promise|void}
      * @abstract
      */
     // eslint-disable-next-line no-unused-vars,no-empty-function

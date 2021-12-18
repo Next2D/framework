@@ -173,11 +173,11 @@ export class Application extends Model
             .all(this._$requests(name))
             .then((responses) =>
             {
-                return this.context.addChild(name, responses);
+                return Promise.resolve(this.context.addChild(name, responses));
             })
             .then((view) =>
             {
-                if (this.config.gotoView) {
+                if ("gotoView" in this.config) {
                     this._$callback(this.config.gotoView.callback, view);
                 }
             });
@@ -202,7 +202,16 @@ export class Application extends Model
             true, 0
         );
 
-        bitmapData.draw(root, new Matrix(ratio, 0, 0, ratio, 0, 0));
+        const player = root.stage._$player;
+        const matrix = player._$matrix;
+
+        const drawMatrix = new Matrix(
+            matrix[0], matrix[1],
+            matrix[2], matrix[3],
+            matrix[4], matrix[5]
+        );
+
+        bitmapData.draw(root, drawMatrix);
 
         // remove all
         while (root.numChildren) {
@@ -210,8 +219,10 @@ export class Application extends Model
         }
 
         const sprite  = root.addChild(new Sprite());
-        sprite.scaleX = 1 / ratio;
-        sprite.scaleY = 1 / ratio;
+        sprite.x = -matrix[4] / matrix[0];
+        sprite.y = -matrix[5] / matrix[3];
+        sprite.scaleX = 1 / matrix[0];
+        sprite.scaleY = 1 / matrix[3];
 
         const snapshot = sprite.addChild(new Shape());
         snapshot
@@ -229,9 +240,6 @@ export class Application extends Model
             .beginFill(0, 0.8)
             .drawRect(0, 0, width, height)
             .endFill();
-
-        const player = root.stage._$player;
-        const matrix = player._$matrix;
 
         const tx = matrix[4];
         if (tx) {

@@ -173,11 +173,14 @@ export class Application extends Model
             .all(this._$requests(name))
             .then((responses) =>
             {
-                return this.context.addChild(name, responses);
+                return new Promise((resolve) =>
+                {
+                    this.context.addChild(name, responses, resolve);
+                });
             })
             .then((view) =>
             {
-                if (this.config.gotoView) {
+                if ("gotoView" in this.config) {
                     this._$callback(this.config.gotoView.callback, view);
                 }
             });

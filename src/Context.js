@@ -46,27 +46,6 @@ export class Context
         const { Event } = next2d.events;
 
         const stage = this._$root.stage;
-
-        stage.addEventListener(Event.ADDED, (event) =>
-        {
-            const view = event.target;
-
-            if (view instanceof next2d.fw.View) {
-
-                const name = this.viewName;
-                const viewModelName = `${name}ViewModel`;
-                if (next2d.fw.packages.has(viewModelName)) {
-
-                    const ViewModelClass = next2d.fw.packages.get(viewModelName);
-
-                    this._$viewModel = new ViewModelClass();
-                    this._$viewModel.bind(view);
-
-                }
-            }
-
-        }, true);
-
         stage.addEventListener(Event.REMOVED, (event) =>
         {
             const view = event.target;
@@ -172,10 +151,11 @@ export class Context
      * Attach the View class to the root Sprite.
      * @param  {string} name
      * @param  {array}  responses
+     * @param  {function} resolve
      * @return {ViewModel|null}
      * @public
      */
-    addChild (name, responses)
+    addChild (name, responses, resolve)
     {
         const names = name.split(/[-_/]/);
 
@@ -194,17 +174,7 @@ export class Context
         if (!next2d.fw.packages.has(viewName)
             || !next2d.fw.packages.has(viewModelName)
         ) {
-            return null;
-        }
-
-        if (next2d.fw.config.loading) {
-            this._$endLoading();
-        }
-
-        if (this._$root.numChildren) {
-            while (this._$root.numChildren) {
-                this._$root.removeChild(this._$root.getChildAt(0));
-            }
+            return resolve(null);
         }
 
         if (next2d.fw.response.size) {
@@ -224,9 +194,31 @@ export class Context
         }
 
         const ViewClass = next2d.fw.packages.get(viewName);
-        this._$view = this._$root.addChild(new ViewClass());
+        this._$view = new ViewClass();
 
-        return this._$view;
+        const ViewModelClass = next2d.fw.packages.get(viewModelName);
+        this._$viewModel = new ViewModelClass();
+
+        return Promise
+                .resolve(this._$viewModel.bind(this._$view))
+                .then(() =>
+                {
+                    if (next2d.fw.config.loading) {
+                        this._$endLoading();
+                    }
+
+                    if (this._$root.numChildren) {
+                        while (this._$root.numChildren) {
+                            this._$root.removeChild(this._$root.getChildAt(0));
+                        }
+                    }
+
+                    return resolve(this._$root.addChild(this._$view));
+                })
+                .catch((error) =>
+                {
+                    console.error(error);
+                });
     }
 
     /**

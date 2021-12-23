@@ -41,10 +41,8 @@ project
 │   │   └── Config.js    // It will be generated automatically.
 │   │
 │   ├── content // Symbolic access to JSON created with NoCode Tool
-│   │   ├── top
-│   │   │   └── TopContent.js
-│   │   └── home
-│   │       └── HomeContent.js
+│   │   ├── TopContent.js
+│   │   └── HomeContent.js
 │   │
 │   ├── image
 │   │   └── default empty

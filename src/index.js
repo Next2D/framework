@@ -9,6 +9,7 @@ import { ViewModel } from "./view/ViewModel";
 import { Model } from "./model/common/Model";
 import { MovieClip } from "./model/common/MovieClip";
 import { Loading } from "./model/callback/Loading";
+import packageJson from "../package.json";
 
 if (!("fw" in window.next2d)) {
 
@@ -31,7 +32,8 @@ if (!("fw" in window.next2d)) {
     };
 
     // output build version
-    console.log("%c Next2D Framework %c 0.2.5 %c https://next2d.app",
+    const packageJson = require("../package.json");
+    console.log(`%c Next2D Framework %c ${packageJson.version} %c https://next2d.app`,
         "color: #fff; background: #5f5f5f",
         "color: #fff; background: #4bc729",
         "");

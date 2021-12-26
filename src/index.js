@@ -31,7 +31,8 @@ if (!("fw" in window.next2d)) {
     };
 
     // output build version
-    console.log("%c Next2D Framework %c 0.2.5 %c https://next2d.app",
+    const packageJson = require("../package.json");
+    console.log(`%c Next2D Framework %c ${packageJson.version} %c https://next2d.app`,
         "color: #fff; background: #5f5f5f",
         "color: #fff; background: #4bc729",
         "");

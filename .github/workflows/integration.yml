@@ -20,9 +20,6 @@ jobs:
           node-version: 14
       - uses: browser-actions/setup-chromium@latest
       - uses: browser-actions/setup-firefox@latest
-      - run: |
-          sudo safaridriver --enable
-          safaridriver -p 0 &
       - run: npm install
       - run: npm run test
 

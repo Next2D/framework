@@ -9,7 +9,6 @@ import { ViewModel } from "./view/ViewModel";
 import { Model } from "./model/common/Model";
 import { MovieClip } from "./model/common/MovieClip";
 import { Loading } from "./model/callback/Loading";
-import packageJson from "../package.json";
 
 if (!("fw" in window.next2d)) {
 

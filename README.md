@@ -130,9 +130,9 @@ In the case of the sample below, access is enabled at `https://example.com/quest
 
 ```json
 {
-    "quest/list": {
-        "requests": []
-    }
+  "quest/list": {
+    "requests": []
+  }
 }
 ````
 
@@ -140,7 +140,8 @@ In the case of the sample below, access is enabled at `https://example.com/quest
 
 | name | value | default | description |
 | --- | --- | --- | --- |
-| `private` | boolean | false | Controls direct access; if set to true, TopView will be activated. |
+| `private` | boolean | false | This is used to control direct access in SPA mode; if set to true and accessed directly, the View set in redirect will be loaded. |
+| `redirect` | string | empty | When private is true, the page set here will be loaded. If it is not set, TopView will be loaded. |
 | `requests` | array | null | Send a request to the specified location before accessing the View. The information received will be set in next2d.fw.response with name as the key. |
 
 #### Properties that can be set in the `requests` property.

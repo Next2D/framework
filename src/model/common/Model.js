@@ -8,7 +8,7 @@ export class Model
      * @constructor
      * @public
      */
-    constructor(object = null)
+    constructor (object = null)
     {
         if (object) {
             const keys = Object.keys(object);

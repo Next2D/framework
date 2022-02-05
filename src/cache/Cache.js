@@ -10,12 +10,14 @@ export class Cache
      * @constructor
      * @public
      */
-    constructor()
+    constructor ()
     {
         this._$store = new Map();
     }
 
     /**
+     * @description
+     *
      * @param {*} key
      * @method
      * @public

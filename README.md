@@ -48,11 +48,10 @@ project
 │   │   └── default empty
 │   │
 │   ├── model // business logic
-│   │   ├── callbask
-│   │   │   └── Background.js
 │   │   ├── api
 │   │   │   └── HomeText.js
-│   │   └── default empty
+│   │   └── callback
+│   │       └── Background.js
 │   │
 │   └── view // Per-page View, ViewModel files.
 │       ├── top

@@ -32,11 +32,6 @@ describe("ModelTest", () =>
         expect(model.response.get("response")).toBe("response");
     });
 
-    test("variable test", () => {
-        const model = new Model();
-        expect(model.variable.get("variable")).toBe("variable");
-    });
-
     test("query test", () => {
         const model = new Model();
         expect(model.query.get("query")).toBe("query");

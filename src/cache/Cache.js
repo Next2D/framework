@@ -16,7 +16,8 @@ export class Cache
     }
 
     /**
-     * @description
+     * @description 指定したkeyのキャッシュ値を返却します。
+     *              Returns the cached value of the specified key.
      *
      * @param {*} key
      * @method
@@ -28,6 +29,9 @@ export class Cache
     }
 
     /**
+     * @description 指定したkeyにvalueをキャッシュします。
+     *              Caches the value for the specified key.
+     *
      * @param {*} key
      * @param {*} value
      * @method
@@ -39,7 +43,10 @@ export class Cache
     }
 
     /**
-     * @param {*} key
+     * @description 指定したkeyのキャッシュが存在するか確認を行います。
+     *              Check if the cache for the specified key exists.
+     *
+     * @param  {*} key
      * @return {boolean}
      * @method
      * @public
@@ -50,7 +57,10 @@ export class Cache
     }
 
     /**
-     * @param {*} key
+     * @description 指定したkeyのキャッシュを削除します。
+     *              Deletes the cache for the specified key.
+     *
+     * @param  {*} key
      * @return {void}
      * @method
      * @public
@@ -61,6 +71,9 @@ export class Cache
     }
 
     /**
+     * @description 全てのキャッシュ情報をクリアします。
+     *              Clear all cache information.
+     *
      * @return {void}
      * @method
      * @public
@@ -71,6 +84,9 @@ export class Cache
     }
 
     /**
+     * @description キャッシュしたkeyの数を返却します。
+     *              Returns the number of cached keys.
+     *
      * @return {number}
      * @method
      * @public

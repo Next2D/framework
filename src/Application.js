@@ -3,6 +3,9 @@ import { Context } from "./Context";
 import { Cache } from "./cache/Cache";
 
 /**
+ * シーン遷移のコントロールを行うクラス。
+ * Class for controlling scene transitions.
+ *
  * @class
  * @extends {Model}
  */
@@ -52,12 +55,6 @@ export class Application extends Model
          * @static
          */
         next2d.fw.cache = new Cache();
-
-        /**
-         * @type {Cache}
-         * @static
-         */
-        next2d.fw.variable = new Cache();
 
         /**
          * @type {Cache}

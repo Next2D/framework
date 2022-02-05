@@ -1,4 +1,7 @@
 /**
+ * 各種、getterを実装したクラス
+ * Various, classes that implement getter
+ *
  * @class
  */
 export class Model
@@ -38,6 +41,9 @@ export class Model
     }
 
     /**
+     * @description 現在起動中のApplicationクラスを返却します。
+     *              Returns the Application class that is currently running.
+     *
      * @return {Application}
      * @readonly
      * @public
@@ -48,6 +54,9 @@ export class Model
     }
 
     /**
+     * @description 現在起動中のCacheクラスを返却します。
+     *              Returns the Cache class that is currently running.
+     *
      * @return {Cache}
      * @readonly
      * @public
@@ -58,6 +67,9 @@ export class Model
     }
 
     /**
+     * @description jsonの情報をまとめたobjectを返却します。
+     *              Returns an object that summarizes the json information.
+     *
      * @return {object}
      * @readonly
      * @public
@@ -68,6 +80,9 @@ export class Model
     }
 
     /**
+     * @description メインコンテキストのクラスを返却します。
+     *              Returns the class of the main context.
+     *
      * @return {Context}
      * @readonly
      * @public
@@ -78,6 +93,9 @@ export class Model
     }
 
     /**
+     * @description 作成したクラスのマッピングオブジェクトを返却します。
+     *              Returns the mapping object of the created class.
+     *
      * @return {Map}
      * @readonly
      * @public
@@ -88,6 +106,9 @@ export class Model
     }
 
     /**
+     * @description routing.jsonで設定したリクエストから戻ってきた情報を格納したオブジェクトを返却します。
+     *              Returns an object that contains the information returned from the request set in routing.json.
+     *
      * @return {Map}
      * @readonly
      * @public
@@ -98,16 +119,9 @@ export class Model
     }
 
     /**
-     * @return {Map}
-     * @readonly
-     * @public
-     */
-    get variable ()
-    {
-        return next2d.fw.variable;
-    }
-
-    /**
+     * @description QueryStringのキーと値を格納したオブジェクトを返却します。
+     *              Returns an object that contains the keys and values of QueryString.
+     *
      * @return {Map}
      * @readonly
      * @public

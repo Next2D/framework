@@ -1,5 +1,4 @@
 import { Model } from "../common/Model";
-import { Config } from "../../Config";
 
 /**
  * @class
@@ -13,7 +12,7 @@ export class Loading extends Model
      */
     start ()
     {
-        const elementId = `${Config.$PREFIX}_loading`;
+        const elementId = "__next2d__framework_loading";
 
         const element = document.getElementById(elementId);
         if (!element) {
@@ -94,7 +93,7 @@ export class Loading extends Model
     end ()
     {
         const element = document
-            .getElementById(`${Config.$PREFIX}_loading`);
+            .getElementById("__next2d__framework_loading");
 
         if (element) {
             element.style.display = "none";

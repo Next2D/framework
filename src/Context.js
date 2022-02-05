@@ -1,4 +1,6 @@
 /**
+ * メインコンテキスト、ViewとViewModelのunbind、bindをコントロールします。
+ * Controls unbind and bind of the main context, View and ViewModel.
  * @class
  */
 export class Context
@@ -106,6 +108,9 @@ export class Context
     }
 
     /**
+     * @description StageクラスにセットされたrootのSpriteを返却します。
+     *              Returns the Sprite of the root set in the Stage class.
+     *
      * @return {next2d.display.Sprite}
      * @readonly
      * @public
@@ -116,7 +121,11 @@ export class Context
     }
 
     /**
+     * @description 現在のシーンで利用中のViewクラスを返却します。
+     *              Returns the View class that is being used in the current scene.
+     *
      * @return {next2d.fw.View}
+     * @default null
      * @readonly
      * @public
      */
@@ -126,7 +135,11 @@ export class Context
     }
 
     /**
+     * @description 現在のシーンで利用中のViewModelクラスを返却します。
+     *              Returns the ViewModel class that is being used in the current scene.
+     *
      * @return {next2d.fw.ViewModel}
+     * @default null
      * @readonly
      * @public
      */
@@ -136,6 +149,9 @@ export class Context
     }
 
     /**
+     * @description 現在のシーンで利用中のViewクラス名を返却します。
+     *              Returns the name of the View class currently being used in the current scene.
+     *
      * @return {string}
      * @default "top"
      * @readonly
@@ -147,8 +163,9 @@ export class Context
     }
 
     /**
-     * ViewクラスをrootのSpriteにアタッチします。
-     * Attach the View class to the root Sprite.
+     * @description ViewクラスをrootのSpriteにアタッチします。
+     *              Attach the View class to the root Sprite.
+     *
      * @param  {string} name
      * @param  {array}  responses
      * @return {ViewModel|null}

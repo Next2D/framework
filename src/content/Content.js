@@ -1,6 +1,9 @@
 import { MovieClip } from "../model/common/MovieClip";
 
 /**
+ * @description NoCode Toolで作成したアニメーションの動的生成の補完を行うクラス。
+ *              A class that completes the dynamic generation of animations created by NoCode Tool.
+ *
  * @class
  * @extends {MovieClip}
  */
@@ -33,21 +36,9 @@ export class Content extends MovieClip
     }
 
     /**
-     * @description 指定されたオブジェクトの空間名を返します。
-     *              Returns the space name of the specified object.
+     * @description constructorが起動した後にコールされます。
+     *              Called after the constructor is invoked.
      *
-     * @return  {string}
-     * @default null
-     * @public
-     */
-    get namespace ()
-    {
-        return null;
-    }
-
-    /**
-     * constructorが起動した後にコールされます。
-     * Called after the constructor is invoked.
      * @return {void}
      * @abstract
      */

@@ -1,10 +1,11 @@
 import { Model } from "./model/common/Model";
 import { Context } from "./Context";
 import { Cache } from "./cache/Cache";
-import { Variable } from "./model/common/Variable";
-import { Query } from "./model/common/Query";
 
 /**
+ * シーン遷移のコントロールを行うクラス。
+ * Class for controlling scene transitions.
+ *
  * @class
  * @extends {Model}
  */
@@ -56,16 +57,10 @@ export class Application extends Model
         next2d.fw.cache = new Cache();
 
         /**
-         * @type {Variable}
+         * @type {Cache}
          * @static
          */
-        next2d.fw.variable = new Variable();
-
-        /**
-         * @type {Query}
-         * @static
-         */
-        next2d.fw.query = new Query();
+        next2d.fw.query = new Cache();
 
         if (this.config.spa) {
             window.addEventListener("popstate", () =>
@@ -131,7 +126,7 @@ export class Application extends Model
             if (name) {
                 const routing = this.config.routing[name];
                 if (routing && routing.private) {
-                    name = "top";
+                    name = routing.redirect || "top";
                 }
             }
 

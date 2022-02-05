@@ -1,6 +1,9 @@
 import { MovieClip } from "../model/common/MovieClip";
 
 /**
+ * Viewの親クラス、抽象クラスとして存在しています。
+ * It exists as a parent class of View and as an abstract class.
+ *
  * @class
  * @extends {MovieClip}
  */
@@ -17,8 +20,9 @@ export class View extends MovieClip
     }
 
     /**
-     * constructorが起動した後にコールされます。
-     * Called after the constructor is invoked.
+     * @description constructorが起動した後にコールされます。
+     *              Called after the constructor is invoked.
+     *
      * @return {void}
      * @abstract
      */

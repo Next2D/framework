@@ -3,6 +3,9 @@
  */
 export const Util = {
     /**
+     * @description ユニークな値を返却します。
+     *              Returns a unique value.
+     *
      * @return {string}
      * @static
      * @method

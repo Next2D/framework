@@ -32,11 +32,6 @@ describe("MovieClipTest", () =>
         expect(mc.response.get("response")).toBe("response");
     });
 
-    test("variable test", () => {
-        const mc = new MovieClip();
-        expect(mc.variable.get("variable")).toBe("variable");
-    });
-
     test("query test", () => {
         const mc = new MovieClip();
         expect(mc.query.get("query")).toBe("query");

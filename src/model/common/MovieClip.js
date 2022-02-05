@@ -69,16 +69,6 @@ export class MovieClip extends next2d.display.MovieClip
      * @readonly
      * @public
      */
-    get variable ()
-    {
-        return next2d.fw.variable;
-    }
-
-    /**
-     * @return {Map}
-     * @readonly
-     * @public
-     */
     get query ()
     {
         return next2d.fw.query;

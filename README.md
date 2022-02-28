@@ -95,7 +95,7 @@ npm test
 
 ### stage.json
 
-| name | value | default | description |
+| name | type | default | description |
 | --- | --- | --- | --- |
 | `width` | number | 240 | This is the setting for the width of the display area. |
 | `height` | number | 240 | This is the setting for the height of the display area. |
@@ -103,7 +103,7 @@ npm test
 
 #### Option settings
 
-| name | value | default | description |
+| name | type | default | description |
 | --- | --- | --- | --- |
 | `base` | string | empty | When acquiring JSON by relative path, the URL set here will be applied as the root. For absolute paths, the URL set here will not be applied. |
 | `fullScreen` | boolean | false | It will be drawn on the entire screen beyond the width and height set in the Stage class. |
@@ -115,7 +115,7 @@ npm test
 You can set a common value for each environment.\
 The values below all are available for all environments.
 
-| name | value | default | description |
+| name | type | default | description |
 | --- | --- | --- | --- |
 | `spa` | boolean | true | As a Single Page Application, the scene can be controlled by URL. |
 | `loading`.`callback` | string | Loading | Sets whether or not to display the loading screen until the preparation for screen transition is complete. Call the start and end functions of the class set as callback. |
@@ -137,7 +137,7 @@ In the case of the sample below, access is enabled at `https://example.com/quest
 
 #### Second level property settings
 
-| name | value | default | description |
+| name | type | default | description |
 | --- | --- | --- | --- |
 | `private` | boolean | false | This is used to control direct access in SPA mode; if set to true and accessed directly, the View set in redirect will be loaded. |
 | `redirect` | string | empty | When private is true, the page set here will be loaded. If it is not set, TopView will be loaded. |
@@ -145,7 +145,7 @@ In the case of the sample below, access is enabled at `https://example.com/quest
 
 #### Properties that can be set in the `requests` property.
 
-| name | value | default | description |
+| name | type | default | description |
 | --- | --- | --- | --- |
 | `type` | string | `content` | The following fixed values are available for this property. `json`, `content`, `image` and `custom` |
 | `path` | string | empty | Get the value of the string enclosed in {{***}} from config.json. e.g. {{ api.endPoint }}path/to/api |

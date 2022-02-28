@@ -14,18 +14,16 @@ module.exports = {
         "cleverLinks"   : false,
         "monospaceLinks": false,
         "applicationName": "Next2D Framework",
-        "disqus": "",
-        "googleAnalytics": "",
-        "favicon": "",
+        "path": "../../../",
         "openGraph": {
-            "title": "Next2D Framework API Documentation",
+            "title": "Framework API Documentation",
+            "description": "Framework API Documentation.",
             "type": "website",
-            "image": "",
-            "site_name": "Next2D Framework API Documentation",
+            "image": "https://next2d.app/assets/img/ogp.png",
             "url": "https://next2d.app/"
         },
         "meta": {
-            "title": "Next2D Framework API Documentation",
+            "title": "Framework API Documentation",
             "description": "Next2D Framework API Documentation.",
             "keyword": "Next2D, WebGL, WebGL2, JavaScript, HTML5, MVVM"
         },
@@ -39,7 +37,7 @@ module.exports = {
         "recurse": true,
         "private": false,
         "lenient": true,
-        "destination": "../next2d/docs/docs/framework/",
-        "template": "node_modules/@pixi/jsdoc-template"
+        "destination": "../next2d/dist/docs/framework/",
+        "template": "node_modules/@next2d/jsdoc-template"
     }
 };

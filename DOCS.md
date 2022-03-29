@@ -53,7 +53,7 @@ project
 ```
 
 #### ${{ framework-api.chart-detail }}$
-<img src="https://raw.githubusercontent.com/Next2D/Framework/main/Framework_Chart_Flow.svg" width="90%">
+<img src="https://raw.githubusercontent.com/Next2D/Framework/main/Framework_Flowchart.svg" width="90%">
 
 #### ${{ framework-api.command.title }}$
 

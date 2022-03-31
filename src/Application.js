@@ -192,8 +192,8 @@ export class Application extends Model
         const { Matrix } = next2d.geom;
 
         const bitmapData = new BitmapData(
-            root.stage.stageWidth  * ratio,
-            root.stage.stageHeight * ratio,
+            root.stage.canvasWidth  * ratio,
+            root.stage.canvasHeight * ratio,
             true, 0
         );
 

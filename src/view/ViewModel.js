@@ -15,6 +15,7 @@ export class ViewModel extends Model
      *
      * @param  {View} view
      * @return {Promise|void}
+     * @method
      * @abstract
      */
     // eslint-disable-next-line no-unused-vars,no-empty-function
@@ -26,8 +27,25 @@ export class ViewModel extends Model
      *
      * @param  {View} view
      * @return {void}
+     * @method
      * @abstract
      */
     // eslint-disable-next-line no-unused-vars,no-empty-function
     unbind (view) {}
+
+    /**
+     * @description bind関数で非同期で処理を開始する共通関数です。
+     *              Common function to start processing asynchronously with bind functions.
+     *
+     * @return {Promise}
+     * @method
+     * @public
+     */
+    factory ()
+    {
+        return new Promise((resolve) =>
+        {
+            requestAnimationFrame(() => { resolve() });
+        });
+    }
 }

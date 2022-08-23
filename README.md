@@ -147,7 +147,7 @@ In the case of the sample below, access is enabled at `https://example.com/quest
 
 | name | type | default | description                                                                                                                                                                         |
 | --- | --- | --- |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `type` | string | `content` | The following fixed values are available for this property. `json`, `content`, `sample`, `image` and `custom`                                                                       |
+| `type` | string | `content` | The following fixed values are available for this property. `json`, `content`, `cluster`, `image` and `custom`                                                                       |
 | `path` | string | empty | Get the value of the string enclosed in {{***}} from config.json. e.g. {{ api.endPoint }}path/to/api                                                                                |
 | `name` | string | empty | When the name is set, the data retrieved with the name as the key will be set in the Response Map.                                                                                  |
 | `cache` | boolean | false | Caches the retrieved data using the value set in name as a key.                                                                                                                     |

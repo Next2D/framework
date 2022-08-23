@@ -22,13 +22,13 @@
     "url": "git+https://github.com/Next2D/Framework.git"
   },
   "devDependencies": {
-    "@babel/core": "^7.16.0",
-    "@babel/preset-env": "^7.16.4",
+    "@babel/core": "^7.18.13",
+    "@babel/preset-env": "^7.18.10",
     "@next2d/jsdoc-template": "^1.0.3",
-    "eslint": "^8.3.0",
-    "eslint-webpack-plugin": "^3.1.1",
-    "webpack": "^5.64.4",
-    "webpack-cli": "^4.9.1",
-    "webpack-dev-server": "^4.6.0"
+    "eslint": "^8.22.0",
+    "eslint-webpack-plugin": "^3.2.0",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.10.0"
   }
 }

@@ -1,6 +1,7 @@
 import { Model } from "./model/common/Model";
 import { Context } from "./Context";
 import { Cache } from "./cache/Cache";
+import { RequestType } from "./constant/RequestType";
 
 /**
  * シーン遷移のコントロールを行うクラス。
@@ -164,6 +165,10 @@ export class Application extends Model
         // update
         this._$popstate = false;
 
+        if (name.indexOf("@") > -1) {
+            name = name.replace("@", "");
+        }
+
         Promise
             .all(this._$requests(name))
             .then((responses) =>
@@ -289,7 +294,9 @@ export class Application extends Model
         for (let idx = 0; idx < routing.requests.length; ++idx) {
 
             const object = routing.requests[idx];
-            if (object.cache && object.name) {
+            if (object.cache && object.name
+                && object.type !== RequestType.CLUSTER
+            ) {
 
                 const name = this._$parseConfig(object.name);
                 if (this.cache.has(name)) {
@@ -309,12 +316,23 @@ export class Application extends Model
 
             switch (this._$parseConfig(object.type)) {
 
-                case "custom":
+                case RequestType.CUSTOM:
                     promises.push(this._$loadCustom(object));
                     break;
 
-                case "json":
+                case RequestType.JSON:
                     promises.push(this._$loadJSON(object));
+                    break;
+
+                case RequestType.CLUSTER:
+                    {
+                        const results = this._$requests(
+                            this._$parseConfig(object.path)
+                        );
+                        for (let idx = 0; idx < results.length; ++idx) {
+                            promises.push(results[idx]);
+                        }
+                    }
                     break;
 
                 default:
@@ -475,7 +493,7 @@ export class Application extends Model
                 .contentLoaderInfo
                 .addEventListener(IOErrorEvent.IO_ERROR, reject);
 
-            if (this._$parseConfig(object.type) === "image") {
+            if (this._$parseConfig(object.type) === RequestType.IMAGE) {
 
                 loader.loadImage(request);
 

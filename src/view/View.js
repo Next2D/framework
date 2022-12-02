@@ -1,4 +1,4 @@
-import { MovieClip } from "../model/common/MovieClip";
+import { MovieClip } from "@/model/common/MovieClip";
 
 /**
  * Viewの親クラス、抽象クラスとして存在しています。

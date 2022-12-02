@@ -1,4 +1,4 @@
-import { Model } from "../common/Model";
+import { Model } from "@/model/common/Model";
 
 /**
  * @class

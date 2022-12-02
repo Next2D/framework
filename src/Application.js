@@ -1,7 +1,7 @@
-import { Model } from "./model/common/Model";
-import { Context } from "./Context";
-import { Cache } from "./cache/Cache";
-import { RequestType } from "./constant/RequestType";
+import { Model } from "@/model/common/Model";
+import { Context } from "@/Context";
+import { Cache } from "@/cache/Cache";
+import { RequestType } from "@/constant/RequestType";
 
 /**
  * シーン遷移のコントロールを行うクラス。

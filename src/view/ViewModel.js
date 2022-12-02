@@ -1,4 +1,4 @@
-import { Model } from "../model/common/Model";
+import { Model } from "@/model/common/Model";
 
 /**
  * ViewModelの親クラス、抽象クラスとして存在しています。

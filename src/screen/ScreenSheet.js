@@ -1,4 +1,4 @@
-import { Model } from "@/model/common/Model";
+import { Model } from "../model/common/Model";
 
 /**
  * スクリーンのサイズ変化に合わせて表示をコントロール

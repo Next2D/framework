@@ -1,14 +1,14 @@
 "use strict";
 
-import { Application } from "@/Application";
-import { Context } from "@/Context";
-import { Util } from "@/Util";
-import { Content } from "@/content/Content";
-import { View } from "@/view/View";
-import { ViewModel } from "@/view/ViewModel";
-import { Model } from "@/model/common/Model";
-import { MovieClip } from "@/model/common/MovieClip";
-import { Loading } from "@/model/callback/Loading";
+import { Application } from "./Application";
+import { Context } from "./Context";
+import { Util } from "./Util";
+import { Content } from "./content/Content";
+import { View } from "./view/View";
+import { ViewModel } from "./view/ViewModel";
+import { Model } from "./model/common/Model";
+import { MovieClip } from "./model/common/MovieClip";
+import { Loading } from "./model/callback/Loading";
 
 if (!("fw" in window.next2d)) {
 

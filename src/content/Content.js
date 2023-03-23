@@ -1,4 +1,4 @@
-import { MovieClip } from "@/model/common/MovieClip";
+import { MovieClip } from "../model/common/MovieClip";
 
 /**
  * @description NoCode Toolで作成したアニメーションの動的生成の補完を行うクラス。
@@ -40,6 +40,7 @@ export class Content extends MovieClip
      *              Called after the constructor is invoked.
      *
      * @return {void}
+     * @method
      * @abstract
      */
     // eslint-disable-next-line no-empty-function

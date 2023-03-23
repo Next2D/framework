@@ -168,7 +168,8 @@ export class Context
      *
      * @param  {string} name
      * @param  {array}  responses
-     * @return {ViewModel|null}
+     * @return {Promise}
+     * @method
      * @public
      */
     addChild (name, responses)
@@ -190,7 +191,7 @@ export class Context
         if (!next2d.fw.packages.has(viewName)
             || !next2d.fw.packages.has(viewModelName)
         ) {
-            return null;
+            return Promise.resolve();
         }
 
         if (next2d.fw.response.size) {
@@ -216,18 +217,19 @@ export class Context
         this._$viewModel = new ViewModelClass();
 
         return Promise
-            .resolve(this._$viewModel.bind(this._$view))
+            .all([this._$viewModel.bind(this._$view)])
             .then(() =>
             {
                 if (next2d.fw.config.loading) {
                     this._$endLoading();
                 }
 
-                while (this._$root.numChildren) {
-                    this._$root.removeChild(this._$root.getChildAt(0));
+                const root = this._$root;
+                while (root.numChildren) {
+                    root.removeChild(root.getChildAt(0));
                 }
 
-                return this._$root.addChild(this._$view);
+                return root.addChild(this._$view);
             })
             .catch((error) =>
             {

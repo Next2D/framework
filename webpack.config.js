@@ -13,11 +13,6 @@ module.exports = {
             "fix": true
         })
     ],
-    "resolve": {
-        "alias": {
-            "@": path.resolve(__dirname, "src")
-        }
-    },
     "devServer": {
         "static": {
             "directory": path.resolve(__dirname, "dist")

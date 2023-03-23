@@ -1,4 +1,4 @@
-import { Model } from "@/model/common/Model";
+import { Model } from "../common/Model";
 
 /**
  * @class
@@ -8,6 +8,7 @@ export class Loading extends Model
 {
     /**
      * @return {void}
+     * @method
      * @public
      */
     start ()
@@ -88,6 +89,7 @@ export class Loading extends Model
 
     /**
      * @return {void}
+     * @method
      * @public
      */
     end ()

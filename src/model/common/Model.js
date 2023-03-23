@@ -25,6 +25,7 @@ export class Model
     /**
      * @param  {object} schema
      * @return {string}
+     * @method
      * @public
      */
     toJSON (schema)

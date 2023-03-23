@@ -6,7 +6,7 @@ module.exports = {
     "entry": "./src/index.js",
     "output": {
         "filename": "next2d-framework.js",
-        "path": path.join(__dirname, "/")
+        "path": path.resolve(__dirname, "/")
     },
     "plugins": [
         new ESLintPlugin({
@@ -15,7 +15,7 @@ module.exports = {
     ],
     "devServer": {
         "static": {
-            "directory": path.join(__dirname, "dist")
+            "directory": path.resolve(__dirname, "dist")
         },
         "compress": false,
         "open": true

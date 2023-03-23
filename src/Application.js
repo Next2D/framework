@@ -86,6 +86,7 @@ export class Application extends Model
      * constructorが起動した後にコールされます。(初回起動時のみコールされます。)
      * Called after the constructor is invoked. (Called only the first time it is invoked.)
      * @return {void}
+     * @method
      * @abstract
      */
     // eslint-disable-next-line no-empty-function
@@ -103,88 +104,95 @@ export class Application extends Model
      */
     gotoView (name = null)
     {
+        const promises = [];
         if (this.config.loading) {
-            this._$createSnapshot();
+            promises.push(this._$createSnapshot());
             this._$startLoading();
         }
 
-        if (this.query.length) {
-            this.query.clear();
-        }
-
-        let query = "";
-        if (!name && location.search) {
-            query = location.search;
-            const parameters = query.slice(1).split("&");
-            for (let idx = 0; idx < parameters.length; ++idx) {
-                const pair = parameters[idx].split("=");
-                this.query.set(pair[0], pair[1]);
-            }
-        }
-
-        if (!name) {
-            name = location.pathname.slice(1);
-            if (name) {
-                const routing = this.config.routing[name];
-                if (routing && routing.private) {
-                    name = routing.redirect || "top";
-                }
-            }
-
-            if (!name) {
-                name = "top";
-            }
-        }
-
-        if (name.indexOf("?") > -1) {
-
-            const names = name.split("?");
-
-            name  = names[0];
-            query = `?${names[1]}`;
-
-            const parameters = names[1].split("&");
-            for (let idx = 0; idx < parameters.length; ++idx) {
-                const pair = parameters[idx].split("=");
-                this.query.set(pair[0], pair[1]);
-            }
-        }
-
-        if (name.slice(0, 1) === ".") {
-            name = name.split("/").slice(1).join("/") || "top";
-        }
-
-        if (this.config.spa && !this._$popstate) {
-            const url = name === "top"
-                ? `${location.origin}${location.search}`
-                : `${location.origin}/${name}${query}`;
-
-            history.pushState("", "", url);
-        }
-
-        // update
-        this._$popstate = false;
-
-        if (name.indexOf("@") > -1) {
-            name = name.replace("@", "");
-        }
-
         Promise
-            .all(this._$requests(name))
-            .then((responses) =>
+            .all(promises)
+            .then(() =>
             {
-                return Promise.resolve(this.context.addChild(name, responses));
-            })
-            .then((view) =>
-            {
-                if ("gotoView" in this.config) {
-                    this._$callback(this.config.gotoView.callback, view);
+                if (this.query.length) {
+                    this.query.clear();
                 }
+
+                let query = "";
+                if (!name && location.search) {
+                    query = location.search;
+                    const parameters = query.slice(1).split("&");
+                    for (let idx = 0; idx < parameters.length; ++idx) {
+                        const pair = parameters[idx].split("=");
+                        this.query.set(pair[0], pair[1]);
+                    }
+                }
+
+                if (!name) {
+                    name = location.pathname.slice(1);
+                    if (name) {
+                        const routing = this.config.routing[name];
+                        if (routing && routing.private) {
+                            name = routing.redirect || "top";
+                        }
+                    }
+
+                    if (!name) {
+                        name = "top";
+                    }
+                }
+
+                if (name.indexOf("?") > -1) {
+
+                    const names = name.split("?");
+
+                    name  = names[0];
+                    query = `?${names[1]}`;
+
+                    const parameters = names[1].split("&");
+                    for (let idx = 0; idx < parameters.length; ++idx) {
+                        const pair = parameters[idx].split("=");
+                        this.query.set(pair[0], pair[1]);
+                    }
+                }
+
+                if (name.slice(0, 1) === ".") {
+                    name = name.split("/").slice(1).join("/") || "top";
+                }
+
+                if (this.config.spa && !this._$popstate) {
+                    const url = name === "top"
+                        ? `${location.origin}${location.search}`
+                        : `${location.origin}/${name}${query}`;
+
+                    history.pushState("", "", url);
+                }
+
+                // update
+                this._$popstate = false;
+
+                if (name.indexOf("@") > -1) {
+                    name = name.replace("@", "");
+                }
+
+                Promise
+                    .all(this._$requests(name))
+                    .then((responses) =>
+                    {
+                        return Promise.resolve(this.context.addChild(name, responses));
+                    })
+                    .then((view) =>
+                    {
+                        if ("gotoView" in this.config) {
+                            this._$callback(this.config.gotoView.callback, view);
+                        }
+                    });
             });
     }
 
     /**
-     * @return {void}
+     * @return {Promise}
+     * @method
      * @private
      */
     _$createSnapshot ()
@@ -204,60 +212,73 @@ export class Application extends Model
 
         const player = root.stage._$player;
         const matrix = player._$matrix;
-
         const drawMatrix = new Matrix(
             matrix[0], matrix[1],
             matrix[2], matrix[3],
             matrix[4], matrix[5]
         );
 
-        bitmapData.draw(root, drawMatrix);
+        return new Promise((resolve) =>
+        {
+            bitmapData.draw(root, drawMatrix, null, null, (canvas) =>
+            {
+                // remove all
+                while (root.numChildren) {
+                    root.removeChild(root.getChildAt(0));
+                }
 
-        // remove all
-        while (root.numChildren) {
-            root.removeChild(root.getChildAt(0));
-        }
+                if (root._$created) {
+                    root._$created = false;
+                    root._$createWorkerInstance();
+                }
 
-        const sprite  = root.addChild(new Sprite());
-        sprite.x = -matrix[4] / matrix[0];
-        sprite.y = -matrix[5] / matrix[3];
-        sprite.scaleX = 1 / matrix[0];
-        sprite.scaleY = 1 / matrix[3];
+                bitmapData.canvas = canvas;
 
-        const snapshot = sprite.addChild(new Shape());
-        snapshot
-            .graphics
-            .beginBitmapFill(bitmapData)
-            .drawRect(0, 0, bitmapData.width, bitmapData.height)
-            .endFill();
+                const sprite = root.addChild(new Sprite());
+                sprite.x = -matrix[4] / matrix[0];
+                sprite.y = -matrix[5] / matrix[3];
+                sprite.scaleX = 1 / matrix[0];
+                sprite.scaleY = 1 / matrix[3];
 
-        const width  = this.config.stage.width;
-        const height = this.config.stage.height;
+                sprite
+                    .addChild(new Shape())
+                    .graphics
+                    .beginBitmapFill(bitmapData)
+                    .drawRect(0, 0, bitmapData.width, bitmapData.height)
+                    .endFill();
 
-        const mask = root.addChild(new Shape());
-        mask
-            .graphics
-            .beginFill(0, 0.8)
-            .drawRect(0, 0, width, height)
-            .endFill();
+                const width  = this.config.stage.width;
+                const height = this.config.stage.height;
 
-        const tx = matrix[4];
-        if (tx) {
-            const scaleX = matrix[0];
-            mask.scaleX = (width + tx * 2 / scaleX) / width;
-            mask.x = -tx / scaleX;
-        }
+                const mask = root.addChild(new Shape());
+                mask
+                    .graphics
+                    .beginFill(0, 0.8)
+                    .drawRect(0, 0, width, height)
+                    .endFill();
 
-        const ty = matrix[5];
-        if (ty) {
-            const scaleY = matrix[3];
-            mask.scaleY = (height + ty * 2 / scaleY) / height;
-            mask.y = -ty / scaleY;
-        }
+                const tx = matrix[4];
+                if (tx) {
+                    const scaleX = matrix[0];
+                    mask.scaleX = (width + tx * 2 / scaleX) / width;
+                    mask.x = -tx / scaleX;
+                }
+
+                const ty = matrix[5];
+                if (ty) {
+                    const scaleY = matrix[3];
+                    mask.scaleY = (height + ty * 2 / scaleY) / height;
+                    mask.y = -ty / scaleY;
+                }
+
+                return resolve();
+            });
+        });
     }
 
     /**
      * @return {void}
+     * @method
      * @private
      */
     _$startLoading ()
@@ -509,6 +530,7 @@ export class Application extends Model
      * @param  {string|array} [callback=null]
      * @param  {*} [value=null]
      * @return {void}
+     * @method
      * @private
      */
     _$callback (callback = null, value = null)
@@ -536,6 +558,7 @@ export class Application extends Model
     /**
      * @param  {string} [value=null]
      * @return {string}
+     * @method
      * @private
      */
     _$parseConfig (value)

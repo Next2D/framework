@@ -8,6 +8,7 @@ export class Loading extends Model
 {
     /**
      * @return {void}
+     * @method
      * @public
      */
     start ()
@@ -88,6 +89,7 @@ export class Loading extends Model
 
     /**
      * @return {void}
+     * @method
      * @public
      */
     end ()

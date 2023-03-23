@@ -40,6 +40,7 @@ export class Content extends MovieClip
      *              Called after the constructor is invoked.
      *
      * @return {void}
+     * @method
      * @abstract
      */
     // eslint-disable-next-line no-empty-function

@@ -1,8 +1,5 @@
 "use strict";
 
-// init => npm install -g jsdoc
-// command => jsdoc -c ./jsdoc.conf.js -r ./src DOCS.md
-
 module.exports = {
     "plugins": [
         "plugins/markdown"

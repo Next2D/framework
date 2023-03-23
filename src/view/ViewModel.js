@@ -45,7 +45,7 @@ export class ViewModel extends Model
     {
         return new Promise((resolve) =>
         {
-            requestAnimationFrame(() => { resolve() });
+            requestAnimationFrame(resolve);
         });
     }
 }

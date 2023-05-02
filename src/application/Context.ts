@@ -13,7 +13,7 @@ export class Context
     private _$viewModel: ViewModel|null;
     private _$viewName: string;
     private readonly _$root: any;
-    private _$toCamelCase: ToCamelCase;
+    private readonly _$toCamelCase: ToCamelCase;
 
     /**
      * @param {number} [width=240]
@@ -123,7 +123,7 @@ export class Context
      *              Attach the View class to the root Sprite.
      *
      * @param  {string} name
-     * @return {Promise<View>}
+     * @return {Promise<View|void>}
      * @method
      * @public
      */

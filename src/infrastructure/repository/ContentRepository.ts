@@ -5,13 +5,11 @@ interface Object {
     type: string;
     name: string;
     path: string;
-    cache: boolean;
-    class: string;
-    access: string;
-    method: string;
-    callback: string;
+    cache?: boolean;
+    callback?: string|string[];
+    method?: string;
     body?: object;
-    headers?: object;
+    headers?: HeadersInit;
 }
 
 /**
@@ -45,7 +43,7 @@ export class ContentRepository
             // @ts-ignore
             const parser: ConfigParser = next2d.fw.parser;
 
-            const request:any = new URLRequest(`${parser.execute(object.path)}`);
+            const request: any = new URLRequest(`${parser.execute(object.path)}`);
 
             request.method = object.method
                 ? parser.execute(object.method).toUpperCase()

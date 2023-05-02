@@ -7,11 +7,11 @@ interface Object {
     type: string;
     name: string;
     path: string;
-    cache: boolean;
-    class: string;
-    access: string;
-    method: string;
-    callback: string;
+    cache?: boolean;
+    callback?: string|string[];
+    method?: string;
+    body?: object;
+    headers?: HeadersInit;
 }
 
 /**
@@ -77,7 +77,7 @@ export class ContentService
                 const promises: Promise<Awaited<any>[]|void>[] = [];
                 if (object.callback) {
                     promises.push(this._$callback.execute(
-                        parser.execute(object.callback), value
+                        object.callback, value
                     ));
                 }
 
@@ -98,11 +98,11 @@ export class ContentService
                 // @ts-ignore
                 const parser: ConfigParser = next2d.fw.parser;
 
-                // @ts-ignore
-                const cache: Map<string, any> = next2d.fw.cache;
-
                 const name: string = parser.execute(object.name);
                 if (object.cache && object.name) {
+                    // @ts-ignore
+                    const cache: Map<string, any> = next2d.fw.cache;
+
                     cache.set(name, content);
                 }
 
@@ -122,8 +122,7 @@ export class ContentService
                 const promises: Promise<Awaited<any>[]|void>[] = [];
                 if (object.callback) {
                     promises.push(this._$callback.execute(
-                        parser.execute(object.callback),
-                        content
+                        object.callback, content
                     ));
                 }
 

@@ -8,7 +8,6 @@
 // @ts-ignore
 export class Content extends next2d.display.MovieClip
 {
-
     /**
      * @constructor
      * @public

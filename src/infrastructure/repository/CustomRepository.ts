@@ -4,11 +4,13 @@ interface Object {
     type: string;
     name: string;
     path: string;
-    cache: boolean;
+    cache?: boolean;
     class: string;
     access: string;
     method: string;
-    callback: string;
+    callback?: string|string[];
+    body?: object;
+    headers?: HeadersInit;
 }
 
 /**

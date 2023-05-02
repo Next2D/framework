@@ -85,7 +85,7 @@ export class RequestUseCase
 
         const promises: Promise<ResponseDTO|void>[] = [];
         const requests: Object[] = this._$requestParser.execute(name);
-        for (let idx:number = 0; idx < requests.length; ++idx) {
+        for (let idx: number = 0; idx < requests.length; ++idx) {
 
             const object: Object = requests[idx];
             switch (parser.execute(object.type)) {
@@ -102,7 +102,7 @@ export class RequestUseCase
                     );
                     break;
 
-                default:
+                case RequestType.CONTENT:
                     promises.push(this._$contentService.execute(object));
                     break;
 

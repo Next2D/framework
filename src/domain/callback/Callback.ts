@@ -37,7 +37,7 @@ export class Callback
             }
 
             const CallbackClass: any = packages.get(name);
-            promises.push(new CallbackClass(value).execute());
+            promises.push(new CallbackClass().execute(value));
         }
 
         return Promise.all(promises);

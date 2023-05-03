@@ -115,14 +115,14 @@ npm test
 You can set a common value for each environment.\
 The values below all are available for all environments.
 
-| name | type | default | description |
-| --- | --- | --- | --- |
-| `spa` | boolean | true | As a Single Page Application, the scene can be controlled by URL. |
-| `loading`.`callback` | string | Loading | Sets whether or not to display the loading screen until the preparation for screen transition is complete. Call the start and end functions of the class set as callback. |
+| name                  | type | default | description |
+|-----------------------| --- | --- | --- |
+| `spa`                 | boolean | true | As a Single Page Application, the scene can be controlled by URL. |
+| `loading`.`callback`  | string | "Loading" | Sets whether or not to display the loading screen until the preparation for screen transition is complete. Call the start and end functions of the class set as callback. |
 | `gotoView`.`callback` | string or array | ["callback.Background"] | You can specify the class to call back after the `gotoView` function finishes. |
 
 ### routing.json
-The top properties that can be set for routing are alphanumeric characters, slashes, hyphens, and underscores. Access the View class in CamelCase using the slash, hyphen, and underscore as keys.
+The top properties that can be set for routing are alphanumeric characters, slashes, hyphens, and underscores. Access the View class in CamelCase using the slash as keys.
 
 #### Example
 In the case of the sample below, access is enabled at `https://example.com/quest/list` and the context is set to `QuestListView.js`.

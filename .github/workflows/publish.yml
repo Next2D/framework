@@ -19,9 +19,9 @@ jobs:
       - run: npm run lint
       - run: npm test
       - run: npm run build
-      - run: cp LICENSE dist
-      - run: cp README.md dist
       - run: node publish.js
+      - run: cp LICENSE ./dist
+      - run: cp README.md ./dist
       - run: cd ./dist
       - run: npm publish --access public
         env:

@@ -51,11 +51,11 @@ export class ContentService
      *              If cache setting is On, set JSON to cache.
      *
      * @param  {object} object
-     * @return {Promise}
+     * @return {Promise<ResponseDTO>}
      * @method
      * @public
      */
-    execute (object: Object)
+    execute (object: Object): Promise<ResponseDTO>
     {
         /**
          * キャッシュを利用する場合はキャッシュデータをチェック

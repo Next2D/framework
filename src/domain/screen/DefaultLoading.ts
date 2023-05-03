@@ -34,7 +34,9 @@ export class DefaultLoading
             // @ts-ignore
             const player: any = root.stage.player;
 
-            const parent: HTMLElement|null = document.getElementById(player.contentElementId);
+            const parent: HTMLElement|null = document
+                .getElementById(player.contentElementId);
+
             if (!parent) {
                 return ;
             }
@@ -43,7 +45,8 @@ export class DefaultLoading
 
             loader.id = this._$elementId;
 
-            loader.innerHTML = `<div></div><div></div><div></div><style>
+            loader.innerHTML = `<div></div><div></div><div></div>
+<style>
 @keyframes ${this._$elementId} {
   0% {
     transform: scale(1);

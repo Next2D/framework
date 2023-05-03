@@ -53,11 +53,11 @@ export class CustomService
      *              If cache setting is On, set JSON to cache.
      *
      * @param  {object} object
-     * @return {Promise<ResponseDTO|void>}
+     * @return {Promise<ResponseDTO>}
      * @method
      * @public
      */
-    execute (object: Object): Promise<ResponseDTO|void>
+    execute (object: Object): Promise<ResponseDTO>
     {
         /**
          * キャッシュを利用する場合はキャッシュデータをチェック

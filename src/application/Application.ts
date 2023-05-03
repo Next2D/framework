@@ -162,11 +162,11 @@ export class Application
      * the URL will be parsed and the View will be launched.
      *
      * @param  {string} [name=""]
-     * @return {void}
+     * @return {Promise<any>}
      * @method
      * @public
      */
-    gotoView (name: string = ""): void
+    gotoView (name: string = ""): Promise<any>
     {
         // @ts-ignore
         const config: any = next2d.fw.config;
@@ -186,7 +186,7 @@ export class Application
             promises.push(this._$capture.execute());
         }
 
-        Promise
+        return Promise
             .all(promises)
             .then((): Promise<void> =>
             {
@@ -225,7 +225,7 @@ export class Application
 
                 return Promise.resolve();
             })
-            .then((): Promise<Awaited<ResponseDTO|void>[]> =>
+            .then((): Promise<Awaited<ResponseDTO>[]> =>
             {
                 /**
                  * routing.jsonで設定したリクエスト処理を実行
@@ -244,8 +244,8 @@ export class Application
                 const response: Map<string, any> = next2d.fw.response;
                 for (let idx: number = 0; idx < responses.length; ++idx) {
 
-                    const object: ResponseDTO|void = responses[idx];
-                    if (!object || !object.name) {
+                    const object: ResponseDTO = responses[idx];
+                    if (!object.name) {
                         continue;
                     }
 

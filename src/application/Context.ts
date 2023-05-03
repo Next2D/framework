@@ -42,7 +42,7 @@ export class Context
 
         /**
          * @type {string}
-         * @default "top"
+         * @default "Top"
          * @private
          */
         this._$viewName = "Top";
@@ -109,7 +109,7 @@ export class Context
      *              Returns the name of the View class currently being used in the current scene.
      *
      * @return {string}
-     * @default "top"
+     * @default "Top"
      * @readonly
      * @public
      */
@@ -145,6 +145,9 @@ export class Context
             return Promise.resolve();
         }
 
+        const ViewModelClass: any = packages.get(viewModelName);
+        this._$viewModel = new ViewModelClass();
+
         const ViewClass: any = packages.get(viewName);
         this._$view = new ViewClass();
 
@@ -156,16 +159,13 @@ export class Context
             }
         });
 
-        const ViewModelClass: any = packages.get(viewModelName);
-        this._$viewModel = new ViewModelClass();
-
         return Promise
             // @ts-ignore
             .all([this._$viewModel.bind(this._$view)])
             .then(() =>
             {
                 const root: any = this._$root;
-                while (root.numChildren) {
+                while (root.numChildren > 0) {
                     root.removeChild(root.getChildAt(0));
                 }
 

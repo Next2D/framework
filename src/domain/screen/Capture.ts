@@ -13,59 +13,59 @@ export class Capture
      */
     execute (): Promise<void>
     {
-        // @ts-ignore
-        const context: any = next2d.fw.context;
-
-        // @ts-ignore
-        const root: any = context.root;
-
-        // @ts-ignore
-        const { Sprite, Shape, BitmapData } = next2d.display;
-
-        // @ts-ignore
-        const { Matrix } = next2d.geom;
-
-        const ratio: number = window.devicePixelRatio;
-        const bitmapData: any = new BitmapData(
-            root.stage.canvasWidth  * ratio,
-            root.stage.canvasHeight * ratio,
-            true, 0
-        );
-
-        // @ts-ignore
-        const config: any = next2d.fw.config;
-
-        const width: number  = config.stage.width;
-        const height: number = config.stage.height;
-
-        const mask: any = new Shape();
-        mask
-            .graphics
-            .beginFill(0, 0.8)
-            .drawRect(0, 0, width, height)
-            .endFill();
-
-        const player: any = root.stage._$player;
-        const matrix: any = player._$matrix;
-
-        const tx: number = matrix[4];
-        if (tx) {
-            const scaleX: number = matrix[0];
-            mask.scaleX = (width + tx * 2 / scaleX) / width;
-            mask.x = -tx / scaleX;
-        }
-
-        const ty: number = matrix[5];
-        if (ty) {
-            const scaleY: number = matrix[3];
-            mask.scaleY = (height + ty * 2 / scaleY) / height;
-            mask.y = -ty / scaleY;
-        }
-
-        root.addChild(mask);
-
         return new Promise((resolve) =>
         {
+            // @ts-ignore
+            const context: any = next2d.fw.context;
+
+            // @ts-ignore
+            const root: any = context.root;
+
+            // @ts-ignore
+            const { Sprite, Shape, BitmapData } = next2d.display;
+
+            // @ts-ignore
+            const { Matrix } = next2d.geom;
+
+            const ratio: number = window.devicePixelRatio;
+            const bitmapData: any = new BitmapData(
+                root.stage.canvasWidth  * ratio,
+                root.stage.canvasHeight * ratio,
+                true, 0
+            );
+
+            // @ts-ignore
+            const config: any = next2d.fw.config;
+
+            const width: number  = config.stage.width;
+            const height: number = config.stage.height;
+
+            const mask: any = new Shape();
+            mask
+                .graphics
+                .beginFill(0, 0.8)
+                .drawRect(0, 0, width, height)
+                .endFill();
+
+            const player: any = root.stage._$player;
+            const matrix: any = player._$matrix;
+
+            const tx: number = matrix[4];
+            if (tx) {
+                const scaleX: number = matrix[0];
+                mask.scaleX = (width + tx * 2 / scaleX) / width;
+                mask.x = -tx / scaleX;
+            }
+
+            const ty: number = matrix[5];
+            if (ty) {
+                const scaleY: number = matrix[3];
+                mask.scaleY = (height + ty * 2 / scaleY) / height;
+                mask.y = -ty / scaleY;
+            }
+
+            root.addChild(mask);
+
             const drawMatrix: any = new Matrix(
                 matrix[0], matrix[1],
                 matrix[2], matrix[3],
@@ -90,7 +90,7 @@ export class Capture
                     .endFill();
 
                 // remove all
-                while (root.numChildren) {
+                while (root.numChildren > 0) {
                     root.removeChild(root.getChildAt(0));
                 }
 

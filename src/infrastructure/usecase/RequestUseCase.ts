@@ -74,16 +74,16 @@ export class RequestUseCase
      *              Execute requests to the type specified in Routing settings
      *
      * @param  {string} name
-     * @return {Promise<ResponseDTO|void>[]}
+     * @return {Promise<ResponseDTO>[]}
      * @method
      * @public
      */
-    execute (name: string): Promise<ResponseDTO|void>[]
+    execute (name: string): Promise<ResponseDTO>[]
     {
         // @ts-ignore
         const parser: ConfigParser = next2d.fw.parser;
 
-        const promises: Promise<ResponseDTO|void>[] = [];
+        const promises: Promise<ResponseDTO>[] = [];
         const requests: Object[] = this._$requestParser.execute(name);
         for (let idx: number = 0; idx < requests.length; ++idx) {
 

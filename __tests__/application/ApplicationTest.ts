@@ -19,7 +19,7 @@ describe("ApplicationTest", () =>
 
         const app = new Application(config, packages);
 
-        expect(typeof app.initialize).toBe("function");
-        expect(typeof app.gotoView).toBe("function");
+        expect(app.initialize()).toBe(undefined);
+        expect(app.gotoView()).toBe(undefined);
     });
 });

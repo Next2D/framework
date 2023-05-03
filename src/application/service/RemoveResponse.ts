@@ -5,11 +5,11 @@ interface Object {
     type: string;
     name: string;
     path: string;
-    cache: boolean;
-    class: string;
-    access: string;
-    method: string;
-    callback: string;
+    cache?: boolean;
+    class?: string;
+    access?: string;
+    method?: string;
+    callback?: string | string[];
 }
 
 /**
@@ -17,7 +17,7 @@ interface Object {
  */
 export class RemoveResponse
 {
-    private _$requestParser: RequestParser;
+    private readonly _$requestParser: RequestParser;
 
     /**
      * @constructor

@@ -11,7 +11,7 @@ interface Object {
     class: string;
     access: string;
     method: string;
-    callback?: string|string[];
+    callback?: string | string[];
     body?: object;
     headers?: HeadersInit;
 }
@@ -24,8 +24,8 @@ interface Object {
  */
 export class CustomService
 {
-    private _$repository: CustomRepository;
-    private _$callback: Callback;
+    private readonly _$repository: CustomRepository;
+    private readonly _$callback: Callback;
 
     /**
      * @constructor

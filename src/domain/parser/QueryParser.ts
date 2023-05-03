@@ -41,7 +41,9 @@ export class QueryParser
         }
 
         if (!name) {
-            name = `${location.pathname.split("/").pop()}`;
+            const names: string[] = location.pathname.split("/");
+            names.shift();
+            name = `${names.join("/")}`;
             if (name) {
                 const routing: any = config.routing[name];
                 if (!routing) {

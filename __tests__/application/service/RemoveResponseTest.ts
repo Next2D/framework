@@ -3,15 +3,17 @@ import { RequestType } from "../../../src/infrastructure/constant/RequestType";
 
 describe("RemoveResponseTest", () =>
 {
-    test("execute test", () => {
-
+    test("execute test", () =>
+    {
         // mock
         const loaderInfo = new Map();
         loaderInfo.set("symbol_1", "abc");
         loaderInfo.set("symbol_2", "xyz");
-        expect(loaderInfo.size).toBe(2);
+        loaderInfo.set("symbol_3", "cache data");
+        expect(loaderInfo.size).toBe(3);
         expect(loaderInfo.get("symbol_1")).toBe("abc");
         expect(loaderInfo.get("symbol_2")).toBe("xyz");
+        expect(loaderInfo.get("symbol_3")).toBe("cache data");
 
         // @ts-ignore
         next2d.fw.loaderInfo = loaderInfo;
@@ -40,6 +42,15 @@ describe("RemoveResponseTest", () =>
                         {
                             "type": RequestType.CONTENT,
                             "name": "test1"
+                        },
+                        {
+                            "type": RequestType.JSON,
+                            "name": "test2"
+                        },
+                        {
+                            "type": RequestType.CONTENT,
+                            "name": "test3",
+                            "cache": true
                         }
                     ]
                 }
@@ -54,8 +65,9 @@ describe("RemoveResponseTest", () =>
 
         // test
         expect(response.size).toBe(0);
-        expect(loaderInfo.size).toBe(1);
+        expect(loaderInfo.size).toBe(2);
         expect(loaderInfo.has("symbol_1")).toBe(false);
         expect(loaderInfo.has("symbol_2")).toBe(true);
+        expect(loaderInfo.has("symbol_3")).toBe(true);
     });
 });

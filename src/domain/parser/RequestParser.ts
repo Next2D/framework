@@ -8,7 +8,7 @@ interface Object {
     class: string;
     access: string;
     method: string;
-    callback: string;
+    callback?: string|string[];
 }
 
 /**

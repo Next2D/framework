@@ -22,12 +22,12 @@ interface QueryObject {
  */
 export class Application
 {
-    private _$queryParser: QueryParser;
-    private _$requestUseCase: RequestUseCase;
-    private _$callback: Callback;
-    private _$loading: Loading;
-    private _$capture: Capture;
-    private _$removeResponse: RemoveResponse;
+    private readonly _$queryParser: QueryParser;
+    private readonly _$requestUseCase: RequestUseCase;
+    private readonly _$callback: Callback;
+    private readonly _$loading: Loading;
+    private readonly _$capture: Capture;
+    private readonly _$removeResponse: RemoveResponse;
     private _$popstate: boolean;
     private _$currentName: string;
 

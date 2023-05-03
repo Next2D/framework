@@ -8,7 +8,7 @@ interface Object {
     name: string;
     path: string;
     cache?: boolean;
-    callback?: string|string[];
+    callback?: string | string[];
     method?: string;
     body?: object;
     headers?: HeadersInit;

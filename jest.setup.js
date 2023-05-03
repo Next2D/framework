@@ -13,7 +13,17 @@ globalThis.next2d = {
     "display": {
         "MovieClip": class MovieClip
         {
+            constructor()
+            {
+                this.namespace = "next2d.display.MovieClip";
+            }
+
             _$sync ()
+            {
+                return undefined;
+            }
+
+            _$getChildren ()
             {
                 return undefined;
             }
@@ -33,6 +43,22 @@ globalThis.next2d = {
                         this.event.set(name, callback);
                     }
                 };
+            }
+
+            loadImage ()
+            {
+                this.event.get("complete")({
+                    "currentTarget": {
+                        "content": {
+                            "_$loaderInfo": {
+                                "_$data": {
+                                    "symbols": new Map([["app", "app"]])
+                                }
+                            },
+                            "text": "NoCode Tool image content"
+                        }
+                    }
+                });
             }
 
             load ()
@@ -70,9 +96,18 @@ globalThis.next2d = {
             constructor()
             {
                 this.method = "GET";
+                this.requestHeaders = [];
+                this.data = null;
             }
         },
-        "URLRequestHeader": class URLRequestHeader {},
+        "URLRequestHeader": class URLRequestHeader
+        {
+            constructor (name, value)
+            {
+                this.name  = name;
+                this.value = value;
+            }
+        },
         "URLRequestMethod": {
             "GET": "GET",
             "PUT": "PUT",

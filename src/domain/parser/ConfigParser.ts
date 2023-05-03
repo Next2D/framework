@@ -45,7 +45,8 @@ export class ConfigParser
                 }
             }
 
-            if (!config) {
+            // @ts-ignore
+            if (config === next2d.fw.config) {
                 continue;
             }
 

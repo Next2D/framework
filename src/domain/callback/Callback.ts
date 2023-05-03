@@ -6,13 +6,13 @@ import { ConfigParser } from "@/domain/parser/ConfigParser";
 export class Callback
 {
     /**
-     * @param  {string|array} [callback=[]]
+     * @param  {string|array} [callback=""]
      * @param  {*} [value=null]
      * @return {Promise}
      * @method
      * @public
      */
-    execute (callback: string | string[] = [], value: any = null): Promise<Awaited<any>[]|void>
+    execute (callback: string | string[] = "", value: any = null): Promise<Awaited<any>[]|void>
     {
         if (!callback) {
             return Promise.resolve();

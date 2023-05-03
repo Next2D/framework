@@ -19,29 +19,22 @@ export class Capture
         // @ts-ignore
         const root: any = context.root;
 
-        const ratio: number = window.devicePixelRatio;
-
         // @ts-ignore
         const { Sprite, Shape, BitmapData } = next2d.display;
+
         // @ts-ignore
         const { Matrix } = next2d.geom;
 
+        const ratio: number = window.devicePixelRatio;
         const bitmapData: any = new BitmapData(
             root.stage.canvasWidth  * ratio,
             root.stage.canvasHeight * ratio,
             true, 0
         );
 
-        const player: any = root.stage._$player;
-        const matrix: any = player._$matrix;
-        const drawMatrix: any = new Matrix(
-            matrix[0], matrix[1],
-            matrix[2], matrix[3],
-            matrix[4], matrix[5]
-        );
-
         // @ts-ignore
         const config: any = next2d.fw.config;
+
         const width: number  = config.stage.width;
         const height: number = config.stage.height;
 
@@ -51,6 +44,9 @@ export class Capture
             .beginFill(0, 0.8)
             .drawRect(0, 0, width, height)
             .endFill();
+
+        const player: any = root.stage._$player;
+        const matrix: any = player._$matrix;
 
         const tx: number = matrix[4];
         if (tx) {
@@ -70,6 +66,12 @@ export class Capture
 
         return new Promise((resolve) =>
         {
+            const drawMatrix: any = new Matrix(
+                matrix[0], matrix[1],
+                matrix[2], matrix[3],
+                matrix[4], matrix[5]
+            );
+
             bitmapData.draw(root, drawMatrix, null, null, (canvas: HTMLCanvasElement): void =>
             {
                 bitmapData.canvas = canvas;

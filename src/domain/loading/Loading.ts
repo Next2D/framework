@@ -21,7 +21,7 @@ export class Loading
             return ;
         }
 
-        const callback: string|undefined = config.loading.callback;
+        const callback: string|void = config.loading.callback;
         if (!callback) {
             return ;
         }

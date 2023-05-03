@@ -17,14 +17,14 @@ export class Content extends next2d.display.MovieClip
         super();
 
         // @ts-ignore
-        const loaderInfo: Map<string, any> = next2d.fw.loaderInfo;
+        const loaderInfoMap: Map<string, any> = next2d.fw.loaderInfo;
 
         // @ts-ignore
-        if (loaderInfo.has(this.namespace)) {
+        if (loaderInfoMap.has(this.namespace)) {
 
             // Set the target LoaderInfo class
             // @ts-ignore
-            this._$loaderInfo = loaderInfo.get(this.namespace);
+            this._$loaderInfo = loaderInfoMap.get(this.namespace);
 
             // Symbol linkage with NoCode Tool
             // @ts-ignore

@@ -14,6 +14,7 @@ jobs:
         with:
           node-version: "18.x"
           registry-url: "https://registry.npmjs.org"
+          path: ./dist/
       - run: npm install
       - run: npm run lint
       - run: npm test
@@ -21,7 +22,6 @@ jobs:
       - run: cp LICENSE dist
       - run: cp README.md dist
       - run: node publish.js
-      - run: cd dist
       - run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

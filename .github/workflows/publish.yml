@@ -22,6 +22,7 @@ jobs:
       - run: cp LICENSE dist
       - run: cp README.md dist
       - run: node publish.js
+      - run: cd ./dist
       - run: npm publish --access public
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}

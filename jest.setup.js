@@ -1,3 +1,144 @@
+globalThis.$windowEventMap = new Map();
+globalThis.window = {
+    "devicePixelRatio": 2,
+    "addEventListener": (type, callback) =>
+    {
+        globalThis.$windowEventMap.set(type, callback);
+    },
+    "next2d": {
+        "display": {
+            "MovieClip": class MovieClip
+            {
+                constructor()
+                {
+                    this.name = "";
+                    this.namespace = "next2d.display.MovieClip";
+                }
+
+                _$sync ()
+                {
+                    return undefined;
+                }
+
+                _$getChildren ()
+                {
+                    return undefined;
+                }
+            },
+            "Loader": class Loader
+            {
+                constructor ()
+                {
+                    this.event = new Map();
+                }
+
+                get contentLoaderInfo ()
+                {
+                    return {
+                        "addEventListener": (name, callback) =>
+                        {
+                            this.event.set(name, callback);
+                        }
+                    };
+                }
+
+                loadImage ()
+                {
+                    this.event.get("complete")({
+                        "currentTarget": {
+                            "content": {
+                                "_$loaderInfo": {
+                                    "_$data": {
+                                        "symbols": new Map([["app", "app"]])
+                                    }
+                                },
+                                "text": "NoCode Tool image content"
+                            }
+                        }
+                    });
+                }
+
+                load ()
+                {
+                    this.event.get("complete")({
+                        "currentTarget": {
+                            "content": {
+                                "_$loaderInfo": {
+                                    "_$data": {
+                                        "symbols": new Map([["app", "app"]])
+                                    }
+                                },
+                                "text": "NoCode Tool content"
+                            }
+                        }
+                    });
+                }
+            },
+            "Shape": class Shape
+            {
+                get graphics ()
+                {
+                    return this;
+                }
+
+                beginBitmapFill ()
+                {
+                    return this;
+                }
+
+                beginFill ()
+                {
+                    return this;
+                }
+
+                drawRect ()
+                {
+                    return this;
+                }
+
+                endFill ()
+                {
+                    return this;
+                }
+            },
+            "BitmapData": class BitmapData
+            {
+                draw (source, matrix, color_transform, canvas = {}, callback)
+                {
+                    callback(canvas);
+                }
+            },
+            "Sprite": class Sprite
+            {
+                addChild (display_object)
+                {
+                    return display_object;
+                }
+
+                get graphics ()
+                {
+                    return this;
+                }
+
+                beginFill ()
+                {
+                    return this;
+                }
+
+                drawRect ()
+                {
+                    return this;
+                }
+
+                endFill ()
+                {
+                    return this;
+                }
+            }
+        },
+    }
+};
+
 globalThis.next2d = {
     "createRootMovieClip": function ()
     {
@@ -231,15 +372,6 @@ globalThis.next2d = {
 
 globalThis.location = {
     "pathname": "/"
-};
-
-globalThis.$windowEventMap = new Map();
-globalThis.window = {
-    "devicePixelRatio": 2,
-    "addEventListener": (type, callback) =>
-    {
-        globalThis.$windowEventMap.set(type, callback);
-    }
 };
 
 globalThis.history = {

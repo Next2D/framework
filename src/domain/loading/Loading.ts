@@ -1,4 +1,4 @@
-import { ConfigParser } from "@/domain/parser/ConfigParser";
+import { ConfigParser } from "../parser/ConfigParser";
 
 /**
  * @class

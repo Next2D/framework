@@ -3,10 +3,10 @@
  * It exists as a parent class of View and as an abstract class.
  *
  * @class
- * @extends {next2d.display.MovieClip}
+ * @extends {window.next2d.display.MovieClip}
  */
 // @ts-ignore
-export class View extends next2d.display.MovieClip
+export class View extends window.next2d.display.MovieClip
 {
     /**
      * @constructor

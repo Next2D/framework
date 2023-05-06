@@ -1,5 +1,5 @@
-import { RequestType } from "@/infrastructure/constant/RequestType";
-import { RequestParser } from "@/domain/parser/RequestParser";
+import { RequestType } from "../../infrastructure/constant/RequestType";
+import { RequestParser } from "../../domain/parser/RequestParser";
 
 interface Object {
     type: string;

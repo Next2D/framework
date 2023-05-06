@@ -1,4 +1,4 @@
-import { RequestType } from "@/infrastructure/constant/RequestType";
+import { RequestType } from "../../infrastructure/constant/RequestType";
 
 interface Object {
     type: string;

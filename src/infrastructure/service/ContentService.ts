@@ -1,7 +1,7 @@
-import { ContentRepository } from "@/infrastructure/repository/ContentRepository";
-import { Callback } from "@/domain/callback/Callback";
-import { ResponseDTO } from "@/infrastructure/dto/ResponseDTO";
-import { ConfigParser } from "@/domain/parser/ConfigParser";
+import { ContentRepository } from "../repository/ContentRepository";
+import { Callback } from "../../domain/callback/Callback";
+import { ResponseDTO } from "../dto/ResponseDTO";
+import { ConfigParser } from "../../domain/parser/ConfigParser";
 
 interface Object {
     type: string;

@@ -1,4 +1,4 @@
-import { ConfigParser } from "@/domain/parser/ConfigParser";
+import { ConfigParser } from "../../domain/parser/ConfigParser";
 
 interface Object {
     type: string;

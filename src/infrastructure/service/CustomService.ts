@@ -1,7 +1,7 @@
-import { CustomRepository } from "@/infrastructure/repository/CustomRepository";
-import { Callback } from "@/domain/callback/Callback";
-import { ResponseDTO } from "@/infrastructure/dto/ResponseDTO";
-import { ConfigParser } from "@/domain/parser/ConfigParser";
+import { CustomRepository } from "../repository/CustomRepository";
+import { Callback } from "../../domain/callback/Callback";
+import { ResponseDTO } from "../dto/ResponseDTO";
+import { ConfigParser } from "../../domain/parser/ConfigParser";
 
 interface Object {
     type: string;

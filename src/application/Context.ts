@@ -1,6 +1,6 @@
-import { ToCamelCase } from "@/domain/convert/ToCamelCase";
-import { View } from "@/view/View";
-import { ViewModel } from "@/view/ViewModel";
+import { ToCamelCase } from "../domain/convert/ToCamelCase";
+import { View } from "../view/View";
+import { ViewModel } from "../view/ViewModel";
 
 /**
  * メインコンテキスト、ViewとViewModelのunbind、bindをコントロールします。

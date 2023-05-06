@@ -1,11 +1,11 @@
-import { RequestType } from "@/infrastructure/constant/RequestType";
-import { ContentService } from "@/infrastructure/service/ContentService";
-import { CustomService } from "@/infrastructure/service/CustomService";
-import { JsonService } from "@/infrastructure/service/JsonService";
-import { Callback } from "@/domain/callback/Callback";
-import { RequestParser } from "@/domain/parser/RequestParser";
-import { ConfigParser } from "@/domain/parser/ConfigParser";
-import { ResponseDTO } from "@/infrastructure/dto/ResponseDTO";
+import { RequestType } from "../constant/RequestType";
+import { ContentService } from "../service/ContentService";
+import { CustomService } from "../service/CustomService";
+import { JsonService } from "../service/JsonService";
+import { Callback } from "../../domain/callback/Callback";
+import { RequestParser } from "../../domain/parser/RequestParser";
+import { ConfigParser } from "../../domain/parser/ConfigParser";
+import { ResponseDTO } from "../dto/ResponseDTO";
 
 interface Object {
     type: string;

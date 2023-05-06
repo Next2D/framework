@@ -1,10 +1,10 @@
 "use strict";
 
-import { Application } from "@/application/Application";
-import { Content } from "@/application/content/Content";
-import { View } from "@/view/View";
-import { ViewModel } from "@/view/ViewModel";
-import { DefaultLoading } from "@/domain/screen/DefaultLoading";
+import { Application } from "./application/Application";
+import { Content } from "./application/content/Content";
+import { View } from "./view/View";
+import { ViewModel } from "./view/ViewModel";
+import { DefaultLoading } from "./domain/screen/DefaultLoading";
 
 // @ts-ignore
 if (!("fw" in window.next2d)) {

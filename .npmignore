@@ -4,10 +4,11 @@
 .gitignore
 .github
 node_modules
-Framework_Flowchart.svg
 __tests__
+coverage
+src
+Framework_Flowchart.svg
 babel.config.js
 jest.config.js
 jest.setup.js
 webpack.config.js
-coverage

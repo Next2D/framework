@@ -3,10 +3,10 @@
  *              A class that completes the dynamic generation of animations created by NoCode Tool.
  *
  * @class
- * @extends {next2d.display.MovieClip}
+ * @extends {window.next2d.display.MovieClip}
  */
 // @ts-ignore
-export class Content extends next2d.display.MovieClip
+export class Content extends window.next2d.display.MovieClip
 {
     /**
      * @constructor

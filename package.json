@@ -18,6 +18,9 @@
     "test": "jest",
     "jsdoc": "jsdoc -c jsdoc.conf.js -r src DOCS.md"
   },
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Next2D/Framework.git"

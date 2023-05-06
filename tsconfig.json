@@ -1,18 +1,17 @@
 {
   "compilerOptions": {
+    "strict": true,
     "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
+    "declaration": true,
     "target": "es6",
-    "module": "es2015",
+    "lib": ["es6", "dom"],
+    "module": "esnext",
     "moduleResolution": "node",
     "baseUrl": ".",
-    "outDir": "./dist",
-    "paths": {
-      "@/*": ["src/*"]
-    },
-    "strict": true
+    "outDir": "./dist/"
   },
   "include": ["src/**/*.ts", "src/index.ts"],
   "exclude": ["node_modules"]

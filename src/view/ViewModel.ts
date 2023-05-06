@@ -1,4 +1,4 @@
-import { View } from "@/view/View";
+import { View } from "./View";
 
 /**
  * ViewModelの親クラス、抽象クラスとして存在しています。

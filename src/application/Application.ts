@@ -157,9 +157,9 @@ export class Application
     initialize (): void {}
 
     /**
-     * 指定のViewを起動して、描画を開始します。引数を指定しない場合はURLをパースしてViewを起動します。
-     * Launches the specified View and starts drawing. If no argument is specified,
-     * the URL will be parsed and the View will be launched.
+     * @description 指定のViewを起動して、描画を開始します。引数を指定しない場合はURLをパースしてViewを起動します。
+     *              Launches the specified View and starts drawing. If no argument is specified,
+     *              the URL will be parsed and the View will be launched.
      *
      * @param  {string} [name=""]
      * @return {Promise<any>}

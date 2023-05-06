@@ -19,6 +19,10 @@ export class DefaultLoading
     }
 
     /**
+     * @description Canvasが設置されたDOMにローディング演出を登録、既にDOMがあれば演出を表示
+     *              Register loading direction in the DOM where Canvas is installed,
+     *              and display the direction if the DOM already exists.
+     *
      * @return {void}
      * @method
      * @public
@@ -108,6 +112,9 @@ export class DefaultLoading
     }
 
     /**
+     * @description ローディング演出を非表示にする
+     *              Hide loading direction
+     *
      * @return {void}
      * @method
      * @public

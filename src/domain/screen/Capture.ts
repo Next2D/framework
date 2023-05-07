@@ -1,5 +1,6 @@
 /**
  * @class
+ * @memberof domain.screen
  */
 export class Capture
 {

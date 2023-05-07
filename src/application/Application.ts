@@ -19,6 +19,7 @@ interface QueryObject {
  * Class for controlling scene transitions.
  *
  * @class
+ * @memberof application
  */
 export class Application
 {

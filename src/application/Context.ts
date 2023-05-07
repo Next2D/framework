@@ -6,6 +6,7 @@ import { ViewModel } from "../view/ViewModel";
  * メインコンテキスト、ViewとViewModelのunbind、bindをコントロールします。
  * Controls unbind and bind of the main context, View and ViewModel.
  * @class
+ * @memberof application
  */
 export class Context
 {

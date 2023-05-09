@@ -5,6 +5,7 @@ interface Object {
 
 /**
  * @class
+ * @memberof domain.parser
  */
 export class QueryParser
 {

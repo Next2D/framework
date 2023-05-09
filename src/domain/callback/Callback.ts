@@ -2,6 +2,7 @@ import { ConfigParser } from "../parser/ConfigParser";
 
 /**
  * @class
+ * @memberof domain.callback
  */
 export class Callback
 {

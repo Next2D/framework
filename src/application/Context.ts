@@ -165,13 +165,23 @@ export class Context
             .all([this._$viewModel.bind(this._$view)])
             .then(() =>
             {
+                if (!this._$view) {
+                    return ;
+                }
+
                 const root: any = this._$root;
-                while (root.numChildren > 0) {
+
+                // @ts-ignore
+                root.addChild(this._$view);
+
+                while (root.numChildren > 1) {
                     root.removeChild(root.getChildAt(0));
                 }
 
                 // @ts-ignore
-                return root.addChild(this._$view);
+                root.mouseChildren = true;
+
+                return this._$view;
             });
     }
 }

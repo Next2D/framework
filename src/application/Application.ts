@@ -163,11 +163,11 @@ export class Application
      *              the URL will be parsed and the View will be launched.
      *
      * @param  {string} [name=""]
-     * @return {Promise<any>}
+     * @return {Promise<void>}
      * @method
      * @public
      */
-    gotoView (name: string = ""): Promise<any>
+    gotoView (name: string = ""): Promise<void>
     {
         // @ts-ignore
         const config: any = next2d.fw.config;

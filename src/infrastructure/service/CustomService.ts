@@ -3,7 +3,6 @@ import { Callback } from "../../domain/callback/Callback";
 import { ResponseDTO } from "../dto/ResponseDTO";
 import { parser } from "../../application/variable/Parser";
 import { cache } from "../../application/variable/Cache";
-import type { ConfigParser } from "../../domain/parser/ConfigParser";
 
 interface Object {
     type: string;

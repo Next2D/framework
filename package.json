@@ -19,9 +19,7 @@
     "jsdoc": "tsc && jsdoc -c jsdoc.conf.js -r dist DOCS.md"
   },
   "types": "dist",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Next2D/Framework.git"

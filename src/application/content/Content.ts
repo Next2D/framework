@@ -1,5 +1,5 @@
 import { MovieClip } from "@next2d/player/dist/player/next2d/display/MovieClip";
-import { loaderInfo } from "../variable/LoaderInfo";
+import { loaderInfoMap } from "../variable/LoaderInfoMap";
 import type { LoaderInfo } from "@next2d/player/dist/player/next2d/display/LoaderInfo";
 
 /**
@@ -20,10 +20,10 @@ export class Content extends MovieClip
     {
         super();
 
-        if (loaderInfo.has(this.namespace)) {
+        if (loaderInfoMap.has(this.namespace)) {
 
             // Set the target LoaderInfo class
-            this._$loaderInfo = loaderInfo.get(this.namespace) as NonNullable<LoaderInfo>;
+            this._$loaderInfo = loaderInfoMap.get(this.namespace) as NonNullable<LoaderInfo>;
 
             // Symbol linkage with NoCode Tool
             this._$sync();

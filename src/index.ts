@@ -1,13 +1,14 @@
 import "@next2d/player";
 import { Application } from "./application/Application";
-import { Content } from "./application/content/Content";
 import { DefaultLoading } from "./domain/screen/DefaultLoading";
 import { View } from "./view/View";
 import { ViewModel } from "./view/ViewModel";
+import { packages } from "./application/variable/Packages";
+import { context } from "./application/variable/Context";
 import { cache } from "./application/variable/Cache";
 import { query } from "./application/variable/Query";
 import { response } from "./application/variable/Response";
-import { loaderInfo } from "./application/variable/LoaderInfo";
+import { loaderInfoMap } from "./application/variable/LoaderInfoMap";
 
 // output build version
 console.log("%c Next2D Framework %c 1.5.3 %c https://next2d.app",
@@ -17,12 +18,13 @@ console.log("%c Next2D Framework %c 1.5.3 %c https://next2d.app",
 
 export {
     Application,
-    Content,
     DefaultLoading,
     View,
     ViewModel,
+    packages,
+    context,
     cache,
     query,
     response,
-    loaderInfo
+    loaderInfoMap
 };

@@ -24,7 +24,8 @@ export class ConfigParser
             return value;
         }
 
-        const values: RegExpMatchArray | null = value.match(/{{(.*?)}}/g);
+        const regexp = new RegExp(/{{(.*?)}}/, "g");
+        const values: RegExpMatchArray | null = value.match(regexp);
         if (!values) {
             return value;
         }

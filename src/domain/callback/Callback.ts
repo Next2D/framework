@@ -1,4 +1,4 @@
-import { ConfigParser } from "../parser/ConfigParser";
+import type { ConfigParser } from "../parser/ConfigParser";
 
 /**
  * @class

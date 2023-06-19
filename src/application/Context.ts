@@ -1,6 +1,6 @@
 import { ToCamelCase } from "../domain/convert/ToCamelCase";
-import { View } from "../view/View";
-import { ViewModel } from "../view/ViewModel";
+import type { View } from "../view/View";
+import type { ViewModel } from "../view/ViewModel";
 
 /**
  * メインコンテキスト、ViewとViewModelのunbind、bindをコントロールします。
@@ -10,8 +10,8 @@ import { ViewModel } from "../view/ViewModel";
  */
 export class Context
 {
-    private _$view: View|null;
-    private _$viewModel: ViewModel|null;
+    private _$view: View | null;
+    private _$viewModel: ViewModel | null;
     private _$viewName: string;
     private readonly _$root: any;
     private readonly _$toCamelCase: ToCamelCase;

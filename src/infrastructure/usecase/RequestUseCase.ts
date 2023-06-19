@@ -4,8 +4,8 @@ import { CustomService } from "../service/CustomService";
 import { JsonService } from "../service/JsonService";
 import { Callback } from "../../domain/callback/Callback";
 import { RequestParser } from "../../domain/parser/RequestParser";
-import { ConfigParser } from "../../domain/parser/ConfigParser";
-import { ResponseDTO } from "../dto/ResponseDTO";
+import type { ConfigParser } from "../../domain/parser/ConfigParser";
+import type { ResponseDTO } from "../dto/ResponseDTO";
 
 interface Object {
     type: string;

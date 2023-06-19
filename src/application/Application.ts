@@ -1,13 +1,13 @@
-import { Context } from "./Context";
-import { ConfigParser } from "../domain/parser/ConfigParser";
 import { QueryParser } from "../domain/parser/QueryParser";
 import { RequestUseCase } from "../infrastructure/usecase/RequestUseCase";
 import { Callback } from "../domain/callback/Callback";
 import { Loading } from "../domain/loading/Loading";
 import { Capture } from "../domain/screen/Capture";
 import { RemoveResponse } from "./service/RemoveResponse";
-import { ResponseDTO } from "../infrastructure/dto/ResponseDTO";
-import { View } from "../view/View";
+import type { ResponseDTO } from "../infrastructure/dto/ResponseDTO";
+import type { View } from "../view/View";
+import type { Context } from "./Context";
+import type { ConfigParser } from "../domain/parser/ConfigParser";
 
 interface QueryObject {
     name: string;

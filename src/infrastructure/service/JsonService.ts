@@ -1,7 +1,7 @@
 import { JsonRepository } from "../repository/JsonRepository";
 import { Callback } from "../../domain/callback/Callback";
 import { ResponseDTO } from "../dto/ResponseDTO";
-import { ConfigParser } from "../../domain/parser/ConfigParser";
+import type { ConfigParser } from "../../domain/parser/ConfigParser";
 
 interface Object {
     type: string;

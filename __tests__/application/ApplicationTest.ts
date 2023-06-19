@@ -126,7 +126,7 @@ describe("ApplicationTest", () =>
         // mock
         cache.clear();
         cache.set("app_test", new ResponseDTO());
-        cache.set("", new ResponseDTO());
+        cache.set("abc", new ResponseDTO());
 
         response.clear();
 
@@ -150,7 +150,7 @@ describe("ApplicationTest", () =>
                         },
                         {
                             "type": RequestType.CONTENT,
-                            "name": "",
+                            "name": "abc",
                             "path": "",
                             "cache": true
                         }

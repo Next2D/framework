@@ -1,5 +1,6 @@
 import { RequestType } from "../../infrastructure/constant/RequestType";
 import { RequestParser } from "../../domain/parser/RequestParser";
+import { loaderInfo } from "../variable/LoaderInfo";
 
 interface Object {
     type: string;
@@ -62,13 +63,12 @@ export class RemoveResponse
              * Remove non-cached packages from in-memory
              */
             const content: any = response.get(object.name);
-            const loaderInfo: any = content._$loaderInfo;
-            if (loaderInfo._$data) {
-                const symbols: Map<string, any> = loaderInfo._$data.symbols;
+            const contentLoaderInfo: any = content._$loaderInfo;
+            if (contentLoaderInfo._$data) {
+                const symbols: Map<string, any> = contentLoaderInfo._$data.symbols;
                 if (symbols.size) {
                     for (const name of symbols.keys()) {
-                        // @ts-ignore
-                        next2d.fw.loaderInfo.delete(name);
+                        loaderInfo.delete(name);
                     }
                 }
             }

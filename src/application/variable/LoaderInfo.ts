@@ -1,0 +1,1 @@
+export const loaderInfo: Map<string, any> = new Map();

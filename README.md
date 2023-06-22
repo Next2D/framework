@@ -14,26 +14,25 @@ Next2D Framework
 ![Twitter Follow](https://img.shields.io/twitter/follow/Next2D?style=social)
 
 [日本語]  
-Next2D Frameworkは、クリーンアーキテクチャー、ドメイン駆動開発、テスト駆動開発、MVVMの原則に従って設計されいます。  
-また、従来のCanvas/WebGLアプリケーションでは困難だったURLによるシーン管理（SPA）を可能にし、シーン毎のUI開発・画面確認が可能になりました。  
-UI構築にはアトミックデザインを推奨しており、コンポーネントの細分化、再利用可能なモジュール設計など、効率的なUI構築と保守が可能となっています。  
+Next2D Frameworkは、クリーンアーキテクチャー、ドメイン駆動開発、テスト駆動開発、MVVMの原則に従って設計されおり、柔軟性、拡張性、保守性に重点を置いたアーキテクチャーとデザイン手法で各レイヤーを疎結合に保つ事が可能です。  
   
-テスト駆動開発を重視しているため、ユニットテスト、統合テスト、UIテストなど、さまざまなレベルでテストを行いながら、高品質なコードの開発をサポートします。  
-
+従来のCanvas/WebGLアプリケーションでは困難だったURLによるシーン管理（SPA）を可能にし、シーン毎のUI開発・画面確認が可能になりました。UI構築にはアトミックデザインを推奨しており、コンポーネントの細分化、再利用可能なモジュール設計など、効率的なUI構築と保守が可能となっています。  
+  
+また、テスト駆動開発を重視しているため、ユニットテスト、統合テスト、UIテストなど、さまざまなレベルでテストを行いながら、高品質なコードの開発をサポートします。  
+  
 [English]  
-Next2D Framework is designed according to the principles of clean architecture, domain-driven development, test-driven development, and MVVM.  
-It also enables scene management by URL (SPA), which has been difficult with conventional Canvas/WebGL applications, and enables UI development and screen verification for each scene.  
-Atomic design is recommended for UI construction, enabling efficient UI construction and maintenance through component segmentation and reusable module design.  
+Next2D Framework is designed according to the principles of clean architecture, domain-driven development, test-driven development, and MVVM, with an emphasis on flexibility, scalability, and maintainability, and a design methodology that keeps each layer loosely coupled.  
   
-Since we emphasize test-driven development, we support the development of high-quality code while performing testing at various levels, including unit testing, integration testing, and UI testing.  
-  
-[简体中文]  
-Next2D框架是根据简洁架构、领域驱动开发、测试驱动开发和MVVM的原则设计的。  
-它还可以通过URL（SPA）实现场景管理，这在传统的Canvas/WebGL应用程序中是很难做到的，并且可以实现逐个场景的UI开发和屏幕检查。  
-原子化设计被推荐用于UI构建，通过组件分割和可重用模块设计，高效的UI构建和维护成为可能。  
-  
-对测试驱动开发的强调支持高质量代码的开发，同时在各个层面进行测试，包括单元测试、集成测试和UI测试。  
+It is designed according to the principles of MVVM, with an architecture and design methodology that focuses on flexibility, scalability, and maintainability, and keeps each layer loosely coupled. The UI can be efficiently built and maintained by subdividing components and designing modules that can be reused.  
 
+In addition, the emphasis on test-driven development supports the development of high-quality code while testing at various levels, including unit tests, integration tests, and UI tests.  
+
+[简体中文]  
+Next2D框架是根据简洁架构、领域驱动开发、测试驱动开发和MVVM的原则设计的，其架构和设计方法注重灵活性、可扩展性和可维护性，使每一层都能保持松散耦合。  
+  
+它可以通过URL（SPA）实现场景管理，这在传统的Canvas/WebGL应用程序中是很难实现的，并且可以为每个场景进行UI开发和屏幕检查。 该系统能够实现高效的UI构建和维护。  
+  
+此外，对测试驱动开发的强调支持高质量代码的开发，同时在各个层面进行测试，包括单元测试、集成测试和UI测试。  
 ## Support
 
 [日本語]  

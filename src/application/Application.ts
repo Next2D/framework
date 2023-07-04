@@ -111,11 +111,11 @@ export class Application
      * @description Next2Dのアプリを起動します
      *              Launch the Next2D application
      *
-     * @return {Application}
+     * @return {Promise}
      * @method
      * @public
      */
-    run ()
+    run (): Promise<void>
     {
         return $createContext(config);
     }

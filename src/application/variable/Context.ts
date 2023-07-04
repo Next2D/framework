@@ -16,8 +16,7 @@ export let context: Context;
  */
 export const $createContext = (config: ConfigImpl): Promise<void> =>
 {
-    return window
-        .next2d
+    return next2d
         .createRootMovieClip(
             config.stage.width,
             config.stage.height,

@@ -2,8 +2,8 @@ import { RequestType } from "../../infrastructure/constant/RequestType";
 import { RequestParser } from "../../domain/parser/RequestParser";
 import { loaderInfoMap } from "../variable/LoaderInfoMap";
 import { response } from "../variable/Response";
-import type { LoaderInfo } from "@next2d/player/dist/player/next2d/display/LoaderInfo";
-import type { ParentImpl } from "@next2d/player/dist/interface/ParentImpl";
+import type { LoaderInfo } from "@next2d/display";
+import type { ParentImpl } from "@next2d/interface";
 
 interface Object {
     type: string;

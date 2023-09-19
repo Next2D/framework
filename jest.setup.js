@@ -52,6 +52,7 @@ globalThis.window = {
                         }
                     };
                 },
+                "addEventListener": () => {},
                 "style": {},
                 "children": []
             };

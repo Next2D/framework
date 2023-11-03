@@ -37,7 +37,7 @@ export class ConfigParser
 
             const names: string[] = value
                 .replace(/\{|\{|\}|\}/g, "")
-                .replace(/ /g, "")
+                .replace(/\s+/g, "")
                 .split(".");
 
             if (!names.length) {

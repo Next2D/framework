@@ -39,11 +39,8 @@ export class Application
      * @constructor
      * @public
      */
-    constructor (config: ConfigImpl, packages: any[])
+    constructor ()
     {
-        $setConfig(config);
-        $setPackages(packages);
-
         /**
          * @type {QueryParser}
          * @private
@@ -88,23 +85,39 @@ export class Application
         this._$popstate = false;
 
         /**
+         * @type {string}
+         * @default "top"
+         * @private
+         */
+        this._$currentName = "top";
+    }
+
+    /**
+     * @description 初期起動関数
+     *              initial invoking function
+     *
+     * @return {Application}
+     * @method
+     * @public
+     */
+    initialize (config: ConfigImpl, packages: any[]): Application
+    {
+        $setConfig(config);
+        $setPackages(packages);
+
+        /**
          * SPAが有効の場合は、遷移の履歴を残す
          * Keep history of transitions if SPA setting is enabled
          */
         if (config.spa) {
-            window.addEventListener("popstate", () =>
+            window.addEventListener("popstate", (): void =>
             {
                 this._$popstate = true;
                 this.gotoView();
             });
         }
 
-        /**
-         * @type {string}
-         * @default "top"
-         * @private
-         */
-        this._$currentName = "top";
+        return this;
     }
 
     /**
@@ -238,7 +251,7 @@ export class Application
 
                 return Promise.all(promises);
             })
-            .then(() =>
+            .then((): void =>
             {
                 /**
                  * ローディング表示を終了

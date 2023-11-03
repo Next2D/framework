@@ -150,10 +150,10 @@ export class Context
 
         return Promise
             .all([this._$viewModel.bind(this._$view)])
-            .then(() =>
+            .then((): View =>
             {
                 if (!this._$view) {
-                    return ;
+                    throw new Error("the view is null.");
                 }
 
                 const root: Sprite | null = this._$root;

@@ -6,8 +6,8 @@
     "skipLibCheck": true,
     "declaration": true,
     "allowJs": true,
-    "target": "es6",
-    "module": "es6",
+    "target": "ESNext",
+    "module": "ESNext",
     "moduleResolution": "node",
     "baseUrl": ".",
     "outDir": "./dist/"

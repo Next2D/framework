@@ -2,7 +2,7 @@
 
 "use strict";
 
-const fs = require("fs");
+import * as fs from "fs";
 
 /**
  * @param  {string} dir
@@ -41,4 +41,4 @@ ${lower}`
     }
 };
 
-execute();
+// execute();

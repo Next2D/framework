@@ -16,7 +16,9 @@ const execute = () =>
     if (fs.existsSync(indexPath)) {
 
         const src = fs.readFileSync(indexPath, "utf8");
-        const packageJson = require(`${process.cwd()}/package.json`);
+        const packageJson = JSON.parse(
+            fs.readFileSync(`${process.cwd()}/package.json`, { "encoding": "utf8" })
+        );
 
         const texts = src.split("\n");
         for (let idx = 0; idx < texts.length; ++idx) {
@@ -41,4 +43,4 @@ ${lower}`
     }
 };
 
-// execute();
+execute();

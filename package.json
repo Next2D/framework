@@ -16,7 +16,7 @@
   "scripts": {
     "lint": "eslint src/**/*.ts",
     "publish": "node ./scripts/version.js && tsc",
-    "test": "jest"
+    "test": "npx vitest"
   },
   "files": [
     "dist"
@@ -29,15 +29,12 @@
     "@next2d/player": "*"
   },
   "devDependencies": {
-    "@babel/core": "^7.23.2",
-    "@babel/plugin-transform-modules-commonjs": "^7.23.0",
-    "@babel/preset-env": "^7.23.2",
-    "@types/jest": "^29.5.7",
     "@typescript-eslint/eslint-plugin": "^6.9.1",
     "@typescript-eslint/parser": "^6.9.1",
-    "eslint": "^8.52.0",
-    "jest": "^29.7.0",
-    "ts-jest": "^29.1.1",
-    "typescript": "^5.2.2"
+    "eslint": "^8.53.0",
+    "jsdom": "^22.1.0",
+    "typescript": "^5.2.2",
+    "vite": "^4.5.0",
+    "vitest": "^0.34.6"
   }
 }

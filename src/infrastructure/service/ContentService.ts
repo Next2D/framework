@@ -3,9 +3,8 @@ import { execute as callback } from "../../domain/callback/Callback";
 import { ResponseDTO } from "../dto/ResponseDTO";
 import { cache } from "../../application/variable/Cache";
 import { loaderInfoMap } from "../../application/variable/LoaderInfoMap";
-import type { LoaderInfo, MovieClip } from "@next2d/display";
+import type { LoaderInfo } from "@next2d/display";
 import type { RequestImpl } from "src/interface/RequestImpl";
-import type { EventDispatcherImpl } from "@next2d/interface";
 
 /**
  * @description RepositoryからJSONを取得して、configのcallbackがあれば実行
@@ -55,7 +54,7 @@ export const execute = async (request_object: RequestImpl): Promise<ResponseDTO>
      * 指定のコンテンツデータを取得
      * Obtain specified content data
      */
-    const content: EventDispatcherImpl<MovieClip> = await contentRepository(request_object);
+    const content = await contentRepository(request_object);
 
     /**
      * キャッシュ設定がonならキャッシュに登録

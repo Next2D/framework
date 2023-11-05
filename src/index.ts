@@ -1,6 +1,5 @@
 import "@next2d/player";
 import { Application } from "./application/Application";
-import { DefaultLoading } from "./domain/screen/DefaultLoading";
 import { View } from "./view/View";
 import { ViewModel } from "./view/ViewModel";
 import { MovieClipContent } from "./application/content/MovieClipContent";
@@ -24,7 +23,6 @@ console.log("%c Next2D Framework %c 2.0.0 %c https://next2d.app",
 const app: Application = new Application();
 export {
     app,
-    DefaultLoading,
     View,
     ViewModel,
     MovieClipContent,

@@ -5,7 +5,10 @@ import type { QueryObjectImpl } from "../interface/QueryObjectImpl";
 import { execute as queryParser } from "../domain/parser/QueryParser";
 import { execute as requestUseCase } from "../infrastructure/usecase/RequestUseCase";
 import { execute as callback } from "../domain/callback/Callback";
-import { execute as capture } from "../domain/screen/Capture";
+import {
+    execute as captureExecute,
+    dispose as captureDispose
+} from "../domain/screen/Capture";
 import { execute as removeResponse } from "./service/RemoveResponse";
 import { $setPackages } from "./variable/Packages";
 import { response } from "./variable/Response";
@@ -113,16 +116,16 @@ export class Application
             const promises: Promise<void>[] = [];
 
             /**
+             * 現時点の描画をBitmapにして処理の負担を減らす
+             * Reduce the processing burden by making the current drawing a Bitmap.
+             */
+            promises.push(captureExecute());
+
+            /**
              * ローディング表示を起動
              * Launch loading display
              */
             promises.push(loadingStart());
-
-            /**
-             * 現時点の描画をBitmapにして処理の負担を減らす
-             * Reduce the processing burden by making the current drawing a Bitmap.
-             */
-            promises.push(capture());
 
             await Promise.all(promises);
         }
@@ -201,6 +204,12 @@ export class Application
          * ローディング表示を終了
          * End loading display
          */
-        loadingEnd();
+        await loadingEnd();
+
+        /**
+         * 前の画面のキャプチャーを終了
+         * End previous screen capture
+         */
+        captureDispose();
     }
 }

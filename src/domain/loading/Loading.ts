@@ -43,7 +43,12 @@ export const start = (): Promise<void> =>
             return resolve();
         }
 
-        resolve($instance.start());
+        $instance.start();
+
+        setTimeout(() =>
+        {
+            resolve();
+        }, 500);
     });
 };
 
@@ -63,7 +68,7 @@ export const end = (): Promise<void> =>
             return resolve();
         }
 
-        const name: string|undefined = config.loading.callback;
+        const name: string | undefined = config.loading.callback;
         if (!name) {
             return resolve();
         }

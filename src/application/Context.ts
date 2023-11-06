@@ -133,11 +133,19 @@ export class Context
         }
 
         /**
-         * 現在のViewとViewModelを変数にセット
-         * Set the current View and ViewModel to variables
+         * 現在のページをstageから削除して、unbind関数を実行
+         * Delete current page from stage and execute unbind function
          */
-        const PrevView: View | null = this._$view;
-        const PrevViewModel: ViewModel | null = this._$viewModel;
+        if (this._$view) {
+            if (this._$viewModel) {
+                this._$viewModel.unbind(this._$view);
+            }
+
+            // remove
+            if (this._$view.parent === this._$root) {
+                this._$root.removeChild(this._$view);
+            }
+        }
 
         /**
          * 遷移先のViewとViewModelを準備
@@ -156,28 +164,10 @@ export class Context
         await Promise.all([this._$viewModel.bind(this._$view)]);
 
         /**
-         * playerにviewをセットして、前のページで利用していたDisplayObjectを全て削除
-         * Set player to view and delete all DisplayObjects used in the previous page.
+         * stageの一番背面にviewをセット
+         * Set the view at the very back of the stage
          */
-        this._$root.addChild(this._$view);
-
-        while (this._$root.numChildren > 1) {
-            this._$root.removeChild(this._$root.getChildAt(0));
-        }
-
-        /**
-         * マウス(タップ)イベントを有効化
-         * Enable mouse (tap) events
-         */
-        this._$root.mouseChildren = true;
-
-        /**
-         * 前のページのunbind関数を実行
-         * Execute unbind function on previous page
-         */
-        if (PrevViewModel && PrevView) {
-            PrevViewModel.unbind(PrevView);
-        }
+        this._$root.addChildAt(this._$view, 0);
 
         return this._$view;
     }

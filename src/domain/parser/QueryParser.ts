@@ -36,7 +36,7 @@ export const execute = (name: string = ""): QueryObjectImpl =>
         }
     }
 
-    const defaultTop: string = config.defaultTop || "top";
+    const defaultTop: string = config?.defaultTop || "top";
     if (!name) {
         const names: string[] = location.pathname.split("/");
         names.shift();

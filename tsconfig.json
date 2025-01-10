@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
+    "target": "ES2020",
     "useDefineForClassFields": true,
     "module": "ESNext",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
@@ -9,6 +9,9 @@
     /* Bundler mode */
     "moduleResolution": "Bundler",
     "resolveJsonModule": true,
+    "strictFunctionTypes": false,
+    "esModuleInterop": true,
+    "declaration": true,
     "isolatedModules": true,
 
     /* Linting */
@@ -17,7 +20,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
-    "declaration": true,
     "baseUrl": ".",
     "outDir": "./dist",
 
@@ -31,6 +33,11 @@
   ],
   "exclude": [
     "node_modules",
-    "src/**/*.test.ts"
+    "**/dist/**",
+    "**/build/**",
+    "scripts",
+    "dist",
+    "**/*.test.ts",
+    "**/.github",
   ]
 }

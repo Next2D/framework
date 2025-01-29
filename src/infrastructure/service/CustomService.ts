@@ -1,4 +1,4 @@
-import type { RequestImpl } from "src/interface/RequestImpl";
+import type { RequestImpl } from "src/interface/IRequest";
 import { ResponseDTO } from "../dto/ResponseDTO";
 import { cache } from "../../application/variable/Cache";
 import { execute as callback } from "../../domain/callback/Callback";

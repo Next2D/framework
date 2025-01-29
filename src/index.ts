@@ -12,10 +12,10 @@ import { cache } from "./application/variable/Cache";
 import { query } from "./application/variable/Query";
 import { response } from "./application/variable/Response";
 import { loaderInfoMap } from "./application/variable/LoaderInfoMap";
-import type { ConfigImpl } from "./interface/ConfigImpl";
+import type { IConfig } from "./interface/IConfig";
 
 // output build version
-console.log("%c Next2D Framework %c 2.0.0 %c https://next2d.app",
+console.log("%c Next2D Framework %c 2.1.0 %c https://next2d.app",
     "color: #fff; background: #5f5f5f",
     "color: #fff; background: #4bc729",
     "");
@@ -35,5 +35,5 @@ export {
     query,
     response,
     loaderInfoMap,
-    ConfigImpl
+    IConfig
 };

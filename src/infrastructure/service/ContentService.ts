@@ -4,7 +4,7 @@ import { ResponseDTO } from "../dto/ResponseDTO";
 import { cache } from "../../application/variable/Cache";
 import { loaderInfoMap } from "../../application/variable/LoaderInfoMap";
 import type { LoaderInfo } from "@next2d/display";
-import type { RequestImpl } from "src/interface/RequestImpl";
+import type { RequestImpl } from "src/interface/IRequest";
 
 /**
  * @description RepositoryからJSONを取得して、configのcallbackがあれば実行

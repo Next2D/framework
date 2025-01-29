@@ -1,4 +1,4 @@
-import type { RequestImpl } from "src/interface/RequestImpl";
+import type { RequestImpl } from "src/interface/IRequest";
 
 /**
  * @description 指定先のJSONを非同期で取得

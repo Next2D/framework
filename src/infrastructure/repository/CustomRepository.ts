@@ -1,4 +1,4 @@
-import type { RequestImpl } from "src/interface/RequestImpl";
+import type { RequestImpl } from "src/interface/IRequest";
 import { packages } from "../../application/variable/Packages";
 
 /**

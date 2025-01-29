@@ -2,7 +2,7 @@ import { execute as jsonRepository } from "../repository/JsonRepository";
 import { execute as callback } from "../../domain/callback/Callback";
 import { ResponseDTO } from "../dto/ResponseDTO";
 import { cache } from "../../application/variable/Cache";
-import { RequestImpl } from "src/interface/RequestImpl";
+import { RequestImpl } from "src/interface/IRequest";
 
 /**
  * @description RepositoryからJSONを取得して、configのcallbackがあれば実行

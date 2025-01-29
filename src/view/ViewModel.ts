@@ -1,8 +1,8 @@
 import type { View } from "./View";
 
 /**
- * ViewModelの親クラス、抽象クラスとして存在しています。
- * It exists as a parent class of ViewModel and as an abstract class.
+ * @description ViewModelの親クラス、抽象クラスとして存在しています。
+ *              It exists as a parent class of ViewModel and as an abstract class.
  *
  * @class
  * @memberof view
@@ -18,9 +18,9 @@ export class ViewModel
      * @method
      * @abstract
      */
-    bind (view: View): Promise<View>
+    async bind (view: View): Promise<View>
     {
-        return this.factory(view);
+        return view;
     }
 
     /**
@@ -28,31 +28,12 @@ export class ViewModel
      *              Called before a new View class is attached.
      *
      * @param  {View} view
-     * @return {void}
-     * @method
-     * @public
-     */
-    // @ts-ignore
-    // eslint-disable-next-line no-unused-vars,no-empty-function
-    unbind (view: View): void {}
-
-    /**
-     * @description bind関数で非同期で処理を開始する共通関数です。
-     *              Common function to start processing asynchronously with bind functions.
-     *
-     * @param  {View} view
      * @return {Promise<View>}
      * @method
-     * @public
+     * @abstract
      */
-    factory (view: View): Promise<View>
+    async unbind (view: View): Promise<View>
     {
-        return new Promise((resolve) =>
-        {
-            requestAnimationFrame((): void =>
-            {
-                return resolve(view);
-            });
-        });
+        return view;
     }
 }

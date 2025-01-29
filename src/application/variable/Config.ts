@@ -1,4 +1,4 @@
-import { ConfigImpl } from "../../interface/ConfigImpl";
+import { ConfigImpl } from "../../interface/IConfig";
 
 /**
  * @type {object}

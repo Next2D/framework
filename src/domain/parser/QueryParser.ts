@@ -1,5 +1,5 @@
-import type { QueryObjectImpl } from "src/interface/QueryObjectImpl";
-import type { RoutingImpl } from "src/interface/RoutingImpl";
+import type { QueryObjectImpl } from "src/interface/IQueryObject";
+import type { RoutingImpl } from "src/interface/IRouting";
 import { config } from "../../application/variable/Config";
 import { query } from "../../application/variable/Query";
 

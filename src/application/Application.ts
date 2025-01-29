@@ -1,7 +1,7 @@
 import type { ResponseDTO } from "../infrastructure/dto/ResponseDTO";
 import type { View } from "../view/View";
-import type { ConfigImpl } from "../interface/ConfigImpl";
-import type { QueryObjectImpl } from "../interface/QueryObjectImpl";
+import type { IConfig } from "../interface/IConfig";
+import type { IQueryObject } from "../interface/IQueryObject";
 import { execute as queryParser } from "../domain/parser/QueryParser";
 import { execute as requestUseCase } from "../infrastructure/usecase/RequestUseCase";
 import { execute as callback } from "../domain/callback/Callback";
@@ -66,7 +66,7 @@ export class Application
      * @method
      * @public
      */
-    initialize (config: ConfigImpl, packages: any[]): Application
+    initialize (config: IConfig, packages: any[]): Application
     {
         $setConfig(config);
         $setPackages(packages);
@@ -140,7 +140,7 @@ export class Application
          * 指定されたパス、もしくはURLからアクセス先を算出
          * Calculate the access point from the specified path or URL
          */
-        const queryObject: QueryObjectImpl = queryParser(name);
+        const queryObject: IQueryObject = queryParser(name);
 
         /**
          * 現在の画面名を更新

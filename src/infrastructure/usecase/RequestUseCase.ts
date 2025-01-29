@@ -3,7 +3,7 @@ import { execute as customService } from "../service/CustomService";
 import { execute as jsonService } from "../service/JsonService";
 import { execute as requestParser } from "../../domain/parser/RequestParser";
 import type { ResponseDTO } from "../dto/ResponseDTO";
-import type { RequestImpl } from "src/interface/RequestImpl";
+import type { RequestImpl } from "src/interface/IRequest";
 
 /**
  * @description Routing設定で指定したタイプへリクエストを実行

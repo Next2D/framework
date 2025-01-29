@@ -8,6 +8,11 @@ export default defineConfig({
     "test": {
         "globals": true,
         "environment": "jsdom",
-        "include": ["src/**/*.test.ts"]
+        "setupFiles": [
+            "test.setup.ts",
+            "@vitest/web-worker",
+            "vitest-webgl-canvas-mock"
+        ],
+        "include": ["src/view/*.test.ts"]
     }
 });

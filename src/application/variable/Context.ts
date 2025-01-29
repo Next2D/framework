@@ -1,6 +1,6 @@
 import { Context } from "../Context";
 import type { Sprite } from "@next2d/display";
-import type { ConfigImpl } from "../../interface/ConfigImpl";
+import type { ConfigImpl } from "../../interface/IConfig";
 
 /**
  * @type {Context}

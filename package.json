@@ -1,7 +1,7 @@
 {
   "name": "@next2d/framework",
   "description": "Next2D Framework is designed according to the principles of clean architecture, domain-driven development, test-driven development, and MVVM, with an emphasis on flexibility, scalability, and maintainability, and a design methodology that keeps each layer loosely coupled.",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "homepage": "https://next2d.app",
   "bugs": "https://github.com/Next2D/Framework/issues/new",
   "author": "Toshiyuki Ienaga <ienaga@next2d.app> (https://github.com/ienaga/)",
@@ -15,29 +15,46 @@
   ],
   "scripts": {
     "lint": "eslint src/**/*.ts",
-    "publish": "node ./scripts/version.js && tsc && node ./scripts/publish.js",
+    "publish": "node ./scripts/clean.js && node ./scripts/version.js && tsc && node ./scripts/publish.js",
     "test": "vitest"
   },
-  "files": [
-    "dist"
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Next2D/Framework.git"
   },
+  "dependencies": {
+    "@next2d/player": "2.0.0"
+  },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.17.0",
+    "@types/node": "^22.10.5",
     "@typescript-eslint/eslint-plugin": "^8.19.1",
     "@typescript-eslint/parser": "^8.19.1",
+    "@vitest/web-worker": "^2.1.8",
     "eslint": "^9.17.0",
     "eslint-plugin-unused-imports": "^4.1.4",
     "jsdom": "^26.0.0",
     "typescript": "^5.7.3",
     "vite": "^6.0.7",
-    "vitest": "^2.1.8"
+    "vitest": "^2.1.8",
+    "vitest-webgl-canvas-mock": "^1.1.0"
   },
   "peerDependencies": {
-    "@next2d/player": "file:../player"
+    "@next2d/cache": "file:../player/packages/cache",
+    "@next2d/core": "file:../player/packages/core",
+    "@next2d/display": "file:../player/packages/display",
+    "@next2d/events": "file:../player/packages/events",
+    "@next2d/filters": "file:../player/packages/filters",
+    "@next2d/geom": "file:../player/packages/geom",
+    "@next2d/media": "file:../player/packages/media",
+    "@next2d/net": "file:../player/packages/net",
+    "@next2d/player": "file:../player",
+    "@next2d/render-queue": "file:../player/packages/render-queue",
+    "@next2d/renderer": "file:../player/packages/renderer",
+    "@next2d/text": "file:../player/packages/text",
+    "@next2d/texture-packer": "file:../player/packages/texture-packer",
+    "@next2d/ui": "file:../player/packages/ui",
+    "@next2d/webgl": "file:../player/packages/webgl"
   }
 }

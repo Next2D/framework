@@ -1,6 +1,6 @@
-import { RequestImpl } from "src/interface/RequestImpl";
+import { RequestImpl } from "src/interface/IRequest";
 import { config } from "../../application/variable/Config";
-import type { RoutingImpl } from "src/interface/RoutingImpl";
+import type { RoutingImpl } from "src/interface/IRouting";
 
 /**
  * @description routing.jsonに設定されたrequestsを返却します。

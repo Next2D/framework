@@ -1,4 +1,4 @@
-import type { LoadingImpl } from "src/interface/LoadingImpl";
+import type { LoadingImpl } from "src/interface/ILoading";
 import { config } from "../../application/variable/Config";
 import { packages } from "../../application/variable/Packages";
 import { DefaultLoading } from "../screen/DefaultLoading";

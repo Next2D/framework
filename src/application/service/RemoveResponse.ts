@@ -3,7 +3,7 @@ import { loaderInfoMap } from "../variable/LoaderInfoMap";
 import { response } from "../variable/Response";
 import type { LoaderInfo } from "@next2d/display";
 import type { ParentImpl } from "@next2d/interface";
-import { RequestImpl } from "src/interface/RequestImpl";
+import { RequestImpl } from "src/interface/IRequest";
 
 /**
  * @param  {string} name

@@ -1,4 +1,4 @@
-import type { RequestImpl } from "src/interface/RequestImpl";
+import type { RequestImpl } from "src/interface/IRequest";
 import { Loader } from "@next2d/display";
 import {
     Event,

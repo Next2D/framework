@@ -1,15 +1,16 @@
 import { ResponseDTO } from "./ResponseDTO";
+import { describe, expect, it } from "vitest";
 
 describe("ResponseDTOTest", () =>
 {
-    test("execute test case1", () =>
+    it("execute test case1", () =>
     {
         const responseDTO = new ResponseDTO();
         expect(responseDTO.name).toBe("");
         expect(responseDTO.response).toBe(null);
     });
 
-    test("execute test case2", () =>
+    it("execute test case2", () =>
     {
         const responseDTO = new ResponseDTO("sample", 100);
         expect(responseDTO.name).toBe("sample");

@@ -1,4 +1,4 @@
-import { loaderInfoMap } from "../variable/LoaderInfoMap";
+import { loaderInfoMap } from "../../../variable/LoaderInfoMap";
 import type { LoaderInfo } from "@next2d/display";
 import type {
     Character,
@@ -6,8 +6,8 @@ import type {
 } from "@next2d/interface";
 
 /**
- * @description NoCode Toolで作成したアニメーションの動的生成の補完を行うクラス。
- *              A class that completes the dynamic generation of animations created by NoCode Tool.
+ * @description Animation Toolで作成したアニメーションの動的生成の補完を行うクラス。
+ *              A class that completes the dynamic generation of animations created by Animation Tool.
  *
  * @class
  * @memberof application.content

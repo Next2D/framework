@@ -1,7 +1,7 @@
 import "@next2d/player";
-import { DefaultLoading } from "../..";
-import { $setConfig } from "../../application/variable/Config";
-import { $createContext, context } from "../../application/variable/Context";
+import { DefaultLoading } from "../../..";
+import { $setConfig } from "../../../application/variable/Config";
+import { $createContext, context } from "../../../application/variable/Context";
 
 describe("DefaultLoadingTest", () =>
 {

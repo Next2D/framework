@@ -2,8 +2,6 @@
 
 "use strict";
 
-import * as fs from "fs";
-
 /**
  * @return {void}
  * @method
@@ -21,15 +19,8 @@ const execute = () =>
         JSON.stringify(packageJson, null, 2)
     );
 
-    if (packageJson.peerDependencies) {
-        packageJson.dependencies = {};
-        const keys = Object.keys(packageJson.peerDependencies);
-        for (let idx = 0; idx < keys.length; ++idx) {
-            packageJson.dependencies[keys[idx]] = "*";
-        }
-
-        delete packageJson.peerDependencies;
-    }
+    delete packageJson.peerDependencies;
+    packageJson.dependencies = { "@next2d/player": "*" };
 
     // LICENSE
     spawnSync(

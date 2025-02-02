@@ -1,41 +1,20 @@
+import { View } from "./View";
+import { ViewModel } from "./ViewModel";
 import { describe, expect, it } from "vitest";
-import {
-    View,
-    ViewModel
-} from "..";
 
 describe("ViewModelTest", () =>
 {
-    it("bind call test", () =>
+    it("bind call test", async () =>
     {
-        const view: View = new View();
-        const viewModel: ViewModel = new ViewModel();
-
-        viewModel
-            .bind(view)
-            .then((result) =>
-            {
-                expect(result instanceof View).toBe(true);
-            });
-
+        const view = new View();
+        const viewModel = new ViewModel();
+        expect(await viewModel.bind(view)).toBe(view);
     });
 
-    it("unbind call test", () =>
+    it("unbind call test", async () =>
     {
-        const viewModel: ViewModel = new ViewModel();
-        expect(viewModel.unbind(new View())).toBe(undefined);
-    });
-
-    it("factory call test", () =>
-    {
-        const view: View = new View();
-        const viewModel: ViewModel = new ViewModel();
-
-        viewModel
-            .factory(view)
-            .then((result) =>
-            {
-                expect(result instanceof View).toBe(true);
-            });
+        const view = new View();
+        const viewModel = new ViewModel();
+        expect(await viewModel.unbind(view)).toBe(view);
     });
 });

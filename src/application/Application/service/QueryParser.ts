@@ -1,7 +1,7 @@
-import type { QueryObjectImpl } from "src/interface/IQueryObject";
-import type { RoutingImpl } from "src/interface/IRouting";
-import { config } from "../../application/variable/Config";
-import { query } from "../../application/variable/Query";
+import type { IQueryObject } from "src/interface/IQueryObject";
+import type { IRouting } from "src/interface/IRouting";
+import { $getConfig } from "../../variable/Config";
+import { query } from "../../variable/Query";
 
 /**
  * @description 指定されたQueryStringか、URLのQueryStringをquery mapに登録
@@ -12,7 +12,7 @@ import { query } from "../../application/variable/Query";
  * @method
  * @public
  */
-export const execute = (name: string = ""): QueryObjectImpl =>
+export const execute = (name: string = ""): IQueryObject =>
 {
     /**
      * 前のシーンのクエリデータを初期化
@@ -36,13 +36,14 @@ export const execute = (name: string = ""): QueryObjectImpl =>
         }
     }
 
+    const config = $getConfig();
     const defaultTop: string = config?.defaultTop || "top";
     if (!name) {
         const names: string[] = location.pathname.split("/");
         names.shift();
         name = `${names.join("/")}`;
         if (name && config && config.routing) {
-            const routing: RoutingImpl = config.routing[name];
+            const routing: IRouting = config.routing[name];
             if (!routing) {
                 name = defaultTop;
             }

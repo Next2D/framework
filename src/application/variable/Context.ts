@@ -1,6 +1,5 @@
+import type { IConfig } from "../../interface/IConfig";
 import { Context } from "../Context";
-import type { Sprite } from "@next2d/display";
-import type { ConfigImpl } from "../../interface/IConfig";
 
 /**
  * @type {Context}
@@ -9,21 +8,19 @@ import type { ConfigImpl } from "../../interface/IConfig";
 export let context: Context;
 
 /**
- * @param  {object} config
- * @return {void}
+ * @param  {IConfig} config
+ * @return {Promise<void>}
  * @method
  * @private
  */
-export const $createContext = async (config: ConfigImpl): Promise<void> =>
+export const $createContext = async (config: IConfig): Promise<void> =>
 {
-    const root: Sprite = await window
-        .next2d
-        .createRootMovieClip(
-            config.stage.width,
-            config.stage.height,
-            config.stage.fps,
-            config.stage.options
-        );
+    const root = await next2d.createRootMovieClip(
+        config.stage.width,
+        config.stage.height,
+        config.stage.fps,
+        config.stage.options
+    );
 
     context = new Context(root);
 };

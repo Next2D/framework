@@ -1,4 +1,4 @@
-import { View } from "..";
+import { View } from "./View";
 import { describe, expect, it } from "vitest";
 
 describe("ViewTest", () =>

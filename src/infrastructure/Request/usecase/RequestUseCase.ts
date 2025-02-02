@@ -1,9 +1,9 @@
+import type { ResponseDTO } from "../../Response/dto/ResponseDTO";
+import type { IRequest } from "src/interface/IRequest";
 import { execute as contentService } from "../service/ContentService";
 import { execute as customService } from "../service/CustomService";
 import { execute as jsonService } from "../service/JsonService";
-import { execute as requestParser } from "../../domain/parser/RequestParser";
-import type { ResponseDTO } from "../dto/ResponseDTO";
-import type { RequestImpl } from "src/interface/IRequest";
+import { execute as requestParser } from "../service/RequestParser";
 
 /**
  * @description Routing設定で指定したタイプへリクエストを実行
@@ -17,10 +17,10 @@ import type { RequestImpl } from "src/interface/IRequest";
 export const execute = (name: string): Promise<ResponseDTO>[] =>
 {
     const promises: Promise<ResponseDTO>[] = [];
-    const requests: RequestImpl[] = requestParser(name);
-    for (let idx: number = 0; idx < requests.length; ++idx) {
+    const requests: IRequest[] = requestParser(name);
+    for (let idx = 0; idx < requests.length; ++idx) {
 
-        const requestObject: RequestImpl = requests[idx];
+        const requestObject: IRequest = requests[idx];
         switch (requestObject.type) {
 
             case "custom":

@@ -1,5 +1,5 @@
 import { Video } from "@next2d/media";
-import { execute as contentBuilder } from "./ContentBuilder";
+import { execute as contentBuilder } from "./Builder/service/ContentBuilderService";
 
 /**
  * @description NoCode Toolで作成したVideoの動的生成の補完を行うクラス。

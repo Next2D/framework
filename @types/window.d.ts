@@ -5,6 +5,6 @@ declare global {
     const next2d: Next2D;
 
     interface Window {
-        next2d?: Next2D;
+        next2d: Next2D;
     }
 }

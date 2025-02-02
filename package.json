@@ -9,6 +9,12 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
+  "exports": {
+    ".": {
+      "import": "./src/index.js",
+      "require": "./src/index.js"
+    }
+  },
   "keywords": [
     "Next2D",
     "Next2D Framework"
@@ -22,22 +28,19 @@
     "type": "git",
     "url": "git+https://github.com/Next2D/Framework.git"
   },
-  "dependencies": {
-    "@next2d/player": "2.0.0"
-  },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
-    "@eslint/js": "^9.17.0",
-    "@types/node": "^22.10.5",
-    "@typescript-eslint/eslint-plugin": "^8.19.1",
-    "@typescript-eslint/parser": "^8.19.1",
-    "@vitest/web-worker": "^2.1.8",
-    "eslint": "^9.17.0",
+    "@eslint/js": "^9.19.0",
+    "@types/node": "^22.13.0",
+    "@typescript-eslint/eslint-plugin": "^8.22.0",
+    "@typescript-eslint/parser": "^8.22.0",
+    "@vitest/web-worker": "^3.0.4",
+    "eslint": "^9.19.0",
     "eslint-plugin-unused-imports": "^4.1.4",
     "jsdom": "^26.0.0",
     "typescript": "^5.7.3",
-    "vite": "^6.0.7",
-    "vitest": "^2.1.8",
+    "vite": "^6.0.11",
+    "vitest": "^3.0.4",
     "vitest-webgl-canvas-mock": "^1.1.0"
   },
   "peerDependencies": {

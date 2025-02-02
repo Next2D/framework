@@ -1,4 +1,5 @@
 import "@next2d/player";
+import type { IConfig } from "./interface/IConfig";
 import { Application } from "./application/Application";
 import { View } from "./view/View";
 import { ViewModel } from "./view/ViewModel";
@@ -10,12 +11,11 @@ import { packages } from "./application/variable/Packages";
 import { context } from "./application/variable/Context";
 import { cache } from "./application/variable/Cache";
 import { query } from "./application/variable/Query";
-import { response } from "./application/variable/Response";
+import { response } from "./infrastructure/Response/variable/Response";
 import { loaderInfoMap } from "./application/variable/LoaderInfoMap";
-import type { IConfig } from "./interface/IConfig";
 
 // output build version
-console.log("%c Next2D Framework %c 2.1.0 %c https://next2d.app",
+console.log("%c Next2D Framework %c 3.0.0 %c https://next2d.app",
     "color: #fff; background: #5f5f5f",
     "color: #fff; background: #4bc729",
     "");

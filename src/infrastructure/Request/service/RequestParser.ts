@@ -1,6 +1,6 @@
-import { RequestImpl } from "src/interface/IRequest";
-import { config } from "../../application/variable/Config";
-import type { RoutingImpl } from "src/interface/IRouting";
+import type { IRequest } from "src/interface/IRequest";
+import type { IRouting } from "src/interface/IRouting";
+import { $getConfig } from "../../../application/variable/Config";
 
 /**
  * @description routing.jsonに設定されたrequestsを返却します。
@@ -13,22 +13,23 @@ import type { RoutingImpl } from "src/interface/IRouting";
  * @method
  * @public
  */
-export const execute = (name: string): RequestImpl[] =>
+export const execute = (name: string): IRequest[] =>
 {
-    const requests: RequestImpl[] = [];
+    const requests: IRequest[] = [];
 
+    const config = $getConfig();
     if (!config || !config.routing) {
         return requests;
     }
 
-    const routing: RoutingImpl = config.routing[name];
+    const routing: IRouting = config.routing[name];
     if (!routing || !routing.requests) {
         return requests;
     }
 
     for (let idx: number = 0; idx < routing.requests.length; idx++) {
 
-        const request: RequestImpl = routing.requests[idx];
+        const request: IRequest = routing.requests[idx];
 
         if (request.type !== "cluster") {
             requests.push(request);
@@ -43,7 +44,7 @@ export const execute = (name: string): RequestImpl[] =>
          * クラスターの場合は分解して配列に追加
          * For clusters, disassemble and add to array
          */
-        const results: RequestImpl[] = execute(request.path);
+        const results: IRequest[] = execute(request.path);
         requests.push(...results);
     }
 

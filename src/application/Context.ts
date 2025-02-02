@@ -1,8 +1,8 @@
-import { execute as toCamelCase } from "../domain/convert/ToCamelCase";
-import { packages } from "./variable/Packages";
 import type { View } from "../view/View";
 import type { ViewModel } from "../view/ViewModel";
 import type { Sprite } from "@next2d/display";
+import { execute as toCamelCase } from "./Context/service/ToCamelCase";
+import { packages } from "./variable/Packages";
 
 /**
  * @description メインコンテキスト、ViewとViewModelのunbind、bindをコントロールします。
@@ -151,10 +151,10 @@ export class Context
          * 遷移先のViewとViewModelを準備
          * Prepare the destination View and ViewModel
          */
-        const ViewModelClass: typeof ViewModel = packages.get(viewModelName);
+        const ViewModelClass: typeof ViewModel = packages.get(viewModelName) as unknown as ViewModel;
         this._$viewModel = new ViewModelClass();
 
-        const ViewClass: typeof View = packages.get(viewName);
+        const ViewClass: typeof View = packages.get(viewName) as unknown as View;
         this._$view = new ViewClass();
 
         /**

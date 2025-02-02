@@ -1,7 +1,7 @@
 import "@next2d/player";
-import { Loading } from "./Loading";
-import { $setConfig } from "../../application/variable/Config";
-import { packages } from "../..";
+import { Loading } from "../Loading";
+import { $setConfig } from "../../../application/variable/Config";
+import { packages } from "../../..";
 
 describe("LoadingTest", () =>
 {

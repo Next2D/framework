@@ -1,5 +1,5 @@
-import { TextField } from "@next2d/display";
-import { execute as contentBuilder } from "./ContentBuilder";
+import { TextField } from "@next2d/text";
+import { execute as contentBuilder } from "./Builder/service/ContentBuilderService";
 
 /**
  * @description NoCode Toolで作成したTextFieldの動的生成の補完を行うクラス。

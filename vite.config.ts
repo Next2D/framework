@@ -13,6 +13,6 @@ export default defineConfig({
             "@vitest/web-worker",
             "vitest-webgl-canvas-mock"
         ],
-        "include": ["src/view/*.test.ts"]
+        "include": ["src/**/*.test.ts"]
     }
 });

@@ -1,8 +1,8 @@
+import type { IQueryObject } from "../../../interface/IQueryObject";
 import { execute } from "./QueryParser";
-import { query } from "../../application/variable/Query";
-import { $setConfig } from "../../application/variable/Config";
-import { QueryObjectImpl } from "../../interface/QueryObjectImpl";
-import { vi } from "vitest";
+import { query } from "../../variable/Query";
+import { $setConfig } from "../../variable/Config";
+import { describe, expect, it, vi } from "vitest";
 
 Object.defineProperty(window, "location", {
     "get": vi.fn().mockReturnValue({
@@ -13,32 +13,32 @@ Object.defineProperty(window, "location", {
 
 describe("QueryParserTest", () =>
 {
-    test("parse query test case1", () =>
+    it("parse query test case1", () =>
     {
         query.clear();
         query.set("test", 123);
         expect(query.size).toBe(1);
 
-        const object: QueryObjectImpl = execute();
+        const object: IQueryObject = execute();
 
         expect(query.size).toBe(0);
         expect(object.name).toBe("top");
         expect(object.queryString).toBe("");
     });
 
-    test("parse query test case2", () =>
+    it("parse query test case2", () =>
     {
         query.clear();
         expect(query.size).toBe(0);
 
-        const object: QueryObjectImpl = execute("@test");
+        const object: IQueryObject = execute("@test");
 
         expect(query.size).toBe(0);
         expect(object.name).toBe("test");
         expect(object.queryString).toBe("");
     });
 
-    test("parse location.search test case1", () =>
+    it("parse location.search test case1", () =>
     {
         // @ts-ignore
         globalThis.location.search = "?q=abc&sample=1";
@@ -46,7 +46,7 @@ describe("QueryParserTest", () =>
         query.clear();
         expect(query.size).toBe(0);
 
-        const object: QueryObjectImpl = execute("");
+        const object: IQueryObject = execute("");
 
         expect(query.size).toBe(2);
         expect(query.get("q")).toBe("abc");
@@ -55,7 +55,7 @@ describe("QueryParserTest", () =>
         expect(object.queryString).toBe("?q=abc&sample=1");
     });
 
-    test("parse location.pathname un match test", () =>
+    it("parse location.pathname un match test", () =>
     {
         // mock
         const config = {
@@ -83,7 +83,7 @@ describe("QueryParserTest", () =>
         query.clear();
         expect(query.size).toBe(0);
 
-        const object: QueryObjectImpl = execute("");
+        const object: IQueryObject = execute("");
 
         expect(query.size).toBe(2);
         expect(query.get("q")).toBe("xyz");
@@ -92,7 +92,7 @@ describe("QueryParserTest", () =>
         expect(object.queryString).toBe("?q=xyz&sample=0");
     });
 
-    test("parse location.pathname public test", () =>
+    it("parse location.pathname public test", () =>
     {
         // mock
         const config = {
@@ -122,7 +122,7 @@ describe("QueryParserTest", () =>
         query.clear();
         expect(query.size).toBe(0);
 
-        const object: QueryObjectImpl = execute("");
+        const object: IQueryObject = execute("");
 
         expect(query.size).toBe(2);
         expect(query.get("q")).toBe("xyz");
@@ -131,7 +131,7 @@ describe("QueryParserTest", () =>
         expect(object.queryString).toBe("?q=xyz&sample=0");
     });
 
-    test("parse location.pathname private test", () =>
+    it("parse location.pathname private test", () =>
     {
         // mock
         const config = {
@@ -161,7 +161,7 @@ describe("QueryParserTest", () =>
         query.clear();
         expect(query.size).toBe(0);
 
-        const object: QueryObjectImpl = execute("");
+        const object: IQueryObject = execute("");
 
         expect(query.size).toBe(2);
         expect(query.get("q")).toBe("xyz");
@@ -170,7 +170,7 @@ describe("QueryParserTest", () =>
         expect(object.queryString).toBe("?q=xyz&sample=0");
     });
 
-    test("parse location.pathname redirect test", () =>
+    it("parse location.pathname redirect test", () =>
     {
         // mock
         const config = {
@@ -201,7 +201,7 @@ describe("QueryParserTest", () =>
         query.clear();
         expect(query.size).toBe(0);
 
-        const object: QueryObjectImpl = execute("");
+        const object: IQueryObject = execute("");
 
         expect(query.size).toBe(2);
         expect(query.get("q")).toBe("xyz");
@@ -210,13 +210,13 @@ describe("QueryParserTest", () =>
         expect(object.queryString).toBe("?q=xyz&sample=0");
     });
 
-    test("parse name query test", () =>
+    it("parse name query test", () =>
     {
         // mock
         query.clear();
         expect(query.size).toBe(0);
 
-        const object: QueryObjectImpl = execute("page/test?abc=123&xyz=999");
+        const object: IQueryObject = execute("page/test?abc=123&xyz=999");
 
         expect(query.size).toBe(2);
         expect(query.get("abc")).toBe("123");
@@ -225,25 +225,25 @@ describe("QueryParserTest", () =>
         expect(object.queryString).toBe("?abc=123&xyz=999");
     });
 
-    test("parse name path test case1", () =>
+    it("parse name path test case1", () =>
     {
         // mock
         query.clear();
         expect(query.size).toBe(0);
 
-        const object: QueryObjectImpl = execute("./test");
+        const object: IQueryObject = execute("./test");
 
         expect(query.size).toBe(0);
         expect(object.name).toBe("test");
     });
 
-    test("parse name path test case2", () =>
+    it("parse name path test case2", () =>
     {
         // mock
         query.clear();
         expect(query.size).toBe(0);
 
-        const object: QueryObjectImpl = execute("./");
+        const object: IQueryObject = execute("./");
 
         expect(query.size).toBe(0);
         expect(object.name).toBe("top");

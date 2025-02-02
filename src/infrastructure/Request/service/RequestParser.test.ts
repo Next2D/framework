@@ -1,9 +1,10 @@
 import { execute } from "./RequestParser";
-import { $setConfig } from "../../../src/application/variable/Config";
+import { $setConfig } from "../../../application/variable/Config";
+import { describe, expect, it } from "vitest";
 
 describe("RequestParserTest", () =>
 {
-    test("request parse no match test case1", () =>
+    it("request parse no match test case1", () =>
     {
         // mock
         const config = {
@@ -24,7 +25,7 @@ describe("RequestParserTest", () =>
         expect(requests.length).toBe(0);
     });
 
-    test("request parse no match test case2", () =>
+    it("request parse no match test case2", () =>
     {
         // mock
         const config = {
@@ -47,7 +48,7 @@ describe("RequestParserTest", () =>
         expect(requests.length).toBe(0);
     });
 
-    test("request parse match test case1", () =>
+    it("request parse match test case1", () =>
     {
         // mock
         const config = {
@@ -83,7 +84,7 @@ describe("RequestParserTest", () =>
         expect(object.path).toBe("local");
     });
 
-    test("request parse cluster test case1", () =>
+    it("request parse cluster test case1", () =>
     {
         // mock
         const config = {

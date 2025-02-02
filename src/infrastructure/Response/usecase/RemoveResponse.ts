@@ -1,9 +1,9 @@
-import { execute as requestParser } from "../../domain/parser/RequestParser";
-import { loaderInfoMap } from "../variable/LoaderInfoMap";
+import { execute as requestParser } from "../../Request/service/RequestParser";
+import { loaderInfoMap } from "../../../application/variable/LoaderInfoMap";
 import { response } from "../variable/Response";
 import type { LoaderInfo } from "@next2d/display";
 import type { ParentImpl } from "@next2d/interface";
-import { RequestImpl } from "src/interface/IRequest";
+import { IRequest } from "../../../interface/IRequest";
 
 /**
  * @param  {string} name
@@ -13,10 +13,10 @@ import { RequestImpl } from "src/interface/IRequest";
  */
 export const execute = (name: string): void =>
 {
-    const requests: RequestImpl[] = requestParser(name);
+    const requests: IRequest[] = requestParser(name);
     for (let idx: number = 0; idx < requests.length; ++idx) {
 
-        const object: RequestImpl = requests[idx];
+        const object: IRequest = requests[idx];
 
         if (object.type !== "content") {
             continue;

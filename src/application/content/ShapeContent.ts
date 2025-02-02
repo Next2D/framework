@@ -1,5 +1,5 @@
 import { Shape } from "@next2d/display";
-import { execute as contentBuilder } from "./ContentBuilder";
+import { execute as contentBuilder } from "./Builder/service/ContentBuilderService";
 
 /**
  * @description NoCode Toolで作成したShapeの動的生成の補完を行うクラス。

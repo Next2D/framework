@@ -1,13 +1,13 @@
 import "@next2d/player";
 import { RequestUseCase } from "./RequestUseCase";
 import { RequestType } from "../../../src/infrastructure/constant/RequestType";
-import { ResponseDTO } from "../dto/ResponseDTO";
-import { $setPackages } from "../../application/variable/Packages";
-import { $setConfig } from "../../application/variable/Config";
+import { ResponseDTO } from "../../Response/dto/ResponseDTO";
+import { $setPackages } from "../../../application/variable/Packages";
+import { $setConfig } from "../../../application/variable/Config";
 import {
     cache,
     packages
-} from "../..";
+} from "../../..";
 
 describe("RequestUseCase Test", () =>
 {

@@ -2,10 +2,10 @@ import "@next2d/player";
 import {
     response,
     loaderInfoMap
-} from "../..";
+} from "../../..";
 import { RemoveResponse } from "./RemoveResponse";
 import { RequestType } from "../../../src/infrastructure/constant/RequestType";
-import { $setConfig } from "../variable/Config";
+import { $setConfig } from "../../../application/variable/Config";
 
 describe("RemoveResponseTest", () =>
 {

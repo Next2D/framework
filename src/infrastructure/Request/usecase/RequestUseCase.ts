@@ -1,44 +1,63 @@
 import type { ResponseDTO } from "../../Response/dto/ResponseDTO";
-import type { IRequest } from "src/interface/IRequest";
-import { execute as contentService } from "../service/ContentService";
-import { execute as customService } from "../service/CustomService";
-import { execute as jsonService } from "../service/JsonService";
-import { execute as requestParser } from "../service/RequestParser";
+import { execute as requestContentRepository } from "../repository/RequestContentRepository";
+import { execute as requestCustomRepository } from "../repository/RequestCustomRepository";
+import { execute as requestJsonRepository } from "../repository/RequestJsonRepository";
+import { execute as configParserRequestsPropertyService } from "../../../application/Config/service/ConfigParserRequestsPropertyService";
 
 /**
  * @description Routing設定で指定したタイプへリクエストを実行
  *              Execute requests to the type specified in Routing settings
  *
  * @param  {string} name
- * @return {Promise}
+ * @return {Promise<ResponseDTO[]>}
  * @method
  * @public
  */
-export const execute = (name: string): Promise<ResponseDTO>[] =>
+export const execute = async (name: string): Promise<ResponseDTO[]> =>
 {
-    const promises: Promise<ResponseDTO>[] = [];
-    const requests: IRequest[] = requestParser(name);
+    const responses: ResponseDTO[] = [];
+
+    const requests = configParserRequestsPropertyService(name);
     for (let idx = 0; idx < requests.length; ++idx) {
 
-        const requestObject: IRequest = requests[idx];
+        const requestObject = requests[idx];
         switch (requestObject.type) {
 
-            case "custom":
-                promises.push(customService(requestObject));
-                break;
-
             case "json":
-                promises.push(jsonService(requestObject));
+                {
+                    const response = await requestJsonRepository(requestObject);
+                    if (!response) {
+                        continue;
+                    }
+                    responses.push(response);
+                }
                 break;
 
             case "content":
-                promises.push(contentService(requestObject));
+                {
+                    const response = await requestContentRepository(requestObject);
+                    if (!response) {
+                        continue;
+                    }
+                    responses.push(response);
+                }
+                break;
+
+            case "custom":
+                {
+                    const response = await requestCustomRepository(requestObject);
+                    if (!response) {
+                        continue;
+                    }
+                    responses.push(response);
+                }
                 break;
 
             default:
                 break;
+
         }
     }
 
-    return promises;
+    return responses;
 };

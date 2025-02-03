@@ -1,41 +1,34 @@
+import type { IContent } from "../../../../interface/IContent";
 import { loaderInfoMap } from "../../../variable/LoaderInfoMap";
-import type { LoaderInfo } from "@next2d/display";
-import type {
-    Character,
-    DisplayObjectImpl
-} from "@next2d/interface";
 
 /**
- * @description Animation Toolで作成したアニメーションの動的生成の補完を行うクラス。
- *              A class that completes the dynamic generation of animations created by Animation Tool.
+ * @description Animation Toolで作成したアニメーションを動的に生成
+ *              Dynamically generate animations created with Animation Tool
  *
- * @class
- * @memberof application.content
+ * @param  {IContent} display_object
+ * @return {void}
+ * @method
+ * @protected
  */
-export const execute = (instance: DisplayObjectImpl<any>): void =>
+export const execute = (display_object: IContent): void =>
 {
-    const name = instance.namespace;
-    if (!loaderInfoMap.has(name)) {
-        return ;
-    }
-
     // Set the target LoaderInfo class
-    const loaderInfo: LoaderInfo | void = loaderInfoMap.get(name);
-    if (!loaderInfo || !loaderInfo._$data) {
+    const name = display_object.namespace;
+    const loaderInfo = loaderInfoMap.get(name);
+    if (!loaderInfo || !loaderInfo.data) {
         return ;
     }
 
-    const characterId: number | void  = loaderInfo._$data.symbols.get(name);
+    const characterId: number | void = loaderInfo.data.symbols.get(name);
     if (!characterId) {
         return ;
     }
 
-    const character: Character<any> = loaderInfo._$data.characters[characterId];
+    const character = loaderInfo.data.characters[characterId];
     if (!character) {
         return ;
     }
 
-    instance._$loaderInfo  = loaderInfo;
-    instance._$characterId = characterId;
-    instance._$sync(character);
+    display_object.characterId = characterId;
+    display_object.$sync(character, loaderInfo);
 };

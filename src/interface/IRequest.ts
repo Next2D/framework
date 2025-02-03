@@ -10,5 +10,5 @@ export interface IRequest {
     access?: string;
     method?: string;
     headers?: HeadersInit;
-    body?: object;
+    body?: any;
 }

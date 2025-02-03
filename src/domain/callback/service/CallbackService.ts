@@ -1,39 +1,36 @@
-import { packages } from "../../application/variable/Packages";
+import { packages } from "../../../application/variable/Packages";
 
 /**
  * @description configで指定されたクラスのexecute関数を実行
  *              Execute function of the class specified in config.
  *
- * @param  {string|array} [callback=""]
+ * @param  {string | string[]} [callback=""]
  * @param  {*} [value=null]
  * @return {Promise}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     callback: string | string[] = "",
     value: any = null
 ): Promise<Awaited<any>[]|void> => {
 
     if (!callback) {
-        return Promise.resolve();
+        return ;
     }
 
     const callbacks: string[] = typeof callback === "string"
         ? [callback]
         : callback;
 
-    const promises: Promise<any>[] = [];
-    for (let idx: number = 0; idx < callbacks.length; ++idx) {
+    for (let idx = 0; idx < callbacks.length; ++idx) {
 
-        const name: string = callbacks[idx];
+        const name = callbacks[idx];
         if (!packages.has(name)) {
             continue;
         }
 
         const CallbackClass: any = packages.get(name);
-        promises.push(new CallbackClass().execute(value));
+        await new CallbackClass().execute(value);
     }
-
-    return Promise.all(promises);
 };

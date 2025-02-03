@@ -1,5 +1,5 @@
 import { TextField } from "@next2d/text";
-import { execute as contentBuilder } from "./Builder/service/ContentBuilderService";
+import { execute as contentBuilderService } from "./Builder/service/ContentBuilderService";
 
 /**
  * @description Animation Toolで作成したTextFieldの動的生成の補完を行うクラス。
@@ -19,7 +19,7 @@ export class TextFieldContent extends TextField
     {
         super();
 
-        contentBuilder(this);
+        contentBuilderService(this);
 
         // initial processing
         this.initialize();

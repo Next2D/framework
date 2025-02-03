@@ -2,8 +2,8 @@ import { TextField } from "@next2d/text";
 import { execute as contentBuilder } from "./Builder/service/ContentBuilderService";
 
 /**
- * @description NoCode Toolで作成したTextFieldの動的生成の補完を行うクラス。
- *              A class that complements the dynamic generation of TextField created by the NoCode Tool.
+ * @description Animation Toolで作成したTextFieldの動的生成の補完を行うクラス。
+ *              A class that complements the dynamic generation of TextField created by the Animation Tool.
  *
  * @class
  * @memberof application.content

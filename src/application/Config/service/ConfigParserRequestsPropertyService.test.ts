@@ -1,5 +1,5 @@
-import { execute } from "./RequestParser";
-import { $setConfig } from "../../../application/variable/Config";
+import { execute } from "../../../infrastructure/Request/service/RequestParser";
+import { $setConfig } from "../../variable/Config";
 import { describe, expect, it } from "vitest";
 
 describe("RequestParserTest", () =>

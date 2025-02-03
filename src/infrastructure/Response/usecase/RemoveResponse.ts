@@ -1,22 +1,23 @@
-import { execute as requestParser } from "../../Request/service/RequestParser";
+import type { DisplayObject } from "@next2d/display";
+import { execute as configParserRequestsPropertyService } from "../../../application/Config/service/ConfigParserRequestsPropertyService";
 import { loaderInfoMap } from "../../../application/variable/LoaderInfoMap";
 import { response } from "../variable/Response";
-import type { LoaderInfo } from "@next2d/display";
-import type { ParentImpl } from "@next2d/interface";
-import { IRequest } from "../../../interface/IRequest";
 
 /**
+ * @description レスポンスデータを削除、キャッシュ設定があれば削除しない
+ *              Remove response data, do not remove if cache setting is present
+ *
  * @param  {string} name
  * @return {void}
  * @method
  * @public
  */
-export const execute = (name: string): void =>
+export const execute = <D extends DisplayObject> (name: string): void =>
 {
-    const requests: IRequest[] = requestParser(name);
-    for (let idx: number = 0; idx < requests.length; ++idx) {
+    const requests = configParserRequestsPropertyService(name);
+    for (let idx = 0; idx < requests.length; ++idx) {
 
-        const object: IRequest = requests[idx];
+        const object = requests[idx];
 
         if (object.type !== "content") {
             continue;
@@ -33,10 +34,10 @@ export const execute = (name: string): void =>
          * キャッシュしないパッケージはインメモリから削除
          * Remove non-cached packages from in-memory
          */
-        const content: ParentImpl<any> = response.get(object.name);
-        const contentLoaderInfo: LoaderInfo | null = content._$loaderInfo;
-        if (contentLoaderInfo && contentLoaderInfo._$data) {
-            const symbols: Map<string, any> = contentLoaderInfo._$data.symbols;
+        const content = response.get(object.name) as D;
+        const contentLoaderInfo = content.loaderInfo;
+        if (contentLoaderInfo && contentLoaderInfo.data) {
+            const symbols: Map<string, number> = contentLoaderInfo.data.symbols;
             if (symbols.size) {
                 for (const name of symbols.keys()) {
                     loaderInfoMap.delete(name);

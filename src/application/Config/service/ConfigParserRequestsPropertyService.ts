@@ -1,5 +1,5 @@
-import type { IRequest } from "src/interface/IRequest";
-import type { IRouting } from "src/interface/IRouting";
+import type { IRequest } from "../../../interface/IRequest";
+import type { IRouting } from "../../../interface/IRouting";
 import { $getConfig } from "../../../application/variable/Config";
 
 /**

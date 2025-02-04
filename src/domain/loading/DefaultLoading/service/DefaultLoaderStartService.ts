@@ -2,7 +2,7 @@ import type { DefaultLoader } from "../../DefaultLoader";
 import type { Shape } from "@next2d/display";
 import type { Job } from "@next2d/ui";
 import { $getConfig } from "../../../../application/variable/Config";
-import { context } from "../../../../application/variable/Context";
+import { $getContext } from "../../../../application/variable/Context";
 
 /**
  * @description ローダーのアニメーションを実行
@@ -61,5 +61,5 @@ export const execute = (default_loader: DefaultLoader): void =>
 
     sprite.x = (config.stage.width  - sprite.width)  / 2;
     sprite.y = (config.stage.height - sprite.height) / 2;
-    context.root.addChild(sprite);
+    $getContext().root.addChild(sprite);
 };

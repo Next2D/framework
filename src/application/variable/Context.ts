@@ -1,26 +1,33 @@
-import type { IConfig } from "../../interface/IConfig";
-import { Context } from "../Context";
+import type { Context } from "../Context";
 
 /**
  * @type {Context}
  * @public
  */
-export let context: Context;
+let $context: Context;
 
 /**
- * @param  {IConfig} config
- * @return {Promise<void>}
+ * @description コンテキストを取得します
+ *              Get the context
+ *
+ * @return {Context}
  * @method
- * @private
+ * @protected
  */
-export const $createContext = async (config: IConfig): Promise<void> =>
+export const $getContext = (): Context =>
 {
-    const root = await next2d.createRootMovieClip(
-        config.stage.width,
-        config.stage.height,
-        config.stage.fps,
-        config.stage.options
-    );
+    return $context as NonNullable<Context>;
+};
 
-    context = new Context(root);
+/**
+ * @description コンテキストを設定します
+ *              Set the context
+ *
+ * @param {Context} context
+ * @method
+ * @protected
+ */
+export const $setContext = (context: Context): void =>
+{
+    $context = context;
 };

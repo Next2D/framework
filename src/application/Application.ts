@@ -1,28 +1,11 @@
-import type { ResponseDTO } from "../infrastructure/Response/dto/ResponseDTO";
-import type { View } from "../view/View";
 import type { IConfig } from "../interface/IConfig";
-import type { IQueryObject } from "../interface/IQueryObject";
 import type { IPackages } from "../interface/IPackages";
-import { execute as queryParser } from "./Application/service/ApplicationQueryStringParserService";
-import { execute as requestUseCase } from "../infrastructure/Request/usecase/RequestUseCase";
-import { execute as callback } from "../domain/callback/Callback";
-import { execute as removeResponse } from "../infrastructure/Response/usecase/ResponseRemoveVariableUseCase";
-import { response } from "../infrastructure/Response/variable/Response";
+import type { Context } from "./Context";
 import { execute as applicationInitializeService } from "./Application/service/ApplicationInitializeService";
 import { execute as applicationGotoViewUseCase } from "./Application/usecase/ApplicationGotoViewUseCase";
+import { execute as contextRunService } from "./Context/service/ContextRunService";
 import { $getConfig } from "./variable/Config";
-import {
-    execute as captureExecute,
-    dispose as captureDispose
-} from "../domain/screen/Capture";
-import {
-    context,
-    $createContext
-} from "./variable/Context";
-import {
-    start as loadingStart,
-    end as loadingEnd
-} from "../domain/loading/Loading";
+import { $getContext } from "./variable/Context";
 
 /**
  * @description シーン遷移のコントロールを行うクラス。
@@ -86,7 +69,7 @@ export class Application
      */
     async run (): Promise<void>
     {
-        $createContext($getConfig());
+        await contextRunService($getConfig());
     }
 
     /**
@@ -102,5 +85,18 @@ export class Application
     async gotoView (name: string = ""): Promise<void>
     {
         applicationGotoViewUseCase(this, name);
+    }
+
+    /**
+     * @description コンテキストを取得します
+     *              Get the context
+     *
+     * @return {Context}
+     * @method
+     * @public
+     */
+    getContext (): Context
+    {
+        return $getContext();
     }
 }

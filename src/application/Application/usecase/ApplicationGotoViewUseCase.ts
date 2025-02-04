@@ -1,6 +1,6 @@
 import type { Application } from "../../Application";
 import { $getConfig } from "../../variable/Config";
-import { context } from "../../variable/Context";
+import { $getContext } from "../../variable/Context";
 import { response } from "../../../infrastructure/Response/variable/Response";
 import { execute as addScreenCaptureService } from "../../../domain/screen/Capture/service/AddScreenCaptureService";
 import { execute as disposeCaptureService } from "../../../domain/screen/Capture/service/DisposeCaptureService";
@@ -42,6 +42,7 @@ export const execute = async (application: Application, name: string = ""): Prom
      * 現在の画面のViewとViewModelをunbind
      * Unbind the View and ViewModel of the current screen
      */
+    const context = $getContext();
     await context.unbind();
 
     /**

@@ -1,4 +1,4 @@
-import { context } from "../../../../application/variable/Context";
+import { $getContext } from "../../../../application/variable/Context";
 import {
     shape,
     bitmap
@@ -14,7 +14,7 @@ import {
  */
 export const execute = (): void =>
 {
-    const root = context.root;
+    const root = $getContext().root;
     if (!root) {
         return ;
     }

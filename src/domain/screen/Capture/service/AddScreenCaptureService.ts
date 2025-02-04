@@ -1,5 +1,5 @@
 import { $getConfig } from "../../../../application/variable/Config";
-import { context } from "../../../../application/variable/Context";
+import { $getContext } from "../../../../application/variable/Context";
 import { Matrix } from "@next2d/geom";
 import {
     stage,
@@ -38,7 +38,7 @@ let $cacheY: number = 0;
  */
 export const execute = async (): Promise<void> =>
 {
-    const root = context.root;
+    const root = $getContext().root;
     if (!root) {
         return ;
     }

@@ -1,7 +1,7 @@
 import type { DefaultLoader } from "../../DefaultLoader";
 import type { Shape } from "@next2d/display";
 import type { Job } from "@next2d/ui";
-import { context } from "../../../../application/variable/Context";
+import { $getContext } from "../../../../application/variable/Context";
 
 /**
  * @description ローダーのアニメーションを終了
@@ -28,7 +28,7 @@ export const execute = (default_loader: DefaultLoader): void =>
         reduceJob.stop();
     }
 
-    const root = context.root;
+    const root = $getContext().root;
     if (!root) {
         return ;
     }

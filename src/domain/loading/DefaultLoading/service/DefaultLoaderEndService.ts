@@ -7,7 +7,7 @@ import { $getContext } from "../../../../application/variable/Context";
  * @description ローダーのアニメーションを終了
  *              End loader animation
  *
- * @param {DefaultLoader} default_loader
+ * @param  {DefaultLoader} default_loader
  * @return {void}
  * @method
  * @protected
@@ -33,7 +33,5 @@ export const execute = (default_loader: DefaultLoader): void =>
         return ;
     }
 
-    if (sprite.parent === root) {
-        root.removeChild(sprite);
-    }
+    root.removeChild(sprite);
 };

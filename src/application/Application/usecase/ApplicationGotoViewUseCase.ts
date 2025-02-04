@@ -1,5 +1,6 @@
 import type { Application } from "../../Application";
 import { $getConfig } from "../../variable/Config";
+import { context } from "../../variable/Context";
 import { response } from "../../../infrastructure/Response/variable/Response";
 import { execute as addScreenCaptureService } from "../../../domain/screen/Capture/service/AddScreenCaptureService";
 import { execute as disposeCaptureService } from "../../../domain/screen/Capture/service/DisposeCaptureService";
@@ -8,6 +9,7 @@ import { execute as loadingEndService } from "../../../domain/loading/Loading/se
 import { execute as responseRemoveVariableUseCase } from "../../../infrastructure/Response/usecase/ResponseRemoveVariableUseCase";
 import { execute as applicationQueryStringParserService } from "../service/ApplicationQueryStringParserService";
 import { execute as requestUseCase } from "../../../infrastructure/Request/usecase/RequestUseCase";
+import { execute as callbackService } from "../../../domain/callback/service/CallbackService";
 
 /**
  * @description 指定されたパス、もしくはURLのクラスを起動
@@ -36,7 +38,11 @@ export const execute = async (application: Application, name: string = ""): Prom
         await loadingStartService();
     }
 
-    // todo unbind
+    /**
+     * 現在の画面のViewとViewModelをunbind
+     * Unbind the View and ViewModel of the current screen
+     */
+    await context.unbind();
 
     /**
      * 前の画面で取得したレスポンスデータを初期化
@@ -93,20 +99,15 @@ export const execute = async (application: Application, name: string = ""): Prom
      * ViewとViewModelを起動
      * Start View and ViewModel
      */
-    // const view = await context.boot(application.currentName);
+    const view = await context.bind(application.currentName);
 
     /**
      * コールバック設定があれば実行
      * Execute callback settings if any.
      */
-    // if (view && config.gotoView) {
-    //     const promises: Promise<any>[] = [];
-    //     promises.push(callback(
-    //         config.gotoView.callback, view
-    //     ));
-
-    //     await Promise.all(promises);
-    // }
+    if (view && config.gotoView) {
+        await callbackService(config.gotoView.callback, view);
+    }
 
     /**
      * ローディング表示を終了

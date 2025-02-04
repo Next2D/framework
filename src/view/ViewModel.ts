@@ -14,14 +14,12 @@ export class ViewModel
      *              Called at the timing when the root Sprite is attached.
      *
      * @param  {View} view
-     * @return {Promise<View>}
+     * @return {Promise<void>}
      * @method
      * @abstract
      */
-    async bind (view: View): Promise<View>
-    {
-        return view;
-    }
+    // eslint-disable-next-line unused-imports/no-unused-vars
+    async bind (view: View): Promise<void> { return void 0 }
 
     /**
      * @description 新しいViewクラスがアタッチされる前にコールされます。

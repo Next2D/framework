@@ -21,10 +21,10 @@ export const execute = (default_loader: DefaultLoader): void =>
             continue ;
         }
 
-        const expandJob = sprite.getLocalVariable("expandJob") as Job;
+        const expandJob = shape.getLocalVariable("expandJob") as Job;
         expandJob.stop();
 
-        const reduceJob = sprite.getLocalVariable("reduceJob") as Job;
+        const reduceJob = shape.getLocalVariable("reduceJob") as Job;
         reduceJob.stop();
     }
 

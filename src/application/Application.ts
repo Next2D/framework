@@ -6,6 +6,7 @@ import { execute as applicationGotoViewUseCase } from "./Application/usecase/App
 import { execute as contextRunService } from "./Context/service/ContextRunService";
 import { $getConfig } from "./variable/Config";
 import { $getContext } from "./variable/Context";
+import { response } from "../infrastructure/Response/variable/Response";
 
 /**
  * @description シーン遷移のコントロールを行うクラス。
@@ -98,5 +99,18 @@ export class Application
     getContext (): Context
     {
         return $getContext();
+    }
+
+    /**
+     * @description configで設定したリクエストのレスポンスマップを返却します
+     *              Returns the response map of the request set in config
+     *
+     * @returns {Map<string, any>}
+     * @method
+     * @public
+     */
+    getResponse (): Map<string, any>
+    {
+        return response;
     }
 }

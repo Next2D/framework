@@ -1,5 +1,4 @@
 import type { IQueryObject } from "src/interface/IQueryObject";
-import type { IRouting } from "src/interface/IRouting";
 import { $getConfig } from "../../variable/Config";
 import { query } from "../../variable/Query";
 
@@ -8,9 +7,9 @@ import { query } from "../../variable/Query";
  *              Register the specified QueryString or URL QueryString in the query map
  *
  * @param  {string} [name=""]
- * @return {object}
+ * @return {IQueryObject}
  * @method
- * @public
+ * @protected
  */
 export const execute = (name: string = ""): IQueryObject =>
 {
@@ -26,24 +25,24 @@ export const execute = (name: string = ""): IQueryObject =>
      * QueryStringがあれば分解
      * Disassemble QueryString if available
      */
-    let queryString: string = "";
+    let queryString = "";
     if (!name && location.search) {
         queryString = location.search;
         const parameters = queryString.slice(1).split("&");
-        for (let idx: number = 0; idx < parameters.length; ++idx) {
-            const pair: string[] = parameters[idx].split("=");
+        for (let idx = 0; idx < parameters.length; ++idx) {
+            const pair = parameters[idx].split("=");
             query.set(pair[0], pair[1]);
         }
     }
 
     const config = $getConfig();
-    const defaultTop: string = config?.defaultTop || "top";
+    const defaultTop = config?.defaultTop || "top";
     if (!name) {
-        const names: string[] = location.pathname.split("/");
+        const names = location.pathname.split("/");
         names.shift();
         name = `${names.join("/")}`;
         if (name && config && config.routing) {
-            const routing: IRouting = config.routing[name];
+            const routing = config.routing[name];
             if (!routing) {
                 name = defaultTop;
             }
@@ -64,14 +63,14 @@ export const execute = (name: string = ""): IQueryObject =>
      */
     if (name.indexOf("?") > -1) {
 
-        const names: string[] = name.split("?");
+        const names = name.split("?");
 
         name  = names[0];
         queryString = `?${names[1]}`;
 
-        const parameters: string[] = names[1].split("&");
-        for (let idx: number = 0; idx < parameters.length; ++idx) {
-            const pair: string[] = parameters[idx].split("=");
+        const parameters = names[1].split("&");
+        for (let idx = 0; idx < parameters.length; ++idx) {
+            const pair = parameters[idx].split("=");
             query.set(pair[0], pair[1]);
         }
     }

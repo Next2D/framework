@@ -1,15 +1,13 @@
-import "@next2d/player";
-import {
-    response,
-    loaderInfoMap
-} from "../../..";
-import { RemoveResponse } from "./RemoveResponse";
-import { RequestType } from "../../../src/infrastructure/constant/RequestType";
+import { execute } from "./ResponseRemoveVariableUseCase";
+import { loaderInfoMap } from "../../../application/variable/LoaderInfoMap";
 import { $setConfig } from "../../../application/variable/Config";
+import { IConfig } from "../../../interface/IConfig";
+import { response } from "../../Response/variable/Response";
+import { describe, expect, it } from "vitest";
 
-describe("RemoveResponseTest", () =>
+describe("ResponseRemoveVariableUseCase", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         // mock
         loaderInfoMap.clear();
@@ -30,8 +28,8 @@ describe("RemoveResponseTest", () =>
 
         response.clear();
         response.set("test1", {
-            "_$loaderInfo": {
-                "_$data": {
+            "loaderInfo": {
+                "data": {
                     "symbols": symbols
                 }
             }
@@ -40,7 +38,7 @@ describe("RemoveResponseTest", () =>
         expect(response.size).toBe(2);
 
         // mock
-        const config = {
+        const config: IConfig = {
             "platform": "web",
             "spa": true,
             "stage": {
@@ -53,15 +51,15 @@ describe("RemoveResponseTest", () =>
                 "test": {
                     "requests": [
                         {
-                            "type": RequestType.CONTENT,
+                            "type": "content",
                             "name": "test1"
                         },
                         {
-                            "type": RequestType.JSON,
+                            "type": "json",
                             "name": "test2"
                         },
                         {
-                            "type": RequestType.CONTENT,
+                            "type": "content",
                             "name": "test3",
                             "cache": true
                         }
@@ -73,7 +71,7 @@ describe("RemoveResponseTest", () =>
         $setConfig(config);
 
         // execute
-        new RemoveResponse().execute("test");
+        execute("test");
 
         // test
         expect(response.size).toBe(0);

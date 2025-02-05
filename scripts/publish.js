@@ -2,6 +2,10 @@
 
 "use strict";
 
+import { readFileSync, writeFileSync } from "fs";
+import { spawnSync } from "child_process";
+import { join } from "path";
+
 /**
  * @return {void}
  * @method
@@ -13,14 +17,14 @@ const execute = () =>
         readFileSync(`${process.cwd()}/package.json`, { "encoding": "utf8" })
     );
 
-    // write package.json
-    writeFileSync(
-        join(process.cwd(), "dist/src/package.json"),
-        JSON.stringify(packageJson, null, 2)
-    );
-
     delete packageJson.peerDependencies;
     packageJson.dependencies = { "@next2d/player": "*" };
+
+    // write package.json
+    writeFileSync(
+        join(process.cwd(), "dist/package.json"),
+        JSON.stringify(packageJson, null, 2)
+    );
 
     // LICENSE
     spawnSync(

@@ -9,13 +9,13 @@ interface IBaseConfig {
 export interface IConfig extends IBaseConfig {
     platform: string;
     stage: IStage;
+    spa: boolean;
+    defaultTop?: string;
+    gotoView?: IGotoView;
     routing?: {
         [key: string]: IRouting
     };
-    defaultTop?: string;
-    spa: boolean;
     loading?: {
         callback: string;
     };
-    gotoView?: IGotoView;
 }

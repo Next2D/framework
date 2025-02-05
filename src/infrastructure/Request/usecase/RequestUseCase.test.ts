@@ -1,17 +1,14 @@
 import "@next2d/player";
-import { RequestUseCase } from "./RequestUseCase";
-import { RequestType } from "../../../src/infrastructure/constant/RequestType";
-import { ResponseDTO } from "../../Response/dto/ResponseDTO";
-import { $setPackages } from "../../../application/variable/Packages";
+import { execute } from "./RequestUseCase";
+import { $setPackages, packages } from "../../../application/variable/Packages";
+import { cache } from "../../../application/variable/Cache";
 import { $setConfig } from "../../../application/variable/Config";
-import {
-    cache,
-    packages
-} from "../../..";
+import { describe, expect, it } from "vitest";
+import type { IConfig } from "../../../interface/IConfig";
 
 describe("RequestUseCase Test", () =>
 {
-    test("request test", () =>
+    it("request test", async () =>
     {
         const TestRepository = {
             "get": () => {
@@ -29,7 +26,7 @@ describe("RequestUseCase Test", () =>
         cache.set("ContentRepository", "success content");
 
         // mock
-        const config = {
+        const config: IConfig = {
             "platform": "web",
             "spa": true,
             "stage": {
@@ -42,21 +39,17 @@ describe("RequestUseCase Test", () =>
                 "test": {
                     "requests": [
                         {
-                            "type": RequestType.CUSTOM,
+                            "type": "custom",
                             "class": "TestRepository",
                             "access": "static",
                             "method": "get",
                             "name": "TestRepository"
                         },
                         {
-                            "type": RequestType.JSON,
+                            "type": "json",
                             "cache": true,
-                            "name": "JSONRepository"
-                        },
-                        {
-                            "type": RequestType.CONTENT,
-                            "cache": true,
-                            "name": "ContentRepository"
+                            "name": "JSONRepository",
+                            "path": "sample"
                         }
                     ]
                 }
@@ -65,35 +58,21 @@ describe("RequestUseCase Test", () =>
 
         $setConfig(config);
 
-        const requestUseCase: RequestUseCase = new RequestUseCase();
-        const promises = requestUseCase.execute("test");
+        const responses = await execute("test");
+        expect(responses.length).toBe(2);
 
-        Promise
-            .all(promises)
-            .then((responses) =>
-            {
-                expect(responses.length).toBe(3);
+        const customResponse = responses[0];
+        if (!customResponse) {
+            throw new Error("stop test");
+        }
+        expect(customResponse.name).toBe("TestRepository");
+        expect(customResponse.response).toBe("success custom");
 
-                const customResponse: ResponseDTO|void = responses[0];
-                if (!customResponse) {
-                    throw new Error("stop test");
-                }
-                expect(customResponse.name).toBe("TestRepository");
-                expect(customResponse.response).toBe("success custom");
-
-                const jsonResponse: ResponseDTO|void = responses[1];
-                if (!jsonResponse) {
-                    throw new Error("stop test");
-                }
-                expect(jsonResponse.name).toBe("JSONRepository");
-                expect(jsonResponse.response).toBe("success json");
-
-                const contentResponse: ResponseDTO|void = responses[2];
-                if (!contentResponse) {
-                    throw new Error("stop test");
-                }
-                expect(contentResponse.name).toBe("ContentRepository");
-                expect(contentResponse.response).toBe("success content");
-            });
+        const jsonResponse = responses[1];
+        if (!jsonResponse) {
+            throw new Error("stop test");
+        }
+        expect(jsonResponse.name).toBe("JSONRepository");
+        expect(jsonResponse.response).toBe("success json");
     });
 });

@@ -1,13 +1,14 @@
-import { execute } from "../../../infrastructure/Request/service/RequestParser";
+import { execute } from "./ConfigParserRequestsPropertyService";
 import { $setConfig } from "../../variable/Config";
+import type { IConfig } from "../../../interface/IConfig";
 import { describe, expect, it } from "vitest";
 
-describe("RequestParserTest", () =>
+describe("ConfigParserRequestsPropertyService Test", () =>
 {
     it("request parse no match test case1", () =>
     {
         // mock
-        const config = {
+        const config: IConfig = {
             "platform": "web",
             "spa": true,
             "stage": {
@@ -28,7 +29,7 @@ describe("RequestParserTest", () =>
     it("request parse no match test case2", () =>
     {
         // mock
-        const config = {
+        const config: IConfig = {
             "platform": "web",
             "spa": true,
             "stage": {
@@ -51,7 +52,7 @@ describe("RequestParserTest", () =>
     it("request parse match test case1", () =>
     {
         // mock
-        const config = {
+        const config: IConfig = {
             "platform": "web",
             "spa": true,
             "stage": {
@@ -75,10 +76,10 @@ describe("RequestParserTest", () =>
 
         $setConfig(config);
 
-        const requests: Object[] = execute("top");
+        const requests = execute("top");
         expect(requests.length).toBe(1);
 
-        const object: Object = requests[0];
+        const object = requests[0];
         expect(object.type).toBe("json");
         expect(object.name).toBe("TopTest");
         expect(object.path).toBe("local");
@@ -87,7 +88,7 @@ describe("RequestParserTest", () =>
     it("request parse cluster test case1", () =>
     {
         // mock
-        const config = {
+        const config: IConfig = {
             "platform": "web",
             "spa": true,
             "stage": {
@@ -125,14 +126,14 @@ describe("RequestParserTest", () =>
 
         $setConfig(config);
 
-        const requests: Object[] = execute("top");
+        const requests = execute("top");
         expect(requests.length).toBe(2);
 
-        const object1: Object = requests[0];
+        const object1 = requests[0];
         expect(object1.type).toBe("content");
         expect(object1.name).toBe("MainContent");
 
-        const object2: Object = requests[1];
+        const object2 = requests[1];
         expect(object2.type).toBe("json");
         expect(object2.name).toBe("TopText");
     });

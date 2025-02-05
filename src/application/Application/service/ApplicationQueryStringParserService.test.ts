@@ -1,5 +1,5 @@
 import type { IQueryObject } from "../../../interface/IQueryObject";
-import { execute } from "./QueryParser";
+import { execute } from "./ApplicationQueryStringParserService";
 import { query } from "../../variable/Query";
 import { $setConfig } from "../../variable/Config";
 import { describe, expect, it, vi } from "vitest";
@@ -11,7 +11,7 @@ Object.defineProperty(window, "location", {
     })
 });
 
-describe("QueryParserTest", () =>
+describe("ApplicationQueryStringParserService", () =>
 {
     it("parse query test case1", () =>
     {

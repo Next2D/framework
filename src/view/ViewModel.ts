@@ -18,6 +18,7 @@ export class ViewModel
      * @method
      * @abstract
      */
+    // @ts-ignore
     // eslint-disable-next-line unused-imports/no-unused-vars
     async bind (view: View): Promise<void> { return void 0 }
 

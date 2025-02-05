@@ -1,10 +1,10 @@
 import { View } from "./View";
 import { describe, expect, it } from "vitest";
 
-describe("ViewTest", () =>
+describe("View Test", () =>
 {
     it("initialize call test", () => {
-        const view: View = new View();
+        const view = new View();
         expect(typeof view.initialize).toBe("function");
     });
 });

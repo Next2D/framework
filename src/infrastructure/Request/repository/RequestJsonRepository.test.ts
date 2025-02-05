@@ -1,25 +1,14 @@
-import "@next2d/player";
-import { JsonRepository } from "./JsonRepository";
-import { RequestType } from "../../../src/infrastructure/constant/RequestType";
+import type { IRequest } from "../../../interface/IRequest";
+import { execute } from "./RequestJsonRepository";
+import { describe, expect, it, vi } from "vitest";
 
-interface Object {
-    type: string;
-    name: string;
-    path: string;
-    cache?: boolean;
-    callback?: string | string[];
-    method?: string;
-    body?: object;
-    headers?: HeadersInit;
-}
-
-describe("JsonRepository Test", () =>
+describe("RequestJsonRepository Test", () =>
 {
-    test("execute fetch get test", () =>
+    it("execute fetch get test", async () =>
     {
         // mock
-        const object: Object = {
-            "type": RequestType.JSON,
+        const object: IRequest = {
+            "type": "json",
             "name": "JsonRepository",
             "path": "next2d",
             "method": "GET"
@@ -27,7 +16,6 @@ describe("JsonRepository Test", () =>
 
         const responseMock = (url: any, options: any) =>
         {
-
             expect(url).toBe(object.path);
             expect(options.method).toBe(object.method);
 
@@ -38,17 +26,18 @@ describe("JsonRepository Test", () =>
                 }
             });
         };
-        global.fetch = jest.fn().mockImplementation(responseMock);
+        global.fetch = vi.fn().mockImplementation(responseMock);
 
-        const jsonRepository = new JsonRepository();
-        jsonRepository.execute(object);
+        const responseDTO = await execute(object);
+        expect(responseDTO.name).toBe("JsonRepository");
+        expect(responseDTO.response).toBe("success fetch json");
     });
 
-    test("execute fetch post test", () =>
+    it("execute fetch post test", async () =>
     {
         // mock
-        const object: Object = {
-            "type": RequestType.JSON,
+        const object: IRequest = {
+            "type": "json",
             "name": "JsonRepository",
             "path": "next2d",
             "method": "POST",
@@ -75,17 +64,18 @@ describe("JsonRepository Test", () =>
                 }
             });
         };
-        global.fetch = jest.fn().mockImplementation(responseMock);
+        global.fetch = vi.fn().mockImplementation(responseMock);
 
-        const jsonRepository = new JsonRepository();
-        jsonRepository.execute(object);
+        const responseDTO = await execute(object);
+        expect(responseDTO.name).toBe("JsonRepository");
+        expect(responseDTO.response).toBe("success fetch json");
     });
 
-    test("execute fetch put test", () =>
+    it("execute fetch put test", async () =>
     {
         // mock
-        const object: Object = {
-            "type": RequestType.JSON,
+        const object: IRequest = {
+            "type": "json",
             "name": "JsonRepository",
             "path": "next2d",
             "method": "PUT",
@@ -99,7 +89,6 @@ describe("JsonRepository Test", () =>
 
         const responseMock = (url: any, options: any) =>
         {
-
             expect(url).toBe(object.path);
             expect(options.method).toBe(object.method);
             expect(options.body).toBe(JSON.stringify(object.body));
@@ -112,9 +101,10 @@ describe("JsonRepository Test", () =>
                 }
             });
         };
-        global.fetch = jest.fn().mockImplementation(responseMock);
+        global.fetch = vi.fn().mockImplementation(responseMock);
 
-        const jsonRepository = new JsonRepository();
-        jsonRepository.execute(object);
+        const responseDTO = await execute(object);
+        expect(responseDTO.name).toBe("JsonRepository");
+        expect(responseDTO.response).toBe("success fetch json");
     });
 });

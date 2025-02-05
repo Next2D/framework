@@ -1,28 +1,15 @@
-import "@next2d/player";
-import { CustomRepository } from "./CustomRepository";
-import { RequestType } from "../../../src/infrastructure/constant/RequestType";
-import { packages } from "../..";
+import { execute } from "./RequestCustomRepository";
+import { packages } from "../../../application/variable/Packages";
+import type { IRequest } from "../../../interface/IRequest";
+import { describe, expect, it } from "vitest";
 
-interface Object {
-    type: string;
-    name: string;
-    path: string;
-    cache?: boolean;
-    class: string;
-    access: string;
-    method: string;
-    callback?: string|string[];
-    body?: object;
-    headers?: HeadersInit;
-}
-
-describe("CustomRepository Test", () =>
+describe("RequestCustomRepository Test", () =>
 {
-    test("execute public test", () =>
+    it("execute public test", async () =>
     {
         // mock
-        const object: Object = {
-            "type": RequestType.CUSTOM,
+        const object: IRequest = {
+            "type": "custom",
             "name": "CustomRepository",
             "path": "next2d",
             "method": "publicGet",
@@ -41,21 +28,16 @@ describe("CustomRepository Test", () =>
         packages.clear();
         packages.set("CustomClass", CustomClass);
 
-        const customRepository = new CustomRepository();
-        customRepository
-            .execute(object)
-            .then((response) =>
-            {
-                expect(response).toBe("publicGet");
-            });
+        const responseDTO = await execute(object);
+        expect(responseDTO.name).toBe("CustomRepository");
+        expect(responseDTO.response).toBe("publicGet");
     });
 
-    test("execute static test", () =>
+    it("execute static test", async () =>
     {
         // mock
-
-        const object: Object = {
-            "type": RequestType.CUSTOM,
+        const object: IRequest = {
+            "type": "custom",
             "name": "CustomRepository",
             "path": "next2d",
             "method": "staticGet",
@@ -74,35 +56,8 @@ describe("CustomRepository Test", () =>
         packages.clear();
         packages.set("CustomClass", CustomClass);
 
-        const customRepository = new CustomRepository();
-        customRepository
-            .execute(object)
-            .then((response) =>
-            {
-                expect(response).toBe("staticGet");
-            });
-    });
-
-    test("execute not found test", () =>
-    {
-        // mock
-        const object: Object = {
-            "type": RequestType.CUSTOM,
-            "name": "CustomRepository",
-            "path": "next2d",
-            "method": "staticGet",
-            "access": "static",
-            "class": "CustomClass"
-        };
-
-        packages.clear();
-
-        const customRepository = new CustomRepository();
-        customRepository
-            .execute(object)
-            .then((response) =>
-            {
-                expect(response).toBe(null);
-            });
+        const responseDTO = await execute(object)
+        expect(responseDTO.name).toBe("CustomRepository");
+        expect(responseDTO.response).toBe("staticGet");
     });
 });

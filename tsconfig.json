@@ -21,7 +21,7 @@
     "noFallthroughCasesInSwitch": true,
 
     "baseUrl": ".",
-    "outDir": "./dist",
+    "outDir": "./dist/src",
 
     "types": [
       "vitest/globals"
@@ -34,10 +34,9 @@
   "exclude": [
     "node_modules",
     "**/dist/**",
-    "**/build/**",
     "scripts",
     "dist",
-    "**/*.test.ts",
-    "**/.github",
+    "src/**/*.test.ts",
+    ".github",
   ]
 }

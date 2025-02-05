@@ -16,14 +16,6 @@ import { execute as configParserRequestsPropertyService } from "../../../applica
 export const execute = async (name: string): Promise<ResponseDTO[]> =>
 {
     const responses: ResponseDTO[] = [];
-    await new Promise<void>((resolve): void =>
-    {
-        setTimeout((): void =>
-        {
-            return resolve();
-        }, 3000);
-    });
-
     const requests = configParserRequestsPropertyService(name);
     for (let idx = 0; idx < requests.length; ++idx) {
 

@@ -1,18 +1,19 @@
-import { execute } from "./ToCamelCase";
+import { execute } from "./ContextToCamelCaseService";
+import { describe, expect, it } from "vitest";
 
-describe("ToCamelCaseTest", () =>
+describe("ContextToCamelCaseService Test", () =>
 {
-    test("execute test case1", () =>
+    it("execute test case1", () =>
     {
         expect(execute("home")).toBe("Home");
     });
 
-    test("execute test case2", () =>
+    it("execute test case2", () =>
     {
         expect(execute("quest/list")).toBe("QuestList");
     });
 
-    test("execute test case3", () =>
+    it("execute test case3", () =>
     {
         expect(execute("game/list/page")).toBe("GameListPage");
     });

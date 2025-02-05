@@ -1,4 +1,3 @@
-import "@next2d/player";
 import { execute } from "./RequestUseCase";
 import { $setPackages, packages } from "../../../application/variable/Packages";
 import { cache } from "../../../application/variable/Cache";

@@ -19,8 +19,8 @@ export const execute = (): void =>
         return ;
     }
 
-    root.removeChild(shape);
     root.removeChild(bitmap);
+    root.removeChild(shape);
 
     /**
      * マウス操作を有効化

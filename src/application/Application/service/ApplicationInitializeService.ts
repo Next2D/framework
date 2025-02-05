@@ -29,10 +29,10 @@ export const execute = (
      * Keep history of transitions if SPA setting is enabled
      */
     if (config.spa) {
-        window.addEventListener("popstate", (): void =>
+        window.addEventListener("popstate", async (): Promise<void> =>
         {
             application.popstate = true;
-            application.gotoView();
+            await application.gotoView();
         });
     }
 

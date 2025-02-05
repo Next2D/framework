@@ -14,24 +14,29 @@ import { $getContext } from "../../../../application/variable/Context";
  */
 export const execute = (default_loader: DefaultLoader): void =>
 {
-    const sprite = default_loader.sprite;
-    for (let idx = 0; idx < 3; ++idx) {
-        const shape = sprite.getChildAt<Shape>(idx);
-        if (!shape) {
-            continue ;
-        }
-
-        const expandJob = shape.getLocalVariable("expandJob") as Job;
-        expandJob.stop();
-
-        const reduceJob = shape.getLocalVariable("reduceJob") as Job;
-        reduceJob.stop();
-    }
-
     const root = $getContext().root;
     if (!root) {
         return ;
     }
 
+    const sprite = default_loader.sprite;
     root.removeChild(sprite);
+
+    for (let idx = 0; idx < 3; ++idx) {
+
+        const shape = sprite.getChildAt<Shape>(idx);
+        if (!shape) {
+            continue ;
+        }
+
+        if (shape.hasLocalVariable("expandJob")) {
+            const expandJob = shape.getLocalVariable("expandJob") as Job;
+            expandJob.stop();
+        }
+
+        if (shape.hasLocalVariable("reduceJob")) {
+            const reduceJob = shape.getLocalVariable("reduceJob") as Job;
+            reduceJob.stop();
+        }
+    }
 };

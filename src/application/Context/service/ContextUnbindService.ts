@@ -16,5 +16,11 @@ export const execute = async (context: Context): Promise<void> =>
     }
 
     await context.viewModel.unbind(context.view);
-    context.root.removeChild(context.view);
+
+    const root = context.root;
+    if (!root) {
+        return ;
+    }
+
+    root.removeChild(context.view);
 };

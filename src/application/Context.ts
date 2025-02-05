@@ -34,16 +34,6 @@ export class Context
     public viewModel: ViewModel | null;
 
     /**
-     * @description 現在のシーンで利用中のViewクラス名を返却します。
-     *              Returns the name of the View class currently being used in the current scene.
-     *
-     * @return {string}
-     * @default "Top"
-     * @public
-     */
-    public viewName: string;
-
-    /**
      * @type {Sprite}
      * @private
      */
@@ -62,7 +52,6 @@ export class Context
         // 初期化
         this.view      = null;
         this.viewModel = null;
-        this.viewName  = "Top";
     }
 
     /**

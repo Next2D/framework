@@ -32,7 +32,7 @@ export class Application
      *             Current screen name
      *
      * @type {string}
-     * @default "top"
+     * @default ""
      * @public
      */
     public currentName: string;
@@ -44,7 +44,7 @@ export class Application
     constructor ()
     {
         this.popstate    = false;
-        this.currentName = "top";
+        this.currentName = "";
     }
 
     /**
@@ -85,7 +85,7 @@ export class Application
      */
     async gotoView (name: string = ""): Promise<void>
     {
-        applicationGotoViewUseCase(this, name);
+        await applicationGotoViewUseCase(this, name);
     }
 
     /**

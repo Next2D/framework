@@ -2,7 +2,7 @@ import type { Context } from "../../Context";
 import type { View } from "../../../view/View";
 import type { ViewModel } from "../../../view/ViewModel";
 import { packages } from "../../variable/Packages";
-import { execute as cntextToCamelCaseService } from "../service/ContextToCamelCaseService";
+import { execute as contextToCamelCaseService } from "../service/ContextToCamelCaseService";
 
 /**
  * @description ViewとViewModelのbindを行います。
@@ -16,9 +16,7 @@ import { execute as cntextToCamelCaseService } from "../service/ContextToCamelCa
  */
 export const execute = async (context: Context, name: string): Promise<View> =>
 {
-    context.viewName = cntextToCamelCaseService(name);
-
-    const viewName = `${context.viewName}View`;
+    const viewName      = `${contextToCamelCaseService(name)}View`;
     const viewModelName = `${viewName}Model`;
 
     if (!packages.size
@@ -44,11 +42,16 @@ export const execute = async (context: Context, name: string): Promise<View> =>
      */
     await context.viewModel.bind(context.view);
 
+    const root = context.root;
+    while (root.numChildren) {
+        root.removeChildAt(0);
+    }
+
     /**
      * stageの一番背面にviewをセット
      * Set the view at the very back of the stage
      */
-    context.root.addChildAt(context.view, 0);
+    root.addChildAt(context.view, 0);
 
     return context.view;
 };

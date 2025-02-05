@@ -53,11 +53,17 @@ export const execute = async (): Promise<void> =>
     bitmapData.canvas = canvas;
     bitmap.x = rectangle.x;
     bitmap.y = rectangle.y;
-    bitmap
-        .graphics
-        .clear()
-        .beginBitmapFill(bitmapData, null, false, false)
-        .drawRect(0, 0, canvas.width, canvas.height);
+    if ($devicePixelRatio !== 1) {
+        bitmap.scaleX = 1 / $devicePixelRatio;
+        bitmap.scaleY = 1 / $devicePixelRatio;
+    }
+
+    bitmap.setBitmapBuffer(canvas.width, canvas.height, bitmapData.buffer as Uint8Array);
+    // bitmap
+    //     .graphics
+    //     .clear()
+    //     .beginBitmapFill(bitmapData, null, false, false)
+    //     .drawRect(0, 0, canvas.width, canvas.height);
 
     root.addChild(bitmap);
 

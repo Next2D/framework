@@ -97,6 +97,18 @@ export const execute = async (application: Application, name: string = ""): Prom
     }
 
     /**
+     * ローディング表示を終了
+     * End loading display
+     */
+    await loadingEndService();
+
+    /**
+     * 前の画面のキャプチャーを終了
+     * End previous screen capture
+     */
+    disposeCaptureService();
+
+    /**
      * ViewとViewModelを起動
      * Start View and ViewModel
      */
@@ -109,16 +121,4 @@ export const execute = async (application: Application, name: string = ""): Prom
     if (view && config.gotoView) {
         await callbackService(config.gotoView.callback, view);
     }
-
-    /**
-     * ローディング表示を終了
-     * End loading display
-     */
-    await loadingEndService();
-
-    /**
-     * 前の画面のキャプチャーを終了
-     * End previous screen capture
-     */
-    disposeCaptureService();
 };

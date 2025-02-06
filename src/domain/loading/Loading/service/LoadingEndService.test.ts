@@ -1,13 +1,7 @@
 import { execute } from "./LoadingEndService";
-import { MovieClip } from "@next2d/display";
-import { Context } from "../../../../application/Context";
-import { $setContext } from "../../../../application/variable/Context";
 import { $setConfig } from "../../../../application/variable/Config";
 import { packages } from "../../../../application/variable/Packages";
-import {
-    $getInstance,
-    $setInstance
-} from "../../Loading";
+import { $setInstance } from "../../Loading";
 import { describe, expect, it } from "vitest";
 
 describe("LoadingEndService Test", () =>

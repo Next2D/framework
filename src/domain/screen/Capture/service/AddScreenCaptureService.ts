@@ -43,6 +43,12 @@ export const execute = async (): Promise<void> =>
         return ;
     }
 
+    /**
+     * マウス操作を強制停止
+     * Mouse operation is forced to stop
+     */
+    root.mouseChildren = false;
+
     const canvas = await next2d.captureToCanvas(root, {
         "matrix": new Matrix($devicePixelRatio, 0, 0, $devicePixelRatio, 0, 0)
     });
@@ -58,12 +64,10 @@ export const execute = async (): Promise<void> =>
         bitmap.scaleY = 1 / $devicePixelRatio;
     }
 
-    bitmap.setBitmapBuffer(canvas.width, canvas.height, bitmapData.buffer as Uint8Array);
-    // bitmap
-    //     .graphics
-    //     .clear()
-    //     .beginBitmapFill(bitmapData, null, false, false)
-    //     .drawRect(0, 0, canvas.width, canvas.height);
+    bitmap.setBitmapBuffer(
+        canvas.width, canvas.height,
+        bitmapData.buffer as Uint8Array
+    );
 
     root.addChild(bitmap);
 
@@ -97,10 +101,4 @@ export const execute = async (): Promise<void> =>
     }
 
     root.addChild(shape);
-
-    /**
-     * マウス操作を強制停止
-     * Mouse operation is forced to stop
-     */
-    root.mouseChildren = false;
 };

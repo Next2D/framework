@@ -6,7 +6,6 @@ import { execute as contentBuilderService } from "./Builder/service/ContentBuild
  *              A class that complements the dynamic generation of MovieClip created by the Animation Tool.
  *
  * @class
- * @memberof application.content
  * @extends {MovieClip}
  */
 export class MovieClipContent extends MovieClip

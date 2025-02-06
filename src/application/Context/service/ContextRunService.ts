@@ -6,7 +6,7 @@ import { $setContext } from "../../variable/Context";
  * @description コンテキストを起動します。
  *              Start the context.
  *
- * @param {IConfig} config
+ * @param  {IConfig} config
  * @return {Promise<void>}
  * @method
  * @protected

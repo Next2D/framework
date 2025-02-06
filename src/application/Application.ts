@@ -13,7 +13,6 @@ import { response } from "../infrastructure/Response/variable/Response";
  *              Class for controlling scene transitions.
  *
  * @class
- * @memberof application
  */
 export class Application
 {

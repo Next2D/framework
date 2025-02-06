@@ -8,7 +8,6 @@ import { execute as defaultLoaderEndService } from "./DefaultLoading/service/Def
  *              Default loading direction
  *
  * @class
- * @memberof domain.screen
  */
 export class DefaultLoader
 {

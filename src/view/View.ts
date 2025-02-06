@@ -5,7 +5,6 @@ import { Sprite } from "@next2d/display";
  *              It exists as a parent class of View and as an abstract class.
  *
  * @class
- * @memberof view
  * @extends {MovieClip}
  */
 export class View extends Sprite

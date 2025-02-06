@@ -6,7 +6,6 @@ import { execute as contentBuilderService } from "./Builder/service/ContentBuild
  *              A class that complements the dynamic generation of Shape created by the Animation Tool.
  *
  * @class
- * @memberof application.content
  * @extends {Shape}
  */
 export class ShapeContent extends Shape

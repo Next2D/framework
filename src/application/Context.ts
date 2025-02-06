@@ -9,7 +9,6 @@ import { execute as contextBindUseCase } from "./Context/usecase/ContextBindUseC
  *              Controls unbind and bind of the main context, View and ViewModel.
  *
  * @class
- * @memberof context
  */
 export class Context
 {

@@ -6,7 +6,6 @@ import { execute as contentBuilderService } from "./Builder/service/ContentBuild
  *              A class that complements the dynamic generation of Video created by the Animation Tool.
  *
  * @class
- * @memberof application.content
  * @extends {Video}
  */
 export class VideoContent extends Video

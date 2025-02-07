@@ -7,6 +7,7 @@ import { execute as contextRunService } from "./Context/service/ContextRunServic
 import { $getConfig } from "./variable/Config";
 import { $getContext } from "./variable/Context";
 import { response } from "../infrastructure/Response/variable/Response";
+import { cache } from "./variable/Cache";
 
 /**
  * @description シーン遷移のコントロールを行うクラス。
@@ -104,12 +105,25 @@ export class Application
      * @description configで設定したリクエストのレスポンスマップを返却します
      *              Returns the response map of the request set in config
      *
-     * @returns {Map<string, any>}
+     * @return {Map<string, any>}
      * @method
      * @public
      */
     getResponse (): Map<string, any>
     {
         return response;
+    }
+
+    /**
+     * @description キャッシュのMapオブジェクトを返却します
+     *              Returns the Map object of the cache
+     *
+     * @return {Map<string, any>}
+     * @method
+     * @public
+     */
+    getCache (): Map<string, any>
+    {
+        return cache;
     }
 }

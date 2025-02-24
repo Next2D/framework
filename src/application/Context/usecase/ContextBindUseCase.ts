@@ -42,6 +42,10 @@ export const execute = async (context: Context, name: string): Promise<View> =>
      */
     await context.viewModel.bind(context.view);
 
+    /**
+     * rootの子要素を全て削除
+     * Remove all child elements of root
+     */
     const root = context.root;
     while (root.numChildren) {
         root.removeChildAt(0);

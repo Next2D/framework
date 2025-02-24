@@ -1,8 +1,4 @@
 import { $getContext } from "../../../../application/variable/Context";
-import {
-    shape,
-    bitmap
-} from "../../Capture";
 
 /**
  * @description 画面キャプチャーのShapeをStageから削除
@@ -19,8 +15,13 @@ export const execute = (): void =>
         return ;
     }
 
-    root.removeChild(bitmap);
-    root.removeChild(shape);
+    /**
+     * rootの子要素を全て削除
+     * Remove all child elements of root
+     */
+    while (root.numChildren > 0) {
+        root.removeChildAt(0);
+    }
 
     /**
      * マウス操作を有効化

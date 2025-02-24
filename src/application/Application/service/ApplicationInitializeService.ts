@@ -5,6 +5,12 @@ import { $setConfig } from "../../variable/Config";
 import { $setPackages } from "../../variable/Packages";
 
 /**
+ * @type {Promise}
+ * @private
+ */
+let $popstateQueue: Promise<void> = Promise.resolve();
+
+/**
  * @description アプリケーションの初期化処理を実行します
  *              Execute the application initialization process
  *
@@ -32,7 +38,7 @@ export const execute = (
         window.addEventListener("popstate", async (): Promise<void> =>
         {
             application.popstate = true;
-            await application.gotoView();
+            $popstateQueue = $popstateQueue.then(() => application.gotoView());
         });
     }
 

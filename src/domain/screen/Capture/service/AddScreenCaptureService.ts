@@ -1,20 +1,12 @@
 import { $getConfig } from "../../../../application/variable/Config";
 import { $getContext } from "../../../../application/variable/Context";
 import { Matrix } from "@next2d/geom";
+import { shape } from "../../Capture";
 import {
     stage,
-    BitmapData
+    BitmapData,
+    Shape
 } from "@next2d/display";
-import {
-    shape,
-    bitmap
-} from "../../Capture";
-
-/**
- * @type {number}
- * @private
- */
-const $devicePixelRatio: number = window.devicePixelRatio;
 
 /**
  * @type {number}
@@ -50,18 +42,20 @@ export const execute = async (): Promise<void> =>
     root.mouseChildren = false;
 
     const canvas = await next2d.captureToCanvas(root, {
-        "matrix": new Matrix($devicePixelRatio, 0, 0, $devicePixelRatio, 0, 0)
+        "matrix": new Matrix(stage.rendererScale, 0, 0, stage.rendererScale, 0, 0)
     });
 
     const rectangle  = root.getBounds();
     const bitmapData = new BitmapData(canvas.width, canvas.height);
 
     bitmapData.canvas = canvas;
+
+    const bitmap = new Shape();
     bitmap.x = rectangle.x;
     bitmap.y = rectangle.y;
-    if ($devicePixelRatio !== 1) {
-        bitmap.scaleX = 1 / $devicePixelRatio;
-        bitmap.scaleY = 1 / $devicePixelRatio;
+    if (stage.rendererScale !== 1) {
+        bitmap.scaleX = 1 / stage.rendererScale;
+        bitmap.scaleY = 1 / stage.rendererScale;
     }
 
     bitmap.setBitmapBuffer(
@@ -74,7 +68,6 @@ export const execute = async (): Promise<void> =>
     const config = $getConfig();
     const width  = config.stage.width;
     const height = config.stage.height;
-
     if (shape.width !== width || shape.width !== height) {
         shape
             .graphics

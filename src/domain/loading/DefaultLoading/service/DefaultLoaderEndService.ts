@@ -20,8 +20,6 @@ export const execute = (default_loader: DefaultLoader): void =>
     }
 
     const sprite = default_loader.sprite;
-    root.removeChild(sprite);
-
     for (let idx = 0; idx < 3; ++idx) {
 
         const shape = sprite.getChildAt<Shape>(idx);
@@ -39,4 +37,6 @@ export const execute = (default_loader: DefaultLoader): void =>
             reduceJob.stop();
         }
     }
+
+    root.removeChild(sprite);
 };

@@ -4,7 +4,7 @@ import type { Context } from "../../Context";
  * @description ViewとViewModelのバインドを解除します。
  *              Unbinds View and ViewModel.
  *
- * @param {Context} context
+ * @param  {Context} context
  * @return {Promise<void>}
  * @method
  * @protected

@@ -2,6 +2,9 @@
 
 "use strict";
 
+import { readFileSync, writeFileSync } from "fs";
+import { join } from "path";
+
 const execute = () =>
 {
     const packageJson = JSON.parse(

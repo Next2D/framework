@@ -2,7 +2,7 @@
 
 "use strict";
 
-import * as fs from "fs";
+import { existsSync, readFileSync, writeFileSync } from "fs";
 
 /**
  * @return {void}
@@ -12,11 +12,11 @@ import * as fs from "fs";
 const execute = () =>
 {
     const indexPath = `${process.cwd()}/src/index.ts`;
-    if (fs.existsSync(indexPath)) {
+    if (existsSync(indexPath)) {
 
-        const src = fs.readFileSync(indexPath, "utf8");
+        const src = readFileSync(indexPath, "utf8");
         const packageJson = JSON.parse(
-            fs.readFileSync(`${process.cwd()}/package.json`, { "encoding": "utf8" })
+            readFileSync(`${process.cwd()}/package.json`, { "encoding": "utf8" })
         );
 
         const texts = src.split("\n");
@@ -30,7 +30,7 @@ const execute = () =>
             const top   = texts.slice(0, idx).join("\n");
             const lower = texts.slice(idx + 1).join("\n");
 
-            fs.writeFileSync(
+            writeFileSync(
                 indexPath,
                 `${top}
 console.log("%c Next2D Framework %c ${packageJson.version} %c https://next2d.app",

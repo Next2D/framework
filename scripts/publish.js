@@ -2,9 +2,7 @@
 
 "use strict";
 
-import { readFileSync, writeFileSync } from "fs";
 import { spawnSync } from "child_process";
-import { join } from "path";
 
 /**
  * @return {void}

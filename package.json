@@ -21,8 +21,9 @@
   ],
   "scripts": {
     "lint": "eslint src/**/*.ts",
+    "clean": "node ./scripts/clean.js",
     "release": "node ./scripts/release.js",
-    "publish": "node ./scripts/clean.js && node ./scripts/version.js && tsc && node ./scripts/publish.js",
+    "publish": "node ./scripts/version.js && tsc && node ./scripts/publish.js",
     "test": "vitest"
   },
   "repository": {

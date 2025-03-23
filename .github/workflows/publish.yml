@@ -19,6 +19,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           registry-url: "https://registry.npmjs.org"
+      - run: npm run release
       - run: npm install
       - run: npm run publish
       - run: cd ~/work/framework/framework/dist && npm publish --access public

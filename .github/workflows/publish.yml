@@ -17,9 +17,9 @@ jobs:
         with:
           node-version: "22.x"
           registry-url: "https://registry.npmjs.org"
-      - run: npm run release
+      - run: npm run create:package
       - run: npm install
-      - run: npm run publish
+      - run: npm run release
       - run: cd ~/work/framework/framework/dist && npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}

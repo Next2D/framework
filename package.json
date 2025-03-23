@@ -1,7 +1,7 @@
 {
   "name": "@next2d/framework",
   "description": "Next2D Framework is designed according to the principles of clean architecture, domain-driven development, test-driven development, and MVVM, with an emphasis on flexibility, scalability, and maintainability, and a design methodology that keeps each layer loosely coupled.",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "homepage": "https://next2d.app",
   "bugs": "https://github.com/Next2D/Framework/issues/new",
   "author": "Toshiyuki Ienaga <ienaga@next2d.app> (https://github.com/ienaga/)",
@@ -22,8 +22,8 @@
   "scripts": {
     "lint": "eslint src/**/*.ts",
     "clean": "node ./scripts/clean.js",
-    "release": "node ./scripts/release.js",
-    "publish": "node ./scripts/version.js && tsc && node ./scripts/publish.js",
+    "create:package": "node ./scripts/create.js",
+    "release": "node ./scripts/version.js && tsc && node ./scripts/publish.js",
     "test": "vitest"
   },
   "repository": {

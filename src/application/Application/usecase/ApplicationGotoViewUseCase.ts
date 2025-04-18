@@ -96,17 +96,19 @@ export const execute = async (application: Application, name: string = ""): Prom
         response.set(object.name, object.response);
     }
 
-    /**
-     * ローディング表示を終了
-     * End loading display
-     */
-    await loadingEndService();
+    if (config.loading) {
+        /**
+         * ローディング表示を終了
+         * End loading display
+         */
+        await loadingEndService();
 
-    /**
-     * 前の画面のキャプチャーを終了
-     * End previous screen capture
-     */
-    disposeCaptureService();
+        /**
+         * 前の画面のキャプチャーを終了
+         * End previous screen capture
+         */
+        disposeCaptureService();
+    }
 
     /**
      * ViewとViewModelを起動

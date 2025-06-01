@@ -41,33 +41,46 @@ export const execute = async (): Promise<void> =>
      */
     root.mouseChildren = false;
 
-    const canvas = await next2d.captureToCanvas(root, {
-        "matrix": new Matrix(stage.rendererScale, 0, 0, stage.rendererScale, 0, 0)
-    });
-
-    const rectangle  = root.getBounds();
-    const bitmapData = new BitmapData(canvas.width, canvas.height);
-
-    bitmapData.canvas = canvas;
-
-    const bitmap = new Shape();
-    bitmap.x = rectangle.x;
-    bitmap.y = rectangle.y;
-    if (stage.rendererScale !== 1) {
-        bitmap.scaleX = 1 / stage.rendererScale;
-        bitmap.scaleY = 1 / stage.rendererScale;
-    }
-
-    bitmap.setBitmapBuffer(
-        canvas.width, canvas.height,
-        bitmapData.buffer as Uint8Array
-    );
-
-    root.addChild(bitmap);
-
+    const scale  = stage.rendererScale;
     const config = $getConfig();
     const width  = config.stage.width;
     const height = config.stage.height;
+
+    const tx = (stage.rendererWidth  - stage.stageWidth  * scale) / 2;
+    const ty = (stage.rendererHeight - stage.stageHeight * scale) / 2;
+
+    /**
+     * 現在の描画をcanvasに転写
+     * Transfer the current drawing to canvas
+     */
+    const rectangle = root.getBounds();
+    if (rectangle.width > 0 && rectangle.height > 0) {
+
+        const canvas = await next2d.captureToCanvas(root, {
+            "matrix": new Matrix(
+                scale, 0, 0, scale,
+                -rectangle.x * scale,
+                -rectangle.y * scale
+            )
+        });
+
+        const bitmapData  = new BitmapData(canvas.width, canvas.height);
+        bitmapData.canvas = canvas;
+
+        const bitmap = new Shape();
+        bitmap.setBitmapBuffer(
+            canvas.width, canvas.height,
+            bitmapData.buffer as Uint8Array
+        );
+
+        bitmap.scaleX = 1 / scale;
+        bitmap.scaleY = 1 / scale;
+        bitmap.x = -tx / scale;
+        bitmap.y = -ty / scale;
+
+        root.addChild(bitmap);
+    }
+
     if (shape.width !== width || shape.width !== height) {
         shape
             .graphics
@@ -77,19 +90,15 @@ export const execute = async (): Promise<void> =>
             .endFill();
     }
 
-    const scale = stage.rendererScale;
-
-    const tx = (stage.rendererWidth  - stage.stageWidth * scale) / 2;
     if (tx && $cacheX !== tx) {
         $cacheX = tx;
-        shape.scaleX = (width + tx * 2 / scale) / width;
+        shape.width = stage.rendererWidth / scale;
         shape.x = -tx / scale;
     }
 
-    const ty = (stage.rendererHeight - stage.stageHeight * scale) / 2;
     if (ty && $cacheY !== ty) {
         $cacheY = ty;
-        shape.scaleY = (height + ty * 2 / scale) / height;
+        shape.height = stage.rendererHeight / scale;
         shape.y = -ty / scale;
     }
 

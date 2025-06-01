@@ -34,7 +34,7 @@ describe("AddScreenCaptureService Test", () =>
         expect(root.numChildren).toBe(0);
         expect(root.mouseChildren).toBe(true);
         await execute();
-        expect(root.numChildren).toBe(2);
+        expect(root.numChildren).toBe(1);
         expect(root.mouseChildren).toBe(false);
     });
 });

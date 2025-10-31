@@ -1,4 +1,4 @@
-import type { IRequest } from "src/interface/IRequest";
+import type { IRequest } from "../../../interface/IRequest";
 import { Loader } from "@next2d/display";
 import { URLRequest } from "@next2d/net";
 import { cache } from "../../../application/variable/Cache";

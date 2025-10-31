@@ -5,6 +5,7 @@
     "module": "ESNext",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
+    "ignoreDeprecations": "6.0",
 
     /* Bundler mode */
     "moduleResolution": "Bundler",
@@ -19,10 +20,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-
-    "baseUrl": ".",
     "outDir": "./dist/src",
-
     "types": [
       "vitest/globals"
     ]
@@ -37,6 +35,6 @@
     "scripts",
     "dist",
     "src/**/*.test.ts",
-    ".github",
+    ".github"
   ]
 }

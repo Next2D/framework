@@ -1,7 +1,7 @@
 {
   "name": "@next2d/framework",
   "description": "Next2D Framework is designed according to the principles of clean architecture, domain-driven development, test-driven development, and MVVM, with an emphasis on flexibility, scalability, and maintainability, and a design methodology that keeps each layer loosely coupled.",
-  "version": "3.0.12",
+  "version": "3.0.13",
   "homepage": "https://next2d.app",
   "bugs": "https://github.com/Next2D/Framework/issues/new",
   "author": "Toshiyuki Ienaga <ienaga@next2d.app> (https://github.com/ienaga/)",
@@ -36,14 +36,14 @@
     "@types/node": "^24.9.2",
     "@typescript-eslint/eslint-plugin": "^8.46.2",
     "@typescript-eslint/parser": "^8.46.2",
-    "@vitest/web-worker": "^4.0.5",
+    "@vitest/web-worker": "^4.0.6",
     "eslint": "^9.38.0",
     "eslint-plugin-unused-imports": "^4.3.0",
     "globals": "^16.4.0",
     "jsdom": "^27.1.0",
     "typescript": "^5.9.3",
     "vite": "^7.1.12",
-    "vitest": "^4.0.5",
+    "vitest": "^4.0.6",
     "vitest-webgl-canvas-mock": "^1.1.0"
   },
   "peerDependencies": {

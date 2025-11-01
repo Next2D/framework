@@ -5,7 +5,7 @@ Next2D Framework
 </div>
 
 [![UnitTest](https://github.com/Next2D/Framework/actions/workflows/integration.yml/badge.svg?branch=main)](https://github.com/Next2D/Framework/actions/workflows/integration.yml)
-[![CodeQL](https://github.com/Next2D/Framework/actions/workflows/codeql-analysis.yml/badge.svg?branch=main)](https://github.com/Next2D/Framework/actions/workflows/codeql-analysis.yml)
+[![CodeQL](https://github.com/Next2D/framework/actions/workflows/github-code-scanning/codeql/badge.svg?branch=main)](https://github.com/Next2D/framework/actions/workflows/github-code-scanning/codeql)
 [![Lint](https://github.com/Next2D/Framework/actions/workflows/lint.yml/badge.svg?branch=main)](https://github.com/Next2D/Framework/actions/workflows/lint.yml)
 
 [![release](https://img.shields.io/github/v/release/Next2D/Framework)](https://github.com/Next2D/Framework/releases)

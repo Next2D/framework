@@ -19,10 +19,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-
-    "baseUrl": ".",
     "outDir": "./dist/src",
-
     "types": [
       "vitest/globals"
     ]
@@ -37,6 +34,6 @@
     "scripts",
     "dist",
     "src/**/*.test.ts",
-    ".github",
+    ".github"
   ]
 }

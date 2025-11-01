@@ -1,4 +1,4 @@
-import type { IQueryObject } from "src/interface/IQueryObject";
+import type { IQueryObject } from "../../../interface/IQueryObject";
 import { $getConfig } from "../../variable/Config";
 import { query } from "../../variable/Query";
 

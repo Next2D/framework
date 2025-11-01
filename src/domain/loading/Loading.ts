@@ -1,4 +1,4 @@
-import type { ILoading } from "src/interface/ILoading";
+import type { ILoading } from "../../interface/ILoading";
 
 /**
  * @type {object}

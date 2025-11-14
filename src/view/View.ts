@@ -5,7 +5,7 @@ import { Sprite } from "@next2d/display";
  *              It exists as a parent class of View and as an abstract class.
  *
  * @class
- * @extends {MovieClip}
+ * @extends {Sprite}
  */
 export class View extends Sprite
 {
@@ -16,17 +16,38 @@ export class View extends Sprite
     constructor ()
     {
         super();
-        this.initialize();
     }
 
     /**
      * @description constructorが起動した後にコールされます。
      *              Called after the constructor is invoked.
      *
-     * @return {void}
+     * @return {Promise<void>}
      * @method
      * @abstract
      */
     // eslint-disable-next-line no-empty-function
-    initialize (): void {}
+    async initialize (): Promise<void> {}
+
+    /**
+     * @description Viewが表示された際にコールされます。
+     *              Called when the View is displayed.
+     *
+     * @return {Promise<void>}
+     * @method
+     * @public
+     */
+    // eslint-disable-next-line no-empty-function
+    async onEnter (): Promise<void> {}
+
+    /**
+     * @description Viewが非表示になった際にコールされます。
+     *              Called when the View is hidden.
+     *
+     * @return {Promise<void>}
+     * @method
+     * @public
+     */
+    // eslint-disable-next-line no-empty-function
+    async onExit (): Promise<void> {}
 }

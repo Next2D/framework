@@ -61,7 +61,9 @@ export const execute = async (): Promise<void> =>
                 scale, 0, 0, scale,
                 -rectangle.x * scale,
                 -rectangle.y * scale
-            )
+            ),
+            "bgColor": config.stage.options?.bgColor || null,
+            "bgAlpha": config.stage.options?.bgColor !== "" ? 1 : 0
         });
 
         const bitmapData  = new BitmapData(canvas.width, canvas.height);

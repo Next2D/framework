@@ -9,7 +9,7 @@
  */
 export const execute = (name: string): string =>
 {
-    const names: string[] = name.split("/");
+    const names: string[] = name.split(/-|\/|_/);
 
     let viewName: string = "";
     for (let idx: number = 0; names.length > idx; ++idx) {

@@ -27,20 +27,16 @@ export const execute = async (context: Context, name: string): Promise<View> =>
     }
 
     /**
-     * 遷移先のViewとViewModelを準備
-     * Prepare the destination View and ViewModel
+     * 遷移先のViewとViewModelを起動、初期化処理を実行
+     * Start the destination View and ViewModel, and execute the initialization process
      */
     const ViewModelClass: any = packages.get(viewModelName) as unknown as ViewModel;
     context.viewModel = (new ViewModelClass() as ViewModel);
+    await context.viewModel.initialize();
 
     const ViewClass: any = packages.get(viewName) as unknown as View;
-    context.view = (new ViewClass() as View);
-
-    /**
-     * ViewModelにViewをbindしてページを生成
-     * Bind a View to a ViewModel to generate a page
-     */
-    await context.viewModel.bind(context.view);
+    context.view = (new ViewClass(context.viewModel) as View);
+    await context.view.initialize();
 
     /**
      * rootの子要素を全て削除
@@ -56,6 +52,12 @@ export const execute = async (context: Context, name: string): Promise<View> =>
      * Set the view at the very back of the stage
      */
     root.addChildAt(context.view, 0);
+
+    /**
+     * 画面表示時の処理を実行
+     * Execute processing when the screen is displayed
+     */
+    await context.view.onEnter();
 
     return context.view;
 };

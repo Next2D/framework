@@ -15,12 +15,16 @@ export const execute = async (context: Context): Promise<void> =>
         return ;
     }
 
-    await context.viewModel.unbind(context.view);
-
     const root = context.root;
     if (!root) {
         return ;
     }
 
     root.removeChild(context.view);
+
+    /**
+     * ViewのonExitをコール
+     * Call View's onExit
+     */
+    await context.view.onExit();
 };

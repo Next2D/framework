@@ -17,4 +17,29 @@ describe("ContextToCamelCaseService Test", () =>
     {
         expect(execute("game/list/page")).toBe("GameListPage");
     });
+
+    it("execute test case4 - hyphen separator", () =>
+    {
+        expect(execute("user-profile")).toBe("UserProfile");
+    });
+
+    it("execute test case5 - underscore separator", () =>
+    {
+        expect(execute("user_settings")).toBe("UserSettings");
+    });
+
+    it("execute test case6 - mixed separators", () =>
+    {
+        expect(execute("game/user-profile_page")).toBe("GameUserProfilePage");
+    });
+
+    it("execute test case7 - multiple hyphens", () =>
+    {
+        expect(execute("my-awesome-component")).toBe("MyAwesomeComponent");
+    });
+
+    it("execute test case8 - multiple underscores", () =>
+    {
+        expect(execute("my_awesome_component")).toBe("MyAwesomeComponent");
+    });
 });

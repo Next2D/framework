@@ -69,8 +69,64 @@ cd app-name
 npm start
 ```
 
-##  Flowchart
-![Flowchart](./Framework_Flowchart.svg)
+## Flowchart
+
+```mermaid
+graph TD
+    User([User]) -->|Request| GotoView[gotoView Path]
+    
+    GotoView --> LoadingCheck{use loading?<br/>Default: true}
+    
+    LoadingCheck -->|YES| LoadingStart[Start Loading]
+    LoadingCheck -->|NO| OnExit
+    LoadingStart --> OnExit
+    
+    OnExit[Previous View: onExit] --> RemoveResponse[Remove Previous Response Data]
+    
+    RemoveResponse --> RequestType[Request Type]
+    
+    RequestType --> JSON[JSON: Get external JSON data]
+    RequestType --> CONTENT[CONTENT: Get Animation Tool JSON]
+    RequestType --> CUSTOM[CUSTOM: Request to external API]
+    
+    JSON --> CacheCheck{use cache?<br/>Default: false}
+    CONTENT --> CacheCheck
+    CUSTOM --> CacheCheck
+    
+    CacheCheck -->|YES| CacheData[(Cache)]
+    CacheCheck -->|NO| GlobalData{{Global Network}}
+    
+    CacheData --> Cached{Cached?}
+    
+    Cached -->|NO| GlobalData
+    Cached -->|YES| RegisterResponse
+    GlobalData --> RegisterResponse
+    
+    RegisterResponse[Register Response Data] --> ViewModelInit[ViewModel: initialize]
+    
+    ViewModelInit --> ViewInit[View: initialize]
+    ViewInit --> AddToStage[Add View to Stage]
+    AddToStage --> OnEnter[View: onEnter]
+    
+    OnEnter --> CallbackCheck{use callback?<br/>Default: empty}
+    
+    CallbackCheck -->|YES| CallbackStart[Start Callback]
+    CallbackCheck -->|NO| LoadingEndCheck
+    CallbackStart --> LoadingEndCheck
+    
+    LoadingEndCheck{use loading?<br/>Default: true}
+    
+    LoadingEndCheck -->|YES| LoadingEnd[End Loading]
+    LoadingEndCheck -->|NO| StartDrawing
+    LoadingEnd --> StartDrawing
+    
+    StartDrawing[Start Drawing] -->|Response| User
+    
+    style User fill:#d5e8d4,stroke:#82b366
+    style StartDrawing fill:#dae8fc,stroke:#6c8ebf
+    style CacheData fill:#fff2cc,stroke:#d6b656
+    style GlobalData fill:#f5f5f5,stroke:#666666
+```
 
 ## License
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT) - see the [LICENSE](LICENSE) file for details.

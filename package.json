@@ -31,7 +31,7 @@
     "url": "git+https://github.com/Next2D/Framework.git"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/eslintrc": "^3.3.3",
     "@eslint/js": "^9.39.1",
     "@types/node": "^24.10.1",
     "@typescript-eslint/eslint-plugin": "^8.48.0",
@@ -42,7 +42,7 @@
     "globals": "^16.5.0",
     "jsdom": "^27.2.0",
     "typescript": "^5.9.3",
-    "vite": "^7.2.4",
+    "vite": "^7.2.6",
     "vitest": "^4.0.14",
     "vitest-webgl-canvas-mock": "^1.1.0"
   },

@@ -81,7 +81,8 @@ graph TD
     LoadingCheck -->|NO| OnExit
     LoadingStart --> OnExit
     
-    OnExit[Previous View: onExit] --> RemoveResponse[Remove Previous Response Data]
+    OnExit[Previous View: onExit] --> RemoveViewFromStage[Remove Previous View from Stage]
+    RemoveViewFromStage --> RemoveResponse[Remove Previous Response Data]
     
     RemoveResponse --> RequestType[Request Type]
     

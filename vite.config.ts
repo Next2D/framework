@@ -13,6 +13,7 @@ export default defineConfig({
             "@vitest/web-worker",
             "vitest-webgl-canvas-mock"
         ],
+        "pool": "threads",
         "include": ["src/**/*.test.ts"]
     }
 });

@@ -23,7 +23,7 @@ Next2D Frameworkは、クリーンアーキテクチャー、ドメイン駆動�
 [English]  
 Next2D Framework is designed according to the principles of clean architecture, domain-driven development, test-driven development, and MVVM, with an emphasis on flexibility, scalability, and maintainability, and a design methodology that keeps each layer loosely coupled.  
   
-It is designed according to the principles of MVVM, with an architecture and design methodology that focuses on flexibility, scalability, and maintainability, and keeps each layer loosely coupled. The UI can be efficiently built and maintained by subdividing components and designing modules that can be reused.  
+It is designed according to the principles of MVVM, with an architecture and design methodology that focuses on flexibility, scalability, and maintainability, and keeps each layer loosely coupled. The UI can be efficiently built and maintained by subdividing components and designing modules that can be reused.
 
 In addition, the emphasis on test-driven development supports the development of high-quality code while testing at various levels, including unit tests, integration tests, and UI tests.  
 
@@ -33,6 +33,36 @@ Next2D框架是根据简洁架构、领域驱动开发、测试驱动开发和MV
 它可以通过URL（SPA）实现场景管理，这在传统的Canvas/WebGL应用程序中是很难实现的，并且可以为每个场景进行UI开发和屏幕检查。 该系统能够实现高效的UI构建和维护。  
   
 此外，对测试驱动开发的强调支持高质量代码的开发，同时在各个层面进行测试，包括单元测试、集成测试和UI测试。  
+
+## Architecture
+
+```
+src/
+├── application/          # Application Layer
+│   ├── Application.ts    # Main application class
+│   ├── Context.ts        # View/ViewModel context management
+│   ├── Application/      # Application services and use cases
+│   ├── Config/           # Configuration services
+│   ├── Context/          # Context services and use cases
+│   ├── content/          # Content classes (MovieClip, Shape, TextField, Video)
+│   └── variable/         # Application state (Config, Context, Cache, Packages, Query)
+├── domain/               # Domain Layer
+│   ├── callback/         # Callback services
+│   ├── loading/          # Loading animation (DefaultLoader, Loading services)
+│   └── screen/           # Screen capture services
+├── infrastructure/       # Infrastructure Layer
+│   ├── Request/          # HTTP request handling (JSON, Content, Custom)
+│   └── Response/         # Response data management
+├── interface/            # TypeScript interfaces
+│   ├── IConfig.ts        # Configuration interface
+│   ├── IRequest.ts       # Request interface
+│   ├── IRouting.ts       # Routing interface
+│   └── ...
+└── view/                 # View Layer
+    ├── View.ts           # Base View class
+    └── ViewModel.ts      # Base ViewModel class
+```
+
 ## Support
 
 [日本語]  
@@ -67,6 +97,112 @@ npm start
 npx create-next2d-app sample-app --template @next2d/framework-typescript-template
 cd app-name
 npm start
+```
+
+## API Reference
+
+### Application
+
+| Method | Description |
+|--------|-------------|
+| `initialize(config, packages)` | Initialize the application with config and packages |
+| `run()` | Launch the Next2D application |
+| `gotoView(name?)` | Navigate to a View. If no argument, parses URL |
+| `getContext()` | Get the current Context |
+| `getResponse()` | Get the response data Map |
+| `getCache()` | Get the cache data Map |
+
+### View Lifecycle
+
+| Method | Description |
+|--------|-------------|
+| `initialize()` | Called after constructor |
+| `onEnter()` | Called when View is displayed |
+| `onExit()` | Called when View is hidden |
+
+### ViewModel Lifecycle
+
+| Method | Description |
+|--------|-------------|
+| `initialize()` | Called after constructor |
+
+### Context
+
+| Property/Method | Description |
+|-----------------|-------------|
+| `view` | Current View instance |
+| `viewModel` | Current ViewModel instance |
+| `root` | Root Sprite on Stage |
+| `bind(name)` | Attach View to Stage |
+| `unbind()` | Detach View from Stage |
+
+### Exported Classes
+
+```typescript
+import {
+    app,              // Application instance
+    View,             // Base View class
+    ViewModel,        // Base ViewModel class
+    MovieClipContent, // MovieClip content from Animation Tool
+    ShapeContent,     // Shape content from Animation Tool
+    TextFieldContent, // TextField content from Animation Tool
+    VideoContent      // Video content from Animation Tool
+} from "@next2d/framework";
+```
+
+## Configuration
+
+### IConfig
+
+```typescript
+interface IConfig {
+    platform: string;        // "web" | "app"
+    spa: boolean;            // Enable SPA mode
+    defaultTop?: string;     // Default top page name (default: "top")
+    stage: {
+        width: number;       // Stage width
+        height: number;      // Stage height
+        fps: number;         // Frame rate
+        options?: {
+            base?: string;
+            fullScreen?: boolean;
+            tagId?: string;
+            bgColor?: string;
+        };
+    };
+    loading?: {
+        callback: string;    // Loading class name
+    };
+    gotoView?: {
+        callback: string | string[];  // Callback after view transition
+    };
+    routing?: {
+        [key: string]: {
+            private?: boolean;
+            redirect?: string;
+            requests?: IRequest[];
+        };
+    };
+}
+```
+
+### IRequest
+
+```typescript
+interface IRequest {
+    type: "json" | "content" | "custom" | "cluster";
+    path?: string;           // URL path
+    name?: string;           // Response key name
+    cache?: boolean;         // Enable caching
+    callback?: string | string[];
+    // For custom type
+    class?: string;
+    access?: "static" | "instance";
+    method?: string;
+    // For HTTP requests
+    headers?: HeadersInit;
+    body?: any;
+}
 ```
 
 ## Flowchart

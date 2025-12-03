@@ -24,7 +24,9 @@ import { execute as callbackService } from "../../../domain/callback/service/Cal
 export const execute = async (application: Application, name: string = ""): Promise<void> =>
 {
     const config = $getConfig();
-    if (config.loading) {
+    const hasLoading = !!config.loading;
+
+    if (hasLoading) {
         /**
          * 現時点の描画をキャプチャーして表示
          * Capture and display the current drawing
@@ -86,17 +88,13 @@ export const execute = async (application: Application, name: string = ""): Prom
      * レスポンス情報をマップに登録
      * Response information is registered on the map
      */
-    for (let idx = 0; idx < responses.length; ++idx) {
-
-        const object = responses[idx];
-        if (!object.name) {
-            continue;
+    for (const object of responses) {
+        if (object.name) {
+            response.set(object.name, object.response);
         }
-
-        response.set(object.name, object.response);
     }
 
-    if (config.loading) {
+    if (hasLoading) {
         /**
          * ローディング表示を終了
          * End loading display

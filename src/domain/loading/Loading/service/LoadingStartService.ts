@@ -1,10 +1,4 @@
-import { DefaultLoader } from "../../DefaultLoader";
-import { $getConfig } from "../../../../application/variable/Config";
-import { packages } from "../../../../application/variable/Packages";
-import {
-    $getInstance,
-    $setInstance
-} from "../../Loading";
+import { execute as loadingGetInstanceService } from "./LoadingGetInstanceService";
 
 /**
  * @description ローダーのアニメーションを実行
@@ -16,25 +10,9 @@ import {
  */
 export const execute = async (): Promise<void> =>
 {
-    const config = $getConfig();
-    if (!config || !config.loading) {
-        return ;
-    }
-
-    const name: string | void = config.loading.callback;
-    if (!name) {
-        return ;
-    }
-
-    let instance = $getInstance();
+    const instance = loadingGetInstanceService();
     if (!instance) {
-
-        const LoaderClass: any = packages.has(name)
-            ? packages.get(name)
-            : DefaultLoader;
-
-        instance = new LoaderClass();
-        $setInstance(instance);
+        return ;
     }
 
     await instance.start();

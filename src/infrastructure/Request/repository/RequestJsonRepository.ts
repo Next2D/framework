@@ -1,7 +1,6 @@
 import type { IRequest } from "../../../interface/IRequest";
-import { cache } from "../../../application/variable/Cache";
-import { ResponseDTO } from "../../Response/dto/ResponseDTO";
-import { execute as callbackService } from "../../../domain/callback/service/CallbackService";
+import { execute as requestCacheCheckService } from "../service/RequestCacheCheckService";
+import { execute as requestResponseProcessService } from "../service/RequestResponseProcessService";
 
 /**
  * @description 指定先のJSONを非同期で取得
@@ -18,23 +17,9 @@ export const execute = async (request_object: IRequest): Promise<any> =>
         throw new Error("`path` and `name` must be set for json requests.");
     }
 
-    const name = request_object.name;
-
-    /**
-     * キャッシュを利用する場合はキャッシュデータをチェック
-     * Check cache data if cache is used
-     */
-    if (request_object.cache) {
-        if (cache.size && cache.has(name)) {
-
-            const value: any = cache.get(name);
-
-            if (request_object.callback) {
-                await callbackService(request_object.callback, value);
-            }
-
-            return new ResponseDTO(name, value);
-        }
+    const cachedResponse = await requestCacheCheckService(request_object);
+    if (cachedResponse) {
+        return cachedResponse;
     }
 
     const options: RequestInit = {};
@@ -59,13 +44,5 @@ export const execute = async (request_object: IRequest): Promise<any> =>
     const response = await fetch(request_object.path, options);
     const value = await response.json();
 
-    if (request_object.cache) {
-        cache.set(name, value);
-    }
-
-    if (request_object.callback) {
-        await callbackService(request_object.callback, value);
-    }
-
-    return new ResponseDTO(name, value);
+    return requestResponseProcessService(request_object, value);
 };

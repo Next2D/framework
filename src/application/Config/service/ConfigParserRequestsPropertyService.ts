@@ -15,21 +15,18 @@ import { $getConfig } from "../../../application/variable/Config";
  */
 export const execute = (name: string): IRequest[] =>
 {
-    const requests: IRequest[] = [];
-
     const config = $getConfig();
     if (!config || !config.routing) {
-        return requests;
+        return [];
     }
 
     const routing: IRouting = config.routing[name];
     if (!routing || !routing.requests) {
-        return requests;
+        return [];
     }
 
-    for (let idx: number = 0; idx < routing.requests.length; idx++) {
-
-        const request: IRequest = routing.requests[idx];
+    const requests: IRequest[] = [];
+    for (const request of routing.requests) {
 
         if (request.type !== "cluster") {
             requests.push(request);

@@ -23,29 +23,106 @@ describe("ContextBindUseCase Test", () =>
             }
         });
 
-        let state = "none";
+        let viewModelInitialized = false;
+        let viewInitialized = false;
+        let viewEntered = false;
+
         class TestViewModel extends ViewModel
         {
-            async bind ()
+            async initialize ()
             {
-                state = "bind";
+                viewModelInitialized = true;
+            }
+        }
+
+        class TestView extends View
+        {
+            async initialize ()
+            {
+                viewInitialized = true;
+            }
+
+            async onEnter ()
+            {
+                viewEntered = true;
             }
         }
 
         packages.clear();
-        packages.set("TestView", View);
+        packages.set("TestView", TestView);
         packages.set("TestViewModel", TestViewModel);
 
         const root = new MovieClip();
         const context = new Context(root);
         $setContext(context);
 
-        expect(state).toBe("none");
+        expect(viewModelInitialized).toBe(false);
+        expect(viewInitialized).toBe(false);
+        expect(viewEntered).toBe(false);
         expect(root.numChildren).toBe(0);
 
         await execute(context, "test");
 
-        expect(state).toBe("bind");
+        expect(viewModelInitialized).toBe(true);
+        expect(viewInitialized).toBe(true);
+        expect(viewEntered).toBe(true);
         expect(root.numChildren).toBe(1);
+        expect(context.view).toBeInstanceOf(TestView);
+        expect(context.viewModel).toBeInstanceOf(TestViewModel);
+    });
+
+    it("should throw error when packages not found", async () =>
+    {
+        $setConfig({
+            "platform": "web",
+            "spa": false,
+            "stage": {
+                "width": 800,
+                "height": 600,
+                "fps": 60
+            }
+        });
+
+        packages.clear();
+
+        const root = new MovieClip();
+        const context = new Context(root);
+        $setContext(context);
+
+        await expect(execute(context, "notfound")).rejects.toThrow("not found view or viewMode.");
+    });
+
+    it("should remove existing children before adding view", async () =>
+    {
+        $setConfig({
+            "platform": "web",
+            "spa": false,
+            "stage": {
+                "width": 800,
+                "height": 600,
+                "fps": 60
+            }
+        });
+
+        class TestViewModel extends ViewModel {}
+        class TestView extends View {}
+
+        packages.clear();
+        packages.set("TestView", TestView);
+        packages.set("TestViewModel", TestViewModel);
+
+        const root = new MovieClip();
+        root.addChild(new MovieClip());
+        root.addChild(new MovieClip());
+
+        const context = new Context(root);
+        $setContext(context);
+
+        expect(root.numChildren).toBe(2);
+
+        await execute(context, "test");
+
+        expect(root.numChildren).toBe(1);
+        expect(context.view).toBeInstanceOf(TestView);
     });
 });

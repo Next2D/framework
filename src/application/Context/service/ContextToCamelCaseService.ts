@@ -9,15 +9,8 @@
  */
 export const execute = (name: string): string =>
 {
-    const names: string[] = name.split(/-|\/|_/);
-
-    let viewName: string = "";
-    for (let idx: number = 0; names.length > idx; ++idx) {
-        name = names[idx];
-        viewName += name
-            .charAt(0)
-            .toUpperCase() + name.slice(1);
-    }
-
-    return viewName;
+    return name
+        .split(/-|\/|_/)
+        .map((word: string): string => word.charAt(0).toUpperCase() + word.slice(1))
+        .join("");
 };

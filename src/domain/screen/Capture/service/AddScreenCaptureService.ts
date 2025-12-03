@@ -2,23 +2,13 @@ import { $getConfig } from "../../../../application/variable/Config";
 import { $getContext } from "../../../../application/variable/Context";
 import { Matrix } from "@next2d/geom";
 import { shape } from "../../Capture";
+import { cacheX, setCacheX } from "../variable/CacheX";
+import { cacheY, setCacheY } from "../variable/CacheY";
 import {
     stage,
     BitmapData,
     Shape
 } from "@next2d/display";
-
-/**
- * @type {number}
- * @private
- */
-let $cacheX: number = 0;
-
-/**
- * @type {number}
- * @private
- */
-let $cacheY: number = 0;
 
 /**
  * @description 画面キャプチャーのShapeをStageに追加
@@ -92,14 +82,14 @@ export const execute = async (): Promise<void> =>
             .endFill();
     }
 
-    if (tx && $cacheX !== tx) {
-        $cacheX = tx;
+    if (tx && cacheX !== tx) {
+        setCacheX(tx);
         shape.width = stage.rendererWidth / scale;
         shape.x = -tx / scale;
     }
 
-    if (ty && $cacheY !== ty) {
-        $cacheY = ty;
+    if (ty && cacheY !== ty) {
+        setCacheY(ty);
         shape.height = stage.rendererHeight / scale;
         shape.y = -ty / scale;
     }

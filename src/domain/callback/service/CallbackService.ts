@@ -23,9 +23,7 @@ export const execute = async (
         ? [callback]
         : callback;
 
-    for (let idx = 0; idx < callbacks.length; ++idx) {
-
-        const name = callbacks[idx];
+    for (const name of callbacks) {
         if (!packages.has(name)) {
             continue;
         }

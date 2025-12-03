@@ -1,10 +1,9 @@
 import type { IRequest } from "../../../interface/IRequest";
 import { Loader } from "@next2d/display";
 import { URLRequest } from "@next2d/net";
-import { cache } from "../../../application/variable/Cache";
 import { loaderInfoMap } from "../../../application/variable/LoaderInfoMap";
-import { ResponseDTO } from "../../Response/dto/ResponseDTO";
-import { execute as callbackService } from "../../../domain/callback/service/CallbackService";
+import { execute as requestCacheCheckService } from "../service/RequestCacheCheckService";
+import { execute as requestResponseProcessService } from "../service/RequestResponseProcessService";
 
 /**
  * @description 指定先のJSONを非同期で取得
@@ -21,24 +20,9 @@ export const execute = async (request_object: IRequest): Promise<any> =>
         throw new Error("`path` and `name` must be set for content requests.");
     }
 
-    const name = request_object.name;
-
-    /**
-     * キャッシュを利用する場合はキャッシュデータをチェック
-     * Check cache data if cache is used
-     */
-    if (request_object.cache) {
-
-        if (cache.size && cache.has(name)) {
-
-            const value: any = cache.get(name);
-
-            if (request_object.callback) {
-                await callbackService(request_object.callback, value);
-            }
-
-            return new ResponseDTO(name, value);
-        }
+    const cachedResponse = await requestCacheCheckService(request_object);
+    if (cachedResponse) {
+        return cachedResponse;
     }
 
     const urlRequest = new URLRequest(request_object.path);
@@ -95,13 +79,5 @@ export const execute = async (request_object: IRequest): Promise<any> =>
         }
     }
 
-    if (request_object.cache) {
-        cache.set(request_object.name, content);
-    }
-
-    if (request_object.callback) {
-        await callbackService(request_object.callback, content);
-    }
-
-    return new ResponseDTO(request_object.name, content);
+    return requestResponseProcessService(request_object, content);
 };

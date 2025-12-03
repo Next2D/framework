@@ -1,8 +1,7 @@
 import type { IRequest } from "../../../interface/IRequest";
 import { packages } from "../../../application/variable/Packages";
-import { cache } from "../../../application/variable/Cache";
-import { ResponseDTO } from "../../Response/dto/ResponseDTO";
-import { execute as callbackService } from "../../../domain/callback/service/CallbackService";
+import { execute as requestCacheCheckService } from "../service/RequestCacheCheckService";
+import { execute as requestResponseProcessService } from "../service/RequestResponseProcessService";
 
 /**
  * @description 指定先の外部データを非同期で取得
@@ -23,24 +22,9 @@ export const execute = async (request_object: IRequest): Promise<any> =>
         throw new Error("`class`, `access`, `method` and `name` must be set for custom requests.");
     }
 
-    const name = request_object.name;
-
-    /**
-     * キャッシュを利用する場合はキャッシュデータをチェック
-     * Check cache data if cache is used
-     */
-    if (request_object.cache) {
-
-        if (cache.size && cache.has(name)) {
-
-            const value: any = cache.get(name);
-
-            if (request_object.callback) {
-                await callbackService(request_object.callback, value);
-            }
-
-            return new ResponseDTO(name, value);
-        }
+    const cachedResponse = await requestCacheCheckService(request_object);
+    if (cachedResponse) {
+        return cachedResponse;
     }
 
     const className = request_object.class;
@@ -53,13 +37,5 @@ export const execute = async (request_object: IRequest): Promise<any> =>
         ? await CallbackClass[request_object.method]()
         : await new CallbackClass()[request_object.method]();
 
-    if (request_object.cache) {
-        cache.set(name, value);
-    }
-
-    if (request_object.callback) {
-        await callbackService(request_object.callback, value);
-    }
-
-    return new ResponseDTO(name, value);
+    return requestResponseProcessService(request_object, value);
 };

@@ -3,12 +3,7 @@ import type { IPackages } from "../../../interface/IPackages";
 import type { Application } from "../../Application";
 import { $setConfig } from "../../variable/Config";
 import { $setPackages } from "../../variable/Packages";
-
-/**
- * @type {Promise}
- * @private
- */
-let $popstateQueue: Promise<void> = Promise.resolve();
+import { popstateQueue, setPopstateQueue } from "../variable/PopstateQueue";
 
 /**
  * @description アプリケーションの初期化処理を実行します
@@ -38,7 +33,7 @@ export const execute = (
         window.addEventListener("popstate", async (): Promise<void> =>
         {
             application.popstate = true;
-            $popstateQueue = $popstateQueue.then(() => application.gotoView());
+            setPopstateQueue(popstateQueue.then(() => application.gotoView()));
         });
     }
 

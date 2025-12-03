@@ -1,8 +1,6 @@
 import type { View } from "../view/View";
 import type { ViewModel } from "../view/ViewModel";
 import type { Sprite } from "@next2d/display";
-import { execute as contextUnbindService } from "./Context/service/ContextUnbindService";
-import { execute as contextBindUseCase } from "./Context/usecase/ContextBindUseCase";
 
 /**
  * @description メインコンテキスト、ViewとViewModelのunbind、bindをコントロールします。
@@ -64,32 +62,5 @@ export class Context
     get root (): Sprite
     {
         return this._$root;
-    }
-
-    /**
-     * @description ViewクラスをrootのSpriteにアタッチします。
-     *              Attach the View class to the root Sprite.
-     *
-     * @param {string} name
-     * @return {Promise<View>}
-     * @method
-     * @public
-     */
-    async bind (name: string): Promise<View>
-    {
-        return await contextBindUseCase(this, name);
-    }
-
-    /**
-     * @description ViewとViewModelのバインドを解除します。
-     *              Unbinds View and ViewModel.
-     *
-     * @return {Promise<void>}
-     * @method
-     * @public
-     */
-    async unbind (): Promise<void>
-    {
-        await contextUnbindService(this);
     }
 }

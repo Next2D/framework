@@ -10,6 +10,8 @@ import { execute as responseRemoveVariableUseCase } from "../../../infrastructur
 import { execute as applicationQueryStringParserService } from "../service/ApplicationQueryStringParserService";
 import { execute as requestUseCase } from "../../../infrastructure/Request/usecase/RequestUseCase";
 import { execute as callbackService } from "../../../domain/callback/service/CallbackService";
+import { execute as contextUnbindService } from "../../Context/service/ContextUnbindService";
+import { execute as contextBindUseCase } from "../../Context/usecase/ContextBindUseCase";
 
 /**
  * @description 指定されたパス、もしくはURLのクラスを起動
@@ -45,7 +47,7 @@ export const execute = async (application: Application, name: string = ""): Prom
      * Unbind the View and ViewModel of the current screen
      */
     const context = $getContext();
-    await context.unbind();
+    await contextUnbindService(context);
 
     /**
      * 前の画面で取得したレスポンスデータを初期化
@@ -114,7 +116,7 @@ export const execute = async (application: Application, name: string = ""): Prom
      * ViewとViewModelを起動
      * Start View and ViewModel
      */
-    const view = await context.bind(application.currentName);
+    const view = await contextBindUseCase(context, application.currentName);
 
     /**
      * コールバック設定があれば実行

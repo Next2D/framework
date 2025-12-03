@@ -38,6 +38,14 @@ vi.mock("../../../domain/callback/service/CallbackService", () => ({
     execute: vi.fn().mockResolvedValue(undefined)
 }));
 
+vi.mock("../../Context/usecase/ContextBindUseCase", () => ({
+    execute: vi.fn().mockResolvedValue(null)
+}));
+
+vi.mock("../../Context/service/ContextUnbindService", () => ({
+    execute: vi.fn().mockResolvedValue(undefined)
+}));
+
 describe("ApplicationGotoViewUseCase Test", () =>
 {
     let mockApplication: any;
@@ -55,8 +63,6 @@ describe("ApplicationGotoViewUseCase Test", () =>
 
         root = new MovieClip();
         mockContext = new Context(root);
-        mockContext.unbind = vi.fn().mockResolvedValue(undefined);
-        mockContext.bind = vi.fn().mockResolvedValue(null);
 
         $setContext(mockContext);
         $setConfig({
@@ -84,6 +90,7 @@ describe("ApplicationGotoViewUseCase Test", () =>
     {
         const { execute: applicationQueryStringParserService } = await import("../service/ApplicationQueryStringParserService");
         const { execute: requestUseCase } = await import("../../../infrastructure/Request/usecase/RequestUseCase");
+        const { execute: contextBindUseCase } = await import("../../Context/usecase/ContextBindUseCase");
 
         vi.mocked(applicationQueryStringParserService).mockReturnValue({
             name: "home",
@@ -94,9 +101,8 @@ describe("ApplicationGotoViewUseCase Test", () =>
 
         await execute(mockApplication, "home");
 
-        expect(mockContext.unbind).toHaveBeenCalled();
         expect(mockApplication.currentName).toBe("home");
-        expect(mockContext.bind).toHaveBeenCalledWith("home");
+        expect(contextBindUseCase).toHaveBeenCalledWith(mockContext, "home");
     });
 
     it("execute test case2: navigation with response data", async () =>

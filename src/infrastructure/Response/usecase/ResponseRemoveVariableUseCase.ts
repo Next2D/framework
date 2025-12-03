@@ -39,8 +39,8 @@ export const execute = <D extends DisplayObject> (name: string): void =>
         if (contentLoaderInfo && contentLoaderInfo.data) {
             const symbols: Map<string, number> = contentLoaderInfo.data.symbols;
             if (symbols.size) {
-                for (const name of symbols.keys()) {
-                    loaderInfoMap.delete(name);
+                for (const symbolName of symbols.keys()) {
+                    loaderInfoMap.delete(symbolName);
                 }
             }
         }

@@ -26,7 +26,9 @@ export const execute = (name: string): IRequest[] =>
     }
 
     const requests: IRequest[] = [];
-    for (const request of routing.requests) {
+    for (let idx = 0; idx < routing.requests.length; ++idx) {
+
+        const request = routing.requests[idx];
 
         if (request.type !== "cluster") {
             requests.push(request);

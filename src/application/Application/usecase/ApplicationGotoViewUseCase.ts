@@ -88,7 +88,9 @@ export const execute = async (application: Application, name: string = ""): Prom
      * レスポンス情報をマップに登録
      * Response information is registered on the map
      */
-    for (const object of responses) {
+    for (let idx = 0; idx < responses.length; ++idx) {
+
+        const object = responses[idx];
         if (object.name) {
             response.set(object.name, object.response);
         }

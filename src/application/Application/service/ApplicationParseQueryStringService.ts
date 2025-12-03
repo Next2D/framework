@@ -11,9 +11,10 @@ import { query } from "../../variable/Query";
  */
 export const execute = (queryString: string): void =>
 {
-    const parameters = queryString.slice(queryString.startsWith("?") ? 1 : 0).split("&");
-    for (const parameter of parameters) {
-        const [key, value] = parameter.split("=");
-        query.set(key, value);
+    const startIndex = queryString.charAt(0) === "?" ? 1 : 0;
+    const parameters = queryString.slice(startIndex).split("&");
+    for (let idx = 0; idx < parameters.length; ++idx) {
+        const pair = parameters[idx].split("=");
+        query.set(pair[0], pair[1]);
     }
 };

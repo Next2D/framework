@@ -16,7 +16,9 @@ export const execute = async (name: string): Promise<ResponseDTO[]> =>
     const responses: ResponseDTO[] = [];
     const requests = configParserRequestsPropertyService(name);
 
-    for (const requestObject of requests) {
+    for (let idx = 0; idx < requests.length; ++idx) {
+
+        const requestObject = requests[idx];
         const repository = repositoryMap.get(requestObject.type);
         if (!repository) {
             continue;

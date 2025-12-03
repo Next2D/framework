@@ -1,6 +1,7 @@
 import type { IRequest } from "../../../interface/IRequest";
 import { execute as requestCacheCheckService } from "../service/RequestCacheCheckService";
 import { execute as requestResponseProcessService } from "../service/RequestResponseProcessService";
+import { execute as requestNormalizeMethodService } from "../service/RequestNormalizeMethodService";
 
 /**
  * @description 指定先のJSONを非同期で取得
@@ -22,19 +23,11 @@ export const execute = async (request_object: IRequest): Promise<any> =>
         return cachedResponse;
     }
 
-    const options: RequestInit = {};
+    const method = requestNormalizeMethodService(request_object.method);
+    const options: RequestInit = { method };
 
-    const method = options.method = request_object.method
-        ? request_object.method.toUpperCase()
-        : "GET";
-
-    const body = request_object.body
-        && method === "POST" || method === "PUT"
-        ? JSON.stringify(request_object.body)
-        : null;
-
-    if (body) {
-        options.body = body;
+    if (request_object.body && (method === "POST" || method === "PUT")) {
+        options.body = JSON.stringify(request_object.body);
     }
 
     if (request_object.headers) {

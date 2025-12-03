@@ -58,18 +58,18 @@ export const execute = (name: string = ""): IQueryObject =>
      * 任意で設定したQueryStringを分解
      * Decompose an arbitrarily set QueryString
      */
-    if (name.includes("?")) {
-        const [baseName, qs] = name.split("?");
-        name = baseName;
-        queryString = `?${qs}`;
-        applicationParseQueryStringService(qs);
+    if (name.indexOf("?") > -1) {
+        const idx = name.indexOf("?");
+        queryString = name.slice(idx);
+        applicationParseQueryStringService(name.slice(idx + 1));
+        name = name.slice(0, idx);
     }
 
-    if (name.startsWith(".")) {
+    if (name.charAt(0) === ".") {
         name = name.split("/").slice(1).join("/") || defaultTop;
     }
 
-    if (name.includes("@")) {
+    if (name.indexOf("@") > -1) {
         name = name.replace("@", "");
     }
 

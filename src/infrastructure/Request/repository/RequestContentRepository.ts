@@ -4,6 +4,7 @@ import { URLRequest } from "@next2d/net";
 import { loaderInfoMap } from "../../../application/variable/LoaderInfoMap";
 import { execute as requestCacheCheckService } from "../service/RequestCacheCheckService";
 import { execute as requestResponseProcessService } from "../service/RequestResponseProcessService";
+import { execute as requestNormalizeMethodService } from "../service/RequestNormalizeMethodService";
 
 /**
  * @description 指定先のJSONを非同期で取得
@@ -26,27 +27,7 @@ export const execute = async (request_object: IRequest): Promise<any> =>
     }
 
     const urlRequest = new URLRequest(request_object.path);
-
-    const method: string = request_object.method
-        ? request_object.method.toUpperCase()
-        : "GET";
-
-    switch (method) {
-
-        case "DELETE":
-        case "GET":
-        case "HEAD":
-        case "OPTIONS":
-        case "POST":
-        case "PUT":
-            urlRequest.method = method;
-            break;
-
-        default:
-            urlRequest.method = "GET";
-            break;
-
-    }
+    urlRequest.method = requestNormalizeMethodService(request_object.method);
 
     if (request_object.headers) {
         for (const [name, value] of Object.entries(request_object.headers)) {
@@ -73,8 +54,8 @@ export const execute = async (request_object: IRequest): Promise<any> =>
     if (loaderInfo.data) {
         const symbols: Map<string, number> = loaderInfo.data.symbols;
         if (symbols.size) {
-            for (const name of symbols.keys()) {
-                loaderInfoMap.set(name, loaderInfo);
+            for (const symbolName of symbols.keys()) {
+                loaderInfoMap.set(symbolName, loaderInfo);
             }
         }
     }

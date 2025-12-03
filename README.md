@@ -105,8 +105,6 @@ npm start
 
 | Method | Description |
 |--------|-------------|
-| `initialize(config, packages)` | Initialize the application with config and packages |
-| `run()` | Launch the Next2D application |
 | `gotoView(name?)` | Navigate to a View. If no argument, parses URL |
 | `getContext()` | Get the current Context |
 | `getResponse()` | Get the response data Map |
@@ -133,8 +131,6 @@ npm start
 | `view` | Current View instance |
 | `viewModel` | Current ViewModel instance |
 | `root` | Root Sprite on Stage |
-| `bind(name)` | Attach View to Stage |
-| `unbind()` | Detach View from Stage |
 
 ### Exported Classes
 

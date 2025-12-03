@@ -9,8 +9,11 @@
  */
 export const execute = (name: string): string =>
 {
-    return name
-        .split(/-|\/|_/)
-        .map((word: string): string => word.charAt(0).toUpperCase() + word.slice(1))
-        .join("");
+    const names = name.split(/-|\/|_/);
+    let result = "";
+    for (let idx = 0; idx < names.length; ++idx) {
+        const word = names[idx];
+        result += word.charAt(0).toUpperCase() + word.slice(1);
+    }
+    return result;
 };

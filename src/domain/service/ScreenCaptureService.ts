@@ -49,6 +49,7 @@ export const ScreenCaptureService = {
          * Mouse operation is forced to stop
          */
         root.mouseChildren = false;
+        root.mouseEnabled  = false;
 
         const scale  = stage.rendererScale;
         const config = $getConfig();
@@ -142,5 +143,6 @@ export const ScreenCaptureService = {
          * Enable Mouse Operation
          */
         root.mouseChildren = true;
+        root.mouseEnabled  = true;
     }
 };

@@ -17,21 +17,6 @@ export class VideoContent extends Video
     constructor ()
     {
         super();
-
         contentBuilderService(this);
-
-        // initial processing
-        this.initialize();
     }
-
-    /**
-     * @description constructorが起動した後にコールされます。
-     *              Called after the constructor is invoked.
-     *
-     * @return {void}
-     * @method
-     * @abstract
-     */
-    // eslint-disable-next-line no-empty-function
-    initialize (): void {}
 }

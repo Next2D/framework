@@ -34,9 +34,11 @@ describe("ScreenCaptureService Test", () =>
 
             expect(root.numChildren).toBe(0);
             expect(root.mouseChildren).toBe(true);
+            expect(root.mouseEnabled).toBe(true);
             await ScreenCaptureService.add();
             expect(root.numChildren).toBe(1);
             expect(root.mouseChildren).toBe(false);
+            expect(root.mouseEnabled).toBe(false);
         });
     });
 
@@ -58,14 +60,17 @@ describe("ScreenCaptureService Test", () =>
             $setContext(new Context(root));
 
             root.mouseChildren = false;
+            root.mouseEnabled  = false;
             root.addChild(new Shape());
             root.addChild(new Shape());
 
             expect(root.numChildren).toBe(2);
             expect(root.mouseChildren).toBe(false);
+            expect(root.mouseEnabled).toBe(false);
             ScreenCaptureService.dispose();
             expect(root.numChildren).toBe(0);
             expect(root.mouseChildren).toBe(true);
+            expect(root.mouseEnabled).toBe(true);
         });
     });
 });

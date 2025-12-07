@@ -1,1 +1,0 @@
-export type IURLRequestMethod = "DELETE" | "GET" | "HEAD" | "OPTIONS" | "POST" | "PUT";

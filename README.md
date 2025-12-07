@@ -38,29 +38,54 @@ Next2D框架是根据简洁架构、领域驱动开发、测试驱动开发和MV
 
 ```
 src/
-├── application/          # Application Layer
-│   ├── Application.ts    # Main application class
-│   ├── Context.ts        # View/ViewModel context management
-│   ├── Application/      # Application services and use cases
-│   ├── Config/           # Configuration services
-│   ├── Context/          # Context services and use cases
-│   ├── content/          # Content classes (MovieClip, Shape, TextField, Video)
-│   └── variable/         # Application state (Config, Context, Cache, Packages, Query)
-├── domain/               # Domain Layer
-│   ├── callback/         # Callback services
-│   ├── loading/          # Loading animation (DefaultLoader, Loading services)
-│   └── screen/           # Screen capture services
-├── infrastructure/       # Infrastructure Layer
-│   ├── Request/          # HTTP request handling (JSON, Content, Custom)
-│   └── Response/         # Response data management
-├── interface/            # TypeScript interfaces
-│   ├── IConfig.ts        # Configuration interface
-│   ├── IRequest.ts       # Request interface
-│   ├── IRouting.ts       # Routing interface
+├── application/            # Application Layer
+│   ├── Application.ts      # Main application class
+│   ├── Context.ts          # View/ViewModel context management
+│   ├── content/            # Content classes (MovieClip, Shape, TextField, Video)
+│   ├── service/            # Application services (pure functions)
+│   │   ├── QueryStringParserService.ts
+│   │   └── RoutingRequestsParserService.ts
+│   ├── usecase/            # Application use cases (with side effects)
+│   │   ├── ApplicationGotoViewUseCase.ts
+│   │   ├── ApplicationInitializeUseCase.ts
+│   │   ├── ContextRunUseCase.ts
+│   │   └── ExecuteCallbackUseCase.ts
+│   └── variable/           # Application state (Config, Context, Cache, Packages, Query)
+├── domain/                 # Domain Layer
+│   ├── entity/             # Domain entities
+│   │   └── DefaultLoader.ts
+│   ├── service/            # Domain services
+│   │   ├── LoadingService.ts
+│   │   ├── ScreenCaptureService.ts
+│   │   └── ViewBinderService.ts
+│   └── variable/           # Domain state
+├── infrastructure/         # Infrastructure Layer
+│   ├── dto/                # Data Transfer Objects
+│   │   └── ResponseDTO.ts
+│   ├── repository/         # External data access
+│   │   ├── ContentRepository.ts
+│   │   ├── CustomRepository.ts
+│   │   └── JsonRepository.ts
+│   ├── service/            # Infrastructure services
+│   │   ├── RequestCacheCheckService.ts
+│   │   └── RequestResponseProcessService.ts
+│   ├── usecase/            # Infrastructure use cases
+│   │   ├── RequestUseCase.ts
+│   │   └── ResponseRemoveVariableUseCase.ts
+│   └── variable/           # Infrastructure state
+├── interface/              # TypeScript interfaces
+│   ├── IConfig.ts          # Configuration interface
+│   ├── IRequest.ts         # Request interface
+│   ├── IRouting.ts         # Routing interface
 │   └── ...
-└── view/                 # View Layer
-    ├── View.ts           # Base View class
-    └── ViewModel.ts      # Base ViewModel class
+├── shared/                 # Shared utilities
+│   └── util/               # Pure utility functions
+│       ├── NormalizeHttpMethod.ts
+│       ├── ParseQueryString.ts
+│       └── ToCamelCase.ts
+└── view/                   # View Layer
+    ├── View.ts             # Base View class (abstract)
+    └── ViewModel.ts        # Base ViewModel class (abstract)
 ```
 
 ## Support

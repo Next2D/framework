@@ -12,8 +12,8 @@ import {
  * @description ローディング処理を管理するドメインサービス
  *              Domain service for managing loading operations
  */
-export const LoadingService = {
-
+export const LoadingService =
+{
     /**
      * @description ローダーのインスタンスを取得または作成
      *              Get or create loader instance

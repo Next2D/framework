@@ -20,8 +20,11 @@ import { ScreenCaptureService } from "../../domain/service/ScreenCaptureService"
  * @method
  * @protected
  */
-export const execute = async (application: Application, name: string = ""): Promise<void> =>
-{
+export const execute = async (
+    application: Application,
+    name: string = ""
+): Promise<void> => {
+
     const config = $getConfig();
     const hasLoading = !!config.loading;
 

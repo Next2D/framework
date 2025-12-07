@@ -29,8 +29,8 @@ let cacheY: number = 0;
  * @description 画面キャプチャーを管理するドメインサービス
  *              Domain service for managing screen capture
  */
-export const ScreenCaptureService = {
-
+export const ScreenCaptureService =
+{
     /**
      * @description 画面キャプチャーのShapeをStageに追加
      *              Add Screen Capture Shape to Stage

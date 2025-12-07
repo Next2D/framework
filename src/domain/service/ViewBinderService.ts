@@ -9,8 +9,8 @@ import { toCamelCase } from "../../shared/util/ToCamelCase";
  * @description ViewとViewModelのバインドを行うドメインサービス
  *              Domain service for binding View and ViewModel
  */
-export const ViewBinderService = {
-
+export const ViewBinderService =
+{
     /**
      * @description ViewとViewModelをバインドします
      *              Binds View and ViewModel

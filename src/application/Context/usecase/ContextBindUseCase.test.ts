@@ -35,7 +35,7 @@ describe("ContextBindUseCase Test", () =>
             }
         }
 
-        class TestView extends View
+        class TestView extends View<TestViewModel>
         {
             async initialize ()
             {
@@ -45,6 +45,10 @@ describe("ContextBindUseCase Test", () =>
             async onEnter ()
             {
                 viewEntered = true;
+            }
+
+            async onExit ()
+            {
             }
         }
 
@@ -104,8 +108,16 @@ describe("ContextBindUseCase Test", () =>
             }
         });
 
-        class TestViewModel extends ViewModel {}
-        class TestView extends View {}
+        class TestViewModel extends ViewModel
+        {
+            async initialize(): Promise<void> {}
+        }
+        class TestView extends View<TestViewModel>
+        {
+            async initialize(): Promise<void> {}
+            async onEnter(): Promise<void> {}
+            async onExit(): Promise<void> {}
+        }
 
         packages.clear();
         packages.set("TestView", TestView);

@@ -1,6 +1,7 @@
 import type { Context } from "../../Context";
 import type { View } from "../../../view/View";
 import type { ViewModel } from "../../../view/ViewModel";
+import type { Constructor } from "../../../interface/IPackages";
 import { packages } from "../../variable/Packages";
 import { execute as contextToCamelCaseService } from "../service/ContextToCamelCaseService";
 
@@ -30,12 +31,12 @@ export const execute = async (context: Context, name: string): Promise<View> =>
      * 遷移先のViewとViewModelを起動、初期化処理を実行
      * Start the destination View and ViewModel, and execute the initialization process
      */
-    const ViewModelClass: any = packages.get(viewModelName) as unknown as ViewModel;
-    context.viewModel = (new ViewModelClass() as ViewModel);
+    const ViewModelClass = packages.get(viewModelName) as Constructor<ViewModel>;
+    context.viewModel = new ViewModelClass();
     await context.viewModel.initialize();
 
-    const ViewClass: any = packages.get(viewName) as unknown as View;
-    context.view = (new ViewClass(context.viewModel) as View);
+    const ViewClass = packages.get(viewName) as Constructor<View>;
+    context.view = new ViewClass(context.viewModel);
     await context.view.initialize();
 
     /**

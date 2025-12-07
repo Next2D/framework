@@ -1,4 +1,5 @@
 import { Sprite } from "@next2d/display";
+import type { ViewModel } from "./ViewModel";
 
 /**
  * @description Viewの親クラス、抽象クラスとして存在しています。
@@ -6,16 +7,27 @@ import { Sprite } from "@next2d/display";
  *
  * @class
  * @extends {Sprite}
+ * @abstract
  */
-export class View extends Sprite
+export abstract class View<VM extends ViewModel = ViewModel> extends Sprite
 {
+    /**
+     * @description ViewModelへの参照
+     *              Reference to ViewModel
+     *
+     * @type {VM}
+     * @protected
+     */
+    protected readonly vm: VM;
+
     /**
      * @constructor
      * @public
      */
-    constructor ()
+    constructor (vm: VM)
     {
         super();
+        this.vm = vm;
     }
 
     /**
@@ -26,8 +38,7 @@ export class View extends Sprite
      * @method
      * @abstract
      */
-    // eslint-disable-next-line no-empty-function
-    async initialize (): Promise<void> {}
+    abstract initialize (): Promise<void>;
 
     /**
      * @description Viewが表示された際にコールされます。
@@ -37,8 +48,7 @@ export class View extends Sprite
      * @method
      * @public
      */
-    // eslint-disable-next-line no-empty-function
-    async onEnter (): Promise<void> {}
+    abstract onEnter (): Promise<void>;
 
     /**
      * @description Viewが非表示になった際にコールされます。
@@ -48,6 +58,5 @@ export class View extends Sprite
      * @method
      * @public
      */
-    // eslint-disable-next-line no-empty-function
-    async onExit (): Promise<void> {}
+    abstract onExit (): Promise<void>;
 }

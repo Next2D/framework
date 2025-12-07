@@ -1,4 +1,5 @@
 import type { ILoading } from "../../../../interface/ILoading";
+import type { Constructor } from "../../../../interface/IPackages";
 import { DefaultLoader } from "../../DefaultLoader";
 import { $getConfig } from "../../../../application/variable/Config";
 import { packages } from "../../../../application/variable/Packages";
@@ -29,8 +30,8 @@ export const execute = (): ILoading | null =>
 
     let instance = $getInstance();
     if (!instance) {
-        const LoaderClass: any = packages.has(name)
-            ? packages.get(name)
+        const LoaderClass = packages.has(name)
+            ? packages.get(name) as Constructor<ILoading>
             : DefaultLoader;
 
         instance = new LoaderClass();

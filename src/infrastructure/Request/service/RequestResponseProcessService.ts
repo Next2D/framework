@@ -8,12 +8,12 @@ import { execute as callbackService } from "../../../domain/callback/service/Cal
  *              Save response to cache, execute callback and return DTO
  *
  * @param  {IRequest} request_object
- * @param  {any} value
+ * @param  {unknown} value
  * @return {Promise<ResponseDTO>}
  * @method
  * @public
  */
-export const execute = async (request_object: IRequest, value: any): Promise<ResponseDTO> =>
+export const execute = async <T = unknown>(request_object: IRequest, value: T): Promise<ResponseDTO<T>> =>
 {
     const name = request_object.name as string;
 

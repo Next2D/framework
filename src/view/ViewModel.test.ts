@@ -1,31 +1,39 @@
 import { ViewModel } from "./ViewModel";
 import { describe, expect, it } from "vitest";
 
+/**
+ * テスト用の具象ViewModelクラス
+ */
+class TestViewModel extends ViewModel
+{
+    async initialize(): Promise<void> {}
+}
+
 describe("ViewModel Test", () =>
 {
     it("should create an instance", () =>
     {
-        const viewModel = new ViewModel();
+        const viewModel = new TestViewModel();
         expect(viewModel).toBeInstanceOf(ViewModel);
     });
 
     it("should have initialize method", () =>
     {
-        const viewModel = new ViewModel();
+        const viewModel = new TestViewModel();
         expect(viewModel.initialize).toBeDefined();
         expect(typeof viewModel.initialize).toBe("function");
     });
 
     it("initialize should return Promise<void>", async () =>
     {
-        const viewModel = new ViewModel();
+        const viewModel = new TestViewModel();
         const result = await viewModel.initialize();
         expect(result).toBeUndefined();
     });
 
     it("should be able to call initialize multiple times", async () =>
     {
-        const viewModel = new ViewModel();
+        const viewModel = new TestViewModel();
         await viewModel.initialize();
         await viewModel.initialize();
         expect(viewModel).toBeInstanceOf(ViewModel);

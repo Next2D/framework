@@ -1,3 +1,5 @@
+import { IURLRequestMethod } from "../../../interface/IURLRequestMethod";
+
 /**
  * @description HTTPメソッドを正規化
  *              Normalize HTTP method
@@ -7,7 +9,7 @@
  * @method
  * @protected
  */
-export const execute = (method?: string): string =>
+export const execute = (method?: string): IURLRequestMethod =>
 {
     if (!method) {
         return "GET";

@@ -1,59 +1,86 @@
 import { View } from "./View";
+import { ViewModel } from "./ViewModel";
 import { describe, expect, it } from "vitest";
+
+/**
+ * テスト用の具象ViewModelクラス
+ */
+class TestViewModel extends ViewModel
+{
+    async initialize(): Promise<void> {}
+}
+
+/**
+ * テスト用の具象Viewクラス
+ */
+class TestView extends View<TestViewModel>
+{
+    async initialize(): Promise<void> {}
+    async onEnter(): Promise<void> {}
+    async onExit(): Promise<void> {}
+}
 
 describe("View Test", () =>
 {
     it("should create an instance", () =>
     {
-        const view = new View();
+        const vm = new TestViewModel();
+        const view = new TestView(vm);
         expect(view).toBeInstanceOf(View);
     });
 
     it("should have initialize method", () =>
     {
-        const view = new View();
+        const vm = new TestViewModel();
+        const view = new TestView(vm);
         expect(view.initialize).toBeDefined();
         expect(typeof view.initialize).toBe("function");
     });
 
     it("should have onEnter method", () =>
     {
-        const view = new View();
+        const vm = new TestViewModel();
+        const view = new TestView(vm);
         expect(view.onEnter).toBeDefined();
         expect(typeof view.onEnter).toBe("function");
     });
 
     it("should have onExit method", () =>
     {
-        const view = new View();
+        const vm = new TestViewModel();
+        const view = new TestView(vm);
         expect(view.onExit).toBeDefined();
         expect(typeof view.onExit).toBe("function");
     });
 
     it("initialize should return Promise<void>", async () =>
     {
-        const view = new View();
+        const vm = new TestViewModel();
+        const view = new TestView(vm);
         const result = await view.initialize();
         expect(result).toBeUndefined();
     });
 
     it("onEnter should return Promise<void>", async () =>
     {
-        const view = new View();
+        const vm = new TestViewModel();
+        const view = new TestView(vm);
         const result = await view.onEnter();
         expect(result).toBeUndefined();
     });
 
     it("onExit should return Promise<void>", async () =>
     {
-        const view = new View();
+        const vm = new TestViewModel();
+        const view = new TestView(vm);
         const result = await view.onExit();
         expect(result).toBeUndefined();
     });
 
     it("should be able to call lifecycle methods in sequence", async () =>
     {
-        const view = new View();
+        const vm = new TestViewModel();
+        const view = new TestView(vm);
         await view.initialize();
         await view.onEnter();
         await view.onExit();
@@ -62,25 +89,20 @@ describe("View Test", () =>
 
     it("should be extendable", () =>
     {
-        class CustomView extends View
+        class CustomViewModel extends ViewModel
         {
-            async initialize(): Promise<void>
-            {
-                // Custom initialization
-            }
-
-            async onEnter(): Promise<void>
-            {
-                // Custom onEnter
-            }
-
-            async onExit(): Promise<void>
-            {
-                // Custom onExit
-            }
+            async initialize(): Promise<void> {}
         }
 
-        const customView = new CustomView();
+        class CustomView extends View<CustomViewModel>
+        {
+            async initialize(): Promise<void> {}
+            async onEnter(): Promise<void> {}
+            async onExit(): Promise<void> {}
+        }
+
+        const vm = new CustomViewModel();
+        const customView = new CustomView(vm);
         expect(customView).toBeInstanceOf(View);
         expect(customView).toBeInstanceOf(CustomView);
     });
@@ -91,7 +113,12 @@ describe("View Test", () =>
         let enterCalled = false;
         let exitCalled = false;
 
-        class CustomView extends View
+        class CustomViewModel extends ViewModel
+        {
+            async initialize(): Promise<void> {}
+        }
+
+        class CustomView extends View<CustomViewModel>
         {
             async initialize(): Promise<void>
             {
@@ -109,7 +136,8 @@ describe("View Test", () =>
             }
         }
 
-        const customView = new CustomView();
+        const vm = new CustomViewModel();
+        const customView = new CustomView(vm);
         await customView.initialize();
         await customView.onEnter();
         await customView.onExit();
@@ -117,5 +145,12 @@ describe("View Test", () =>
         expect(initCalled).toBe(true);
         expect(enterCalled).toBe(true);
         expect(exitCalled).toBe(true);
+    });
+
+    it("should have vm property set via constructor", () =>
+    {
+        const vm = new TestViewModel();
+        const view = new TestView(vm);
+        expect(view["vm"]).toBe(vm);
     });
 });

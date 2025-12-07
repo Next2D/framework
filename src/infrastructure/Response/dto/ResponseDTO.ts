@@ -4,7 +4,7 @@
  *
  * @class
  */
-export class ResponseDTO
+export class ResponseDTO<T = unknown>
 {
     /**
      * @description キャッシュのキー名
@@ -21,20 +21,20 @@ export class ResponseDTO
      * @description レスポンスデータ
      *              response data
      *
-     * @return {*}
+     * @return {T}
      * @default null
      * @readonly
      * @public
      */
-    public readonly response: any;
+    public readonly response: T;
 
     /**
      * @param {string} [name=""]
-     * @param {*} [response=null]
+     * @param {T} [response]
      * @constructor
      * @public
      */
-    constructor (name: string = "", response: any = null)
+    constructor (name: string = "", response: T = null as T)
     {
         this.name = name;
         this.response = response;

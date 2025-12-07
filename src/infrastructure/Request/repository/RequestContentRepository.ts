@@ -1,21 +1,22 @@
 import type { IRequest } from "../../../interface/IRequest";
 import { Loader } from "@next2d/display";
 import { URLRequest } from "@next2d/net";
+import { ResponseDTO } from "../../Response/dto/ResponseDTO";
 import { loaderInfoMap } from "../../../application/variable/LoaderInfoMap";
 import { execute as requestCacheCheckService } from "../service/RequestCacheCheckService";
 import { execute as requestResponseProcessService } from "../service/RequestResponseProcessService";
 import { execute as requestNormalizeMethodService } from "../service/RequestNormalizeMethodService";
 
 /**
- * @description 指定先のJSONを非同期で取得
- *              Asynchronously obtain JSON of the specified destination
+ * @description 指定先のコンテンツを非同期で取得
+ *              Asynchronously obtain content of the specified destination
  *
  * @param  {IRequest} request_object
- * @return {Promise<any>}
+ * @return {Promise<ResponseDTO>}
  * @method
  * @public
  */
-export const execute = async (request_object: IRequest): Promise<any> =>
+export const execute = async (request_object: IRequest): Promise<ResponseDTO> =>
 {
     if (!request_object.path || !request_object.name) {
         throw new Error("`path` and `name` must be set for content requests.");

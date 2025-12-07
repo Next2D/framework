@@ -1,4 +1,5 @@
 import type { IRequest } from "../../../interface/IRequest";
+import { ResponseDTO } from "../../Response/dto/ResponseDTO";
 import { execute as requestCacheCheckService } from "../service/RequestCacheCheckService";
 import { execute as requestResponseProcessService } from "../service/RequestResponseProcessService";
 import { execute as requestNormalizeMethodService } from "../service/RequestNormalizeMethodService";
@@ -8,11 +9,11 @@ import { execute as requestNormalizeMethodService } from "../service/RequestNorm
  *              Asynchronously obtain JSON of the specified destination
  *
  * @param  {IRequest} request_object
- * @return {Promise<any>}
+ * @return {Promise<ResponseDTO>}
  * @method
  * @public
  */
-export const execute = async (request_object: IRequest): Promise<any> =>
+export const execute = async (request_object: IRequest): Promise<ResponseDTO> =>
 {
     if (!request_object.path || !request_object.name) {
         throw new Error("`path` and `name` must be set for json requests.");

@@ -24,7 +24,7 @@ export const execute = async (request_object: IRequest): Promise<ResponseDTO | n
         return null;
     }
 
-    const value: any = cache.get(name);
+    const value: unknown = cache.get(name);
 
     if (request_object.callback) {
         await callbackService(request_object.callback, value);

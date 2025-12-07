@@ -1,3 +1,5 @@
+import type { ICallback } from "../../../interface/ICallback";
+import type { Constructor } from "../../../interface/IPackages";
 import { packages } from "../../../application/variable/Packages";
 
 /**
@@ -5,18 +7,18 @@ import { packages } from "../../../application/variable/Packages";
  *              Execute function of the class specified in config.
  *
  * @param  {string | string[]} [callback=""]
- * @param  {*} [value=null]
- * @return {Promise}
+ * @param  {unknown} [value=null]
+ * @return {Promise<void>}
  * @method
  * @public
  */
 export const execute = async (
     callback: string | string[] = "",
-    value: any = null
-): Promise<Awaited<any>[]|void> => {
+    value: unknown = null
+): Promise<void> => {
 
     if (!callback) {
-        return ;
+        return;
     }
 
     const callbacks: string[] = typeof callback === "string"
@@ -30,7 +32,7 @@ export const execute = async (
             continue;
         }
 
-        const CallbackClass: any = packages.get(name);
+        const CallbackClass = packages.get(name) as Constructor<ICallback>;
         await new CallbackClass().execute(value);
     }
 };

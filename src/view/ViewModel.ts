@@ -3,8 +3,9 @@
  *              It exists as a parent class of ViewModel and as an abstract class.
  *
  * @class
+ * @abstract
  */
-export class ViewModel
+export abstract class ViewModel
 {
     /**
      * @description constructorが起動した後にコールされます。
@@ -14,6 +15,5 @@ export class ViewModel
      * @method
      * @abstract
      */
-    // eslint-disable-next-line no-empty-function
-    async initialize (): Promise<void> {}
+    abstract initialize (): Promise<void>;
 }

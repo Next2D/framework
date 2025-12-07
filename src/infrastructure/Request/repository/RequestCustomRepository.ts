@@ -1,18 +1,28 @@
 import type { IRequest } from "../../../interface/IRequest";
+import type { Constructor } from "../../../interface/IPackages";
+import { ResponseDTO } from "../../Response/dto/ResponseDTO";
 import { packages } from "../../../application/variable/Packages";
 import { execute as requestCacheCheckService } from "../service/RequestCacheCheckService";
 import { execute as requestResponseProcessService } from "../service/RequestResponseProcessService";
+
+/**
+ * @description Customリクエスト用のクラスインターフェース
+ *              Class interface for Custom request
+ */
+interface ICustomClass {
+    [key: string]: () => Promise<unknown> | unknown;
+}
 
 /**
  * @description 指定先の外部データを非同期で取得
  *              Asynchronous acquisition of external data at specified destination
  *
  * @param  {IRequest} request_object
- * @return {Promise<any>}
+ * @return {Promise<ResponseDTO>}
  * @method
  * @public
  */
-export const execute = async (request_object: IRequest): Promise<any> =>
+export const execute = async (request_object: IRequest): Promise<ResponseDTO> =>
 {
     if (!request_object.class
         || !request_object.access
@@ -32,10 +42,10 @@ export const execute = async (request_object: IRequest): Promise<any> =>
         throw new Error("package not found.");
     }
 
-    const CallbackClass: any = packages.get(className);
+    const CustomClass = packages.get(className) as Constructor<ICustomClass> & ICustomClass;
     const value = request_object.access === "static"
-        ? await CallbackClass[request_object.method]()
-        : await new CallbackClass()[request_object.method]();
+        ? await CustomClass[request_object.method]()
+        : await new CustomClass()[request_object.method]();
 
     return requestResponseProcessService(request_object, value);
 };

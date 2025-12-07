@@ -10,8 +10,7 @@ export class ResponseDTO<T = unknown>
      * @description キャッシュのキー名
      *              Key name of cache
      *
-     * @return {string}
-     * @default ""
+     * @type {string}
      * @readonly
      * @public
      */
@@ -21,22 +20,33 @@ export class ResponseDTO<T = unknown>
      * @description レスポンスデータ
      *              response data
      *
-     * @return {T}
-     * @default null
+     * @type {T}
      * @readonly
      * @public
      */
     public readonly response: T;
 
     /**
-     * @param {string} [name=""]
-     * @param {T} [response]
+     * @description コールバッククラス名
+     *              Callback class name
+     *
+     * @type {string | string[] | undefined}
+     * @readonly
+     * @public
+     */
+    public readonly callback?: string | string[];
+
+    /**
+     * @param {string} name
+     * @param {T} response
+     * @param {string | string[]} [callback]
      * @constructor
      * @public
      */
-    constructor (name: string = "", response: T = null as T)
+    constructor (name: string, response: T, callback?: string | string[])
     {
-        this.name = name;
+        this.name     = name;
         this.response = response;
+        this.callback = callback;
     }
 }

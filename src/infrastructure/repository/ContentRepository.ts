@@ -22,7 +22,7 @@ export const execute = async (request_object: IRequest): Promise<ResponseDTO> =>
         throw new Error("`path` and `name` must be set for content requests.");
     }
 
-    const cachedResponse = await requestCacheCheckService(request_object);
+    const cachedResponse = requestCacheCheckService(request_object);
     if (cachedResponse) {
         return cachedResponse;
     }

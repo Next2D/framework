@@ -1,5 +1,5 @@
 /**
- * @type {Map<string, any>}
+ * @type {Map<string, unknown>}
  * @protected
  */
-export const cache: Map<string, any> = new Map();
+export const cache: Map<string, unknown> = new Map();

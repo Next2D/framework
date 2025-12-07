@@ -1,7 +1,6 @@
 import { execute } from "./ResponseRemoveVariableUseCase";
 import { loaderInfoMap } from "../../application/variable/LoaderInfoMap";
-import { $setConfig } from "../../application/variable/Config";
-import { IConfig } from "../../interface/IConfig";
+import type { IRequest } from "../../interface/IRequest";
 import { response } from "../variable/Response";
 import { describe, expect, it } from "vitest";
 
@@ -37,41 +36,25 @@ describe("ResponseRemoveVariableUseCase", () =>
         response.set("test2", []);
         expect(response.size).toBe(2);
 
-        // mock
-        const config: IConfig = {
-            "platform": "web",
-            "spa": true,
-            "stage": {
-                "width": 240,
-                "height": 240,
-                "fps": 12,
-                "options": {}
+        // mock requests array
+        const requests: IRequest[] = [
+            {
+                "type": "content",
+                "name": "test1"
             },
-            "routing": {
-                "test": {
-                    "requests": [
-                        {
-                            "type": "content",
-                            "name": "test1"
-                        },
-                        {
-                            "type": "json",
-                            "name": "test2"
-                        },
-                        {
-                            "type": "content",
-                            "name": "test3",
-                            "cache": true
-                        }
-                    ]
-                }
+            {
+                "type": "json",
+                "name": "test2"
+            },
+            {
+                "type": "content",
+                "name": "test3",
+                "cache": true
             }
-        };
-
-        $setConfig(config);
+        ];
 
         // execute
-        execute("test");
+        execute(requests);
 
         // test
         expect(response.size).toBe(0);

@@ -3,7 +3,10 @@ import { $getConfig } from "../variable/Config";
 import { $getContext } from "../variable/Context";
 import { response } from "../../infrastructure/variable/Response";
 import { execute as queryStringParserService } from "../service/QueryStringParserService";
-import { execute as requestUseCase } from "../../infrastructure/usecase/RequestUseCase";
+import {
+    execute as requestUseCase,
+    getRequests
+} from "../../infrastructure/usecase/RequestUseCase";
 import { execute as executeCallbackUseCase } from "./ExecuteCallbackUseCase";
 import { execute as responseRemoveVariableUseCase } from "../../infrastructure/usecase/ResponseRemoveVariableUseCase";
 import { ViewBinderService } from "../../domain/service/ViewBinderService";
@@ -53,7 +56,8 @@ export const execute = async (
      * 前の画面で取得したレスポンスデータを初期化
      * Initialize the response data obtained on the previous screen
      */
-    responseRemoveVariableUseCase(application.currentName);
+    const previousRequests = getRequests(application.currentName);
+    responseRemoveVariableUseCase(previousRequests);
 
     /**
      * 指定されたパス、もしくはURLからアクセス先を算出
@@ -87,14 +91,22 @@ export const execute = async (
     const responses = await requestUseCase(application.currentName);
 
     /**
-     * レスポンス情報をマップに登録
-     * Response information is registered on the map
+     * レスポンス情報をマップに登録し、コールバックを実行
+     * Register response information on the map and execute callbacks
      */
     for (let idx = 0; idx < responses.length; ++idx) {
 
         const object = responses[idx];
         if (object.name) {
             response.set(object.name, object.response);
+        }
+
+        /**
+         * リクエストごとのコールバック処理を実行
+         * Execute callback for each request
+         */
+        if (object.callback) {
+            await executeCallbackUseCase(object.callback, object.response);
         }
     }
 

@@ -105,11 +105,11 @@ export class Application
      * @description configで設定したリクエストのレスポンスマップを返却します
      *              Returns the response map of the request set in config
      *
-     * @return {Map<string, any>}
+     * @return {Map<string, unknown>}
      * @method
      * @public
      */
-    getResponse (): Map<string, any>
+    getResponse (): Map<string, unknown>
     {
         return response;
     }
@@ -118,11 +118,11 @@ export class Application
      * @description キャッシュのMapオブジェクトを返却します
      *              Returns the Map object of the cache
      *
-     * @return {Map<string, any>}
+     * @return {Map<string, unknown>}
      * @method
      * @public
      */
-    getCache (): Map<string, any>
+    getCache (): Map<string, unknown>
     {
         return cache;
     }

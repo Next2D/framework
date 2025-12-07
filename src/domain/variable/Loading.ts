@@ -1,7 +1,7 @@
 import type { ILoading } from "../../interface/ILoading";
 
 /**
- * @type {object}
+ * @type {ILoading | null}
  * @default null
  * @private
  */
@@ -11,25 +11,25 @@ let $instance: ILoading | null = null;
  * @description ローダーのインスタンスを取得
  *              Get loader instance
  *
- * @return {ILoading}
+ * @return {ILoading | null}
  * @method
- * @public
+ * @protected
  */
-export const $getInstance = (): ILoading =>
+export const $getInstance = (): ILoading | null =>
 {
-    return $instance as ILoading;
+    return $instance;
 };
 
 /**
  * @description ローダーのインスタンスを設定
  *              Set loader instance
  *
- * @param {ILoading} instance
+ * @param {ILoading | null} instance
  * @return {void}
  * @method
- * @public
+ * @protected
  */
-export const $setInstance = (instance: ILoading): void =>
+export const $setInstance = (instance: ILoading | null): void =>
 {
     $instance = instance;
 };

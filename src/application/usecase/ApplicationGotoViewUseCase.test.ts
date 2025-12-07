@@ -30,7 +30,8 @@ vi.mock("../service/QueryStringParserService", () => ({
 }));
 
 vi.mock("../../infrastructure/usecase/RequestUseCase", () => ({
-    execute: vi.fn().mockResolvedValue([])
+    execute: vi.fn().mockResolvedValue([]),
+    getRequests: vi.fn().mockReturnValue([])
 }));
 
 vi.mock("./ExecuteCallbackUseCase", () => ({

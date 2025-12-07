@@ -44,12 +44,12 @@ export const ViewBinderService =
         await context.view.initialize();
 
         /**
-         * rootの子要素を全て削除
-         * Remove all child elements of root
+         * rootの子要素を全て削除（末尾から削除することでO(n)に最適化）
+         * Remove all child elements of root (optimized to O(n) by removing from end)
          */
         const root = context.root;
-        while (root.numChildren) {
-            root.removeChildAt(0);
+        for (let idx = root.numChildren - 1; idx >= 0; --idx) {
+            root.removeChildAt(idx);
         }
 
         /**

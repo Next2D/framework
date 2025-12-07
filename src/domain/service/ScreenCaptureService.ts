@@ -131,11 +131,11 @@ export const ScreenCaptureService =
         }
 
         /**
-         * rootの子要素を全て削除
-         * Remove all child elements of root
+         * rootの子要素を全て削除（末尾から削除することでO(n)に最適化）
+         * Remove all child elements of root (optimized to O(n) by removing from end)
          */
-        while (root.numChildren > 0) {
-            root.removeChildAt(0);
+        for (let idx = root.numChildren - 1; idx >= 0; --idx) {
+            root.removeChildAt(idx);
         }
 
         /**

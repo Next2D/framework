@@ -1,29 +1,24 @@
 import type { IRequest } from "../../interface/IRequest";
 import { cache } from "../../application/variable/Cache";
 import { ResponseDTO } from "../dto/ResponseDTO";
-import { execute as executeCallbackUseCase } from "../../application/usecase/ExecuteCallbackUseCase";
 
 /**
- * @description レスポンスをキャッシュに保存し、コールバックを実行してDTOを返却
- *              Save response to cache, execute callback and return DTO
+ * @description レスポンスをキャッシュに保存してDTOを返却
+ *              Save response to cache and return DTO
  *
- * @param  {IRequest} request_object
- * @param  {unknown} value
- * @return {Promise<ResponseDTO>}
+ * @param  {IRequest} requestObject
+ * @param  {T} value
+ * @return {ResponseDTO<T>}
  * @method
  * @public
  */
-export const execute = async <T = unknown>(request_object: IRequest, value: T): Promise<ResponseDTO<T>> =>
+export const execute = <T = unknown>(requestObject: IRequest, value: T): ResponseDTO<T> =>
 {
-    const name = request_object.name as string;
+    const name = requestObject.name as string;
 
-    if (request_object.cache) {
+    if (requestObject.cache) {
         cache.set(name, value);
     }
 
-    if (request_object.callback) {
-        await executeCallbackUseCase(request_object.callback, value);
-    }
-
-    return new ResponseDTO(name, value);
+    return new ResponseDTO(name, value, requestObject.callback);
 };

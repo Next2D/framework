@@ -8,35 +8,41 @@ import { execute as requestResponseProcessService } from "../service/RequestResp
  * @description 指定先のJSONを非同期で取得
  *              Asynchronously obtain JSON of the specified destination
  *
- * @param  {IRequest} request_object
+ * @param  {IRequest} requestObject
  * @return {Promise<ResponseDTO>}
+ * @throws {Error} path/nameが未設定の場合、HTTPエラーの場合
  * @method
  * @public
  */
-export const execute = async (request_object: IRequest): Promise<ResponseDTO> =>
+export const execute = async (requestObject: IRequest): Promise<ResponseDTO> =>
 {
-    if (!request_object.path || !request_object.name) {
+    if (!requestObject.path || !requestObject.name) {
         throw new Error("`path` and `name` must be set for json requests.");
     }
 
-    const cachedResponse = await requestCacheCheckService(request_object);
+    const cachedResponse = requestCacheCheckService(requestObject);
     if (cachedResponse) {
         return cachedResponse;
     }
 
-    const method = normalizeHttpMethod(request_object.method);
+    const method = normalizeHttpMethod(requestObject.method);
     const options: RequestInit = { method };
 
-    if (request_object.body && (method === "POST" || method === "PUT")) {
-        options.body = JSON.stringify(request_object.body);
+    if (requestObject.body && (method === "POST" || method === "PUT")) {
+        options.body = JSON.stringify(requestObject.body);
     }
 
-    if (request_object.headers) {
-        options.headers = request_object.headers;
+    if (requestObject.headers) {
+        options.headers = requestObject.headers;
     }
 
-    const response = await fetch(request_object.path, options);
+    const response = await fetch(requestObject.path, options);
+
+    if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status} ${response.statusText} for ${requestObject.path}`);
+    }
+
     const value = await response.json();
 
-    return requestResponseProcessService(request_object, value);
+    return requestResponseProcessService(requestObject, value);
 };

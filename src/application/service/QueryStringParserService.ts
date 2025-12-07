@@ -61,14 +61,14 @@ export const execute = (name: string = ""): IQueryObject =>
      * 任意で設定したQueryStringを分解
      * Decompose an arbitrarily set QueryString
      */
-    if (name.indexOf("?") > -1) {
-        const idx = name.indexOf("?");
-        queryString = name.slice(idx);
-        const parsed = parseQueryString(name.slice(idx + 1));
+    const questionIdx = name.indexOf("?");
+    if (questionIdx > -1) {
+        queryString = name.slice(questionIdx);
+        const parsed = parseQueryString(name.slice(questionIdx + 1));
         for (const [key, value] of parsed) {
             query.set(key, value);
         }
-        name = name.slice(0, idx);
+        name = name.slice(0, questionIdx);
     }
 
     if (name.charAt(0) === ".") {

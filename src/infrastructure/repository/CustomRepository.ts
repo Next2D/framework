@@ -32,7 +32,7 @@ export const execute = async (request_object: IRequest): Promise<ResponseDTO> =>
         throw new Error("`class`, `access`, `method` and `name` must be set for custom requests.");
     }
 
-    const cachedResponse = await requestCacheCheckService(request_object);
+    const cachedResponse = requestCacheCheckService(request_object);
     if (cachedResponse) {
         return cachedResponse;
     }

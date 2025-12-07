@@ -71,4 +71,43 @@ describe("ApplicationInitializeUseCase", () =>
         execute(app, config, buildPackages);
         expect(state).toBe("");
     });
+
+    it("popstate handler sets popstate flag and triggers gotoView", async () =>
+    {
+        let popstateCallback: (() => Promise<void>) | null = null;
+        window.addEventListener = vi.fn((name, callback) =>
+        {
+            if (name === "popstate") {
+                popstateCallback = callback as () => Promise<void>;
+            }
+        });
+
+        const app = new Application();
+        app.gotoView = vi.fn().mockResolvedValue(undefined);
+
+        const config: IConfig = {
+            "platform": "web",
+            "stage": {
+                "width": 640,
+                "height": 480,
+                "fps": 60
+            },
+            "spa": true
+        };
+
+        const buildPackages: IPackages = [[
+            "view", View
+        ]];
+
+        execute(app, config, buildPackages);
+
+        expect(popstateCallback).not.toBeNull();
+        expect(app.popstate).toBe(false);
+
+        // Trigger the popstate event handler
+        await popstateCallback!();
+
+        expect(app.popstate).toBe(true);
+        expect(app.gotoView).toHaveBeenCalled();
+    });
 });

@@ -254,5 +254,32 @@ describe("ViewBinderService Test", () =>
 
             expect(root.numChildren).toBe(0);
         });
+
+        it("should return early if root is null", async () =>
+        {
+            $setConfig({
+                "platform": "web",
+                "spa": false,
+                "stage": {
+                    "width": 800,
+                    "height": 600,
+                    "fps": 60
+                }
+            });
+
+            // Create a mock context with null root
+            const mockContext = {
+                "root": null,
+                "view": {
+                    "onExit": async () => {}
+                },
+                "viewModel": {
+                    "unbind": () => {}
+                }
+            } as unknown as Context;
+
+            // Should not throw
+            await ViewBinderService.unbind(mockContext);
+        });
     });
 });

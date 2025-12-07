@@ -208,4 +208,28 @@ describe("LoadingService Test", () =>
             expect($getInstance()).toBeNull();
         });
     });
+
+    describe("start edge cases", () =>
+    {
+        it("should return early if getInstance returns null", async () =>
+        {
+            // Config without loading - getInstance will return null
+            $setConfig({
+                "platform": "web",
+                "spa": false,
+                "stage": {
+                    "width": 800,
+                    "height": 600,
+                    "fps": 60
+                }
+            });
+
+            $setInstance(null);
+
+            // This should return early without throwing
+            await LoadingService.start();
+
+            expect($getInstance()).toBeNull();
+        });
+    });
 });

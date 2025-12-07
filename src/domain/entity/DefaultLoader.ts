@@ -5,31 +5,50 @@ import { $getContext } from "../../application/variable/Context";
 import { Tween, Easing } from "@next2d/ui";
 
 /**
- * @description Tweenジョブを取得または作成
- *              Get or create Tween job
+ * @description アニメーションの定数
+ *              Animation constants
+ */
+const ANIMATION_DURATION = 0.4;
+const ANIMATION_DELAY_INTERVAL = 0.15;
+
+/**
+ * @description 拡大アニメーションのジョブを作成
+ *              Create expand animation job
  *
  * @param  {Shape} shape
- * @param  {string} jobName
+ * @param  {number} delay
  * @return {Job}
  */
-const getOrCreateJob = (shape: Shape, jobName: string): Job =>
+const createExpandJob = (shape: Shape, delay: number): Job =>
 {
-    if (shape.hasLocalVariable(jobName)) {
-        const job = shape.getLocalVariable(jobName) as Job;
-        job.stop();
-        return job;
-    }
-
-    const job = Tween.add(
+    return Tween.add(
         shape,
         { "scaleX": 0.1, "scaleY": 0.1, "alpha": 0 },
         { "scaleX": 1, "scaleY": 1, "alpha": 1 },
-        0.12,
-        0.5,
+        delay,
+        ANIMATION_DURATION,
         Easing.inOutCubic
     );
-    shape.setLocalVariable(jobName, job);
-    return job;
+};
+
+/**
+ * @description 縮小アニメーションのジョブを作成
+ *              Create reduce animation job
+ *
+ * @param  {Shape} shape
+ * @param  {number} delay
+ * @return {Job}
+ */
+const createReduceJob = (shape: Shape, delay: number): Job =>
+{
+    return Tween.add(
+        shape,
+        { "scaleX": 1, "scaleY": 1, "alpha": 1 },
+        { "scaleX": 0.1, "scaleY": 0.1, "alpha": 0 },
+        delay,
+        ANIMATION_DURATION,
+        Easing.inOutCubic
+    );
 };
 
 /**
@@ -110,20 +129,47 @@ export class DefaultLoader
             shape.scaleY = 0.1;
             shape.alpha  = 0;
 
-            const reduceJob = getOrCreateJob(shape, "reduceJob");
-            const expandJob = getOrCreateJob(shape, "expandJob");
-
-            reduceJob.nextJob = expandJob;
-            expandJob.nextJob = reduceJob;
-
-            if (idx) {
-                setTimeout((): void =>
-                {
-                    expandJob.start();
-                }, 120 * idx);
-            } else {
-                expandJob.start();
+            /**
+             * 既存のジョブを停止してクリア
+             * Stop and clear existing jobs
+             */
+            if (shape.hasLocalVariable("expandJob")) {
+                (shape.getLocalVariable("expandJob") as Job).stop();
             }
+            if (shape.hasLocalVariable("reduceJob")) {
+                (shape.getLocalVariable("reduceJob") as Job).stop();
+            }
+
+            /**
+             * アニメーションジョブを作成
+             * 初回のみ遅延を設定し、ループ時はdelayなしで統一サイクル
+             * Create animation jobs
+             * Set delay only for the first time, no delay for loop with unified cycle
+             *
+             * 初回: expandJob(delay) -> reduceJob(0) -> loopExpandJob(0) -> loopReduceJob(0) -> ...
+             */
+            const initialDelay = ANIMATION_DELAY_INTERVAL * idx;
+
+            // 初回の拡大アニメーション（遅延あり）
+            const expandJob = createExpandJob(shape, initialDelay);
+
+            // 縮小アニメーション（遅延なし）
+            const reduceJob = createReduceJob(shape, 0);
+
+            // ループ用の拡大アニメーション（遅延なし）
+            const loopExpandJob = createExpandJob(shape, 0);
+
+            // ジョブチェーンを構築（ループ）
+            expandJob.nextJob = reduceJob;
+            reduceJob.nextJob = loopExpandJob;
+            loopExpandJob.nextJob = reduceJob;
+
+            // ローカル変数に保存（end時に停止するため）
+            shape.setLocalVariable("expandJob", expandJob);
+            shape.setLocalVariable("reduceJob", reduceJob);
+            shape.setLocalVariable("loopExpandJob", loopExpandJob);
+
+            expandJob.start();
 
             if (shape.width === minSize) {
                 continue;
@@ -166,14 +212,16 @@ export class DefaultLoader
                 continue;
             }
 
-            if (shape.hasLocalVariable("expandJob")) {
-                const expandJob = shape.getLocalVariable("expandJob") as Job;
-                expandJob.stop();
-            }
-
-            if (shape.hasLocalVariable("reduceJob")) {
-                const reduceJob = shape.getLocalVariable("reduceJob") as Job;
-                reduceJob.stop();
+            /**
+             * 全てのジョブを停止
+             * Stop all jobs
+             */
+            const jobNames = ["expandJob", "reduceJob", "loopExpandJob"];
+            for (let jIdx = 0; jIdx < jobNames.length; ++jIdx) {
+                const jobName = jobNames[jIdx];
+                if (shape.hasLocalVariable(jobName)) {
+                    (shape.getLocalVariable(jobName) as Job).stop();
+                }
             }
         }
 

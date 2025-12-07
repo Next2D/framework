@@ -150,4 +150,95 @@ describe("ApplicationGotoViewUseCase Test", () =>
         expect(response.has("")).toBe(false);
         expect(response.get("valid")).toEqual({ data: "should be set" });
     });
+
+    it("execute test case4: navigation with loading enabled", async () =>
+    {
+        const { execute: queryStringParserService } = await import("../service/QueryStringParserService");
+        const { execute: requestUseCase } = await import("../../infrastructure/usecase/RequestUseCase");
+        const { LoadingService } = await import("../../domain/service/LoadingService");
+        const { ScreenCaptureService } = await import("../../domain/service/ScreenCaptureService");
+
+        $setConfig({
+            platform: "web",
+            spa: false,
+            stage: {
+                width: 800,
+                height: 600,
+                fps: 60
+            },
+            loading: {
+                callback: async () => null
+            }
+        });
+
+        vi.mocked(queryStringParserService).mockReturnValue({
+            name: "home",
+            queryString: ""
+        });
+        vi.mocked(requestUseCase).mockResolvedValue([]);
+
+        await execute(mockApplication, "home");
+
+        expect(ScreenCaptureService.add).toHaveBeenCalled();
+        expect(LoadingService.start).toHaveBeenCalled();
+        expect(LoadingService.end).toHaveBeenCalled();
+        expect(ScreenCaptureService.dispose).toHaveBeenCalled();
+    });
+
+    it("execute test case5: response with callback should execute callback", async () =>
+    {
+        const { execute: queryStringParserService } = await import("../service/QueryStringParserService");
+        const { execute: requestUseCase } = await import("../../infrastructure/usecase/RequestUseCase");
+        const { execute: executeCallbackUseCase } = await import("./ExecuteCallbackUseCase");
+
+        vi.mocked(queryStringParserService).mockReturnValue({
+            name: "page",
+            queryString: ""
+        });
+
+        const mockCallback = vi.fn();
+        const mockResponses = [
+            { name: "data", response: { value: 123 }, callback: mockCallback }
+        ];
+        vi.mocked(requestUseCase).mockResolvedValue(mockResponses);
+
+        await execute(mockApplication, "page");
+
+        expect(executeCallbackUseCase).toHaveBeenCalledWith(mockCallback, { value: 123 });
+    });
+
+    it("execute test case6: gotoView callback should be executed when view is returned", async () =>
+    {
+        const { execute: queryStringParserService } = await import("../service/QueryStringParserService");
+        const { execute: requestUseCase } = await import("../../infrastructure/usecase/RequestUseCase");
+        const { ViewBinderService } = await import("../../domain/service/ViewBinderService");
+        const { execute: executeCallbackUseCase } = await import("./ExecuteCallbackUseCase");
+
+        const mockGotoViewCallback = vi.fn();
+        $setConfig({
+            platform: "web",
+            spa: false,
+            stage: {
+                width: 800,
+                height: 600,
+                fps: 60
+            },
+            gotoView: {
+                callback: mockGotoViewCallback
+            }
+        });
+
+        vi.mocked(queryStringParserService).mockReturnValue({
+            name: "withCallback",
+            queryString: ""
+        });
+        vi.mocked(requestUseCase).mockResolvedValue([]);
+
+        const mockView = { name: "MockView" };
+        vi.mocked(ViewBinderService.bind).mockResolvedValue(mockView as any);
+
+        await execute(mockApplication, "withCallback");
+
+        expect(executeCallbackUseCase).toHaveBeenCalledWith(mockGotoViewCallback, mockView);
+    });
 });

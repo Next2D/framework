@@ -18,9 +18,7 @@ export const execute = (name: string = ""): IQueryObject =>
      * 前のシーンのクエリデータを初期化
      * Initialize query data from previous scene
      */
-    if (query.size) {
-        query.clear();
-    }
+    query.clear();
 
     /**
      * QueryStringがあれば分解

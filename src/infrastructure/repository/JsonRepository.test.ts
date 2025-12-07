@@ -139,4 +139,27 @@ describe("JsonRepository Test", () =>
 
         await expect(execute(object)).rejects.toThrow("HTTP error: 404 Not Found for next2d");
     });
+
+    it("should throw error when path or name is missing", async () =>
+    {
+        const objectWithoutPath: IRequest = {
+            "type": "json",
+            "name": "TestName",
+            "path": ""
+        };
+
+        await expect(execute(objectWithoutPath)).rejects.toThrow(
+            "`path` and `name` must be set for json requests."
+        );
+
+        const objectWithoutName: IRequest = {
+            "type": "json",
+            "name": "",
+            "path": "test/path"
+        };
+
+        await expect(execute(objectWithoutName)).rejects.toThrow(
+            "`path` and `name` must be set for json requests."
+        );
+    });
 });

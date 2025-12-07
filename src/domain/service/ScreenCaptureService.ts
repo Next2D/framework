@@ -93,7 +93,7 @@ export const ScreenCaptureService =
             root.addChild(bitmap);
         }
 
-        if (shape.width !== width || shape.width !== height) {
+        if (shape.width !== width || shape.height !== height) {
             shape
                 .graphics
                 .clear()

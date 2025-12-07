@@ -200,4 +200,95 @@ describe("ScreenCaptureService Test", () =>
             expect(root.numChildren).toBe(0);
         });
     });
+
+    describe("cache update branches", () =>
+    {
+        it("should update cacheX when tx changes", async () =>
+        {
+            const root = new MovieClip();
+            $setContext(new Context(root));
+
+            // First call sets initial cache values
+            await ScreenCaptureService.add();
+
+            // Modify stage properties to create non-zero tx
+            const originalRendererWidth = stage.rendererWidth;
+            const originalStageWidth = stage.stageWidth;
+            const originalRendererScale = stage.rendererScale;
+
+            Object.defineProperty(stage, "rendererWidth", {
+                "get": () => 1000,
+                "configurable": true
+            });
+            Object.defineProperty(stage, "stageWidth", {
+                "get": () => 800,
+                "configurable": true
+            });
+            Object.defineProperty(stage, "rendererScale", {
+                "get": () => 1,
+                "configurable": true
+            });
+
+            // This should trigger the tx cache update branch
+            await ScreenCaptureService.add();
+
+            // Restore original values
+            Object.defineProperty(stage, "rendererWidth", {
+                "get": () => originalRendererWidth,
+                "configurable": true
+            });
+            Object.defineProperty(stage, "stageWidth", {
+                "get": () => originalStageWidth,
+                "configurable": true
+            });
+            Object.defineProperty(stage, "rendererScale", {
+                "get": () => originalRendererScale,
+                "configurable": true
+            });
+        });
+
+        it("should update cacheY when ty changes", async () =>
+        {
+            const root = new MovieClip();
+            $setContext(new Context(root));
+
+            // First call sets initial cache values
+            await ScreenCaptureService.add();
+
+            // Modify stage properties to create non-zero ty
+            const originalRendererHeight = stage.rendererHeight;
+            const originalStageHeight = stage.stageHeight;
+            const originalRendererScale = stage.rendererScale;
+
+            Object.defineProperty(stage, "rendererHeight", {
+                "get": () => 800,
+                "configurable": true
+            });
+            Object.defineProperty(stage, "stageHeight", {
+                "get": () => 600,
+                "configurable": true
+            });
+            Object.defineProperty(stage, "rendererScale", {
+                "get": () => 1,
+                "configurable": true
+            });
+
+            // This should trigger the ty cache update branch
+            await ScreenCaptureService.add();
+
+            // Restore original values
+            Object.defineProperty(stage, "rendererHeight", {
+                "get": () => originalRendererHeight,
+                "configurable": true
+            });
+            Object.defineProperty(stage, "stageHeight", {
+                "get": () => originalStageHeight,
+                "configurable": true
+            });
+            Object.defineProperty(stage, "rendererScale", {
+                "get": () => originalRendererScale,
+                "configurable": true
+            });
+        });
+    });
 });

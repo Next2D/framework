@@ -235,4 +235,60 @@ describe("DefaultLoader Test", () =>
             expect(sprite).toBe(loader.sprite);
         });
     });
+
+    describe("edge cases", () =>
+    {
+        it("start should handle null shape gracefully when sprite children are removed", () =>
+        {
+            const root = new MovieClip();
+            $setContext(new Context(root));
+
+            const loader = new DefaultLoader();
+            // Remove all children to trigger the null check
+            while (loader.sprite.numChildren > 0) {
+                loader.sprite.removeChildAt(0);
+            }
+
+            // Should not throw
+            loader.start();
+        });
+
+        it("end should handle null shape gracefully when sprite children are removed", () =>
+        {
+            const root = new MovieClip();
+            $setContext(new Context(root));
+
+            const loader = new DefaultLoader();
+            root.addChild(loader.sprite);
+
+            // Remove all children from sprite
+            while (loader.sprite.numChildren > 0) {
+                loader.sprite.removeChildAt(0);
+            }
+
+            // Should not throw
+            loader.end();
+
+            expect(root.numChildren).toBe(0);
+        });
+
+        it("start should skip redrawing when shape width matches minSize", () =>
+        {
+            const root = new MovieClip();
+            $setContext(new Context(root));
+
+            const loader = new DefaultLoader();
+
+            // First start - shapes are drawn
+            loader.start();
+
+            // Get the first shape's width after drawing
+            const shape0 = loader.sprite.getChildAt<Shape>(0);
+            expect(shape0).toBeTruthy();
+
+            // Second start - should skip the redraw branch (line 175)
+            // because shape.width === minSize is already true
+            loader.start();
+        });
+    });
 });

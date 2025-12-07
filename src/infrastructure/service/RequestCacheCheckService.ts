@@ -19,7 +19,7 @@ export const execute = (requestObject: IRequest): ResponseDTO | null =>
 
     const name = requestObject.name;
 
-    if (!cache.size || !cache.has(name)) {
+    if (!cache.has(name)) {
         return null;
     }
 

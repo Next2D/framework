@@ -2,13 +2,17 @@ import type { IStage } from "./IStage";
 import type { IRouting } from "./IRouting";
 import type { IGotoView } from "./IGotoView";
 
+interface IBaseConfig {
+    [key: string]: any
+}
+
 /**
  * @description アプリケーション設定のインターフェース
  *              Application configuration interface
  *
  * @interface
  */
-export interface IConfig {
+export interface IConfig extends IBaseConfig {
     /**
      * @description プラットフォーム識別子
      *              Platform identifier

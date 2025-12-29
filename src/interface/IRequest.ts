@@ -1,16 +1,11 @@
 import type { IRequestType } from "./IRequestType";
+import type { IAccessType } from "./IAccessType";
 
 /**
  * @description HTTPメソッドの型
  *              HTTP method type
  */
 export type IHttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "HEAD" | "OPTIONS";
-
-/**
- * @description カスタムリクエストのアクセス方法
- *              Access method for custom request
- */
-export type IAccessType = "static" | "instance";
 
 /**
  * @description リクエスト設定のインターフェース

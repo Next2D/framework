@@ -16,7 +16,7 @@ describe("QueryStringParserService", () =>
     it("parse query test case1", () =>
     {
         query.clear();
-        query.set("test", 123);
+        query.set("test", "123");
         expect(query.size).toBe(1);
 
         const object: IQueryObject = execute();
@@ -48,9 +48,9 @@ describe("QueryStringParserService", () =>
 
         const object: IQueryObject = execute("");
 
-        expect(query.size).toBe(2);
-        expect(query.get("q")).toBe("abc");
-        expect(query.get("sample")).toBe("1");
+        expect(query.size).toBe(0);
+        expect(query.has("q")).toBe(false);
+        expect(query.has("sample")).toBe(false);
         expect(object.name).toBe("top");
         expect(object.queryString).toBe("?q=abc&sample=1");
     });
@@ -85,9 +85,9 @@ describe("QueryStringParserService", () =>
 
         const object: IQueryObject = execute("");
 
-        expect(query.size).toBe(2);
-        expect(query.get("q")).toBe("xyz");
-        expect(query.get("sample")).toBe("0");
+        expect(query.size).toBe(0);
+        expect(query.has("q")).toBe(false);
+        expect(query.has("sample")).toBe(false);
         expect(object.name).toBe("top");
         expect(object.queryString).toBe("?q=xyz&sample=0");
     });
@@ -124,9 +124,9 @@ describe("QueryStringParserService", () =>
 
         const object: IQueryObject = execute("");
 
-        expect(query.size).toBe(2);
-        expect(query.get("q")).toBe("xyz");
-        expect(query.get("sample")).toBe("0");
+        expect(query.size).toBe(0);
+        expect(query.has("q")).toBe(false);
+        expect(query.has("sample")).toBe(false);
         expect(object.name).toBe("quest/list");
         expect(object.queryString).toBe("?q=xyz&sample=0");
     });
@@ -163,9 +163,9 @@ describe("QueryStringParserService", () =>
 
         const object: IQueryObject = execute("");
 
-        expect(query.size).toBe(2);
-        expect(query.get("q")).toBe("xyz");
-        expect(query.get("sample")).toBe("0");
+        expect(query.size).toBe(0);
+        expect(query.has("q")).toBe(false);
+        expect(query.has("sample")).toBe(false);
         expect(object.name).toBe("top");
         expect(object.queryString).toBe("?q=xyz&sample=0");
     });
@@ -203,9 +203,9 @@ describe("QueryStringParserService", () =>
 
         const object: IQueryObject = execute("");
 
-        expect(query.size).toBe(2);
-        expect(query.get("q")).toBe("xyz");
-        expect(query.get("sample")).toBe("0");
+        expect(query.size).toBe(0);
+        expect(query.has("q")).toBe(false);
+        expect(query.has("sample")).toBe(false);
         expect(object.name).toBe("quest/detail");
         expect(object.queryString).toBe("?q=xyz&sample=0");
     });
@@ -218,9 +218,9 @@ describe("QueryStringParserService", () =>
 
         const object: IQueryObject = execute("page/test?abc=123&xyz=999");
 
-        expect(query.size).toBe(2);
-        expect(query.get("abc")).toBe("123");
-        expect(query.get("xyz")).toBe("999");
+        expect(query.size).toBe(0);
+        expect(query.has("abc")).toBe(false);
+        expect(query.has("xyz")).toBe(false);
         expect(object.name).toBe("page/test");
         expect(object.queryString).toBe("?abc=123&xyz=999");
     });

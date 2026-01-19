@@ -1,7 +1,6 @@
 import type { IQueryObject } from "../../interface/IQueryObject";
 import { $getConfig } from "../variable/Config";
 import { query } from "../variable/Query";
-import { parseQueryString } from "../../shared/util/ParseQueryString";
 
 /**
  * @description 指定されたQueryStringか、URLのQueryStringをquery mapに登録
@@ -27,10 +26,6 @@ export const execute = (name: string = ""): IQueryObject =>
     let queryString = "";
     if (!name && location.search) {
         queryString = location.search;
-        const parsed = parseQueryString(queryString);
-        for (const [key, value] of parsed) {
-            query.set(key, value);
-        }
     }
 
     const config = $getConfig();
@@ -62,10 +57,6 @@ export const execute = (name: string = ""): IQueryObject =>
     const questionIdx = name.indexOf("?");
     if (questionIdx > -1) {
         queryString = name.slice(questionIdx);
-        const parsed = parseQueryString(name.slice(questionIdx + 1));
-        for (const [key, value] of parsed) {
-            query.set(key, value);
-        }
         name = name.slice(0, questionIdx);
     }
 

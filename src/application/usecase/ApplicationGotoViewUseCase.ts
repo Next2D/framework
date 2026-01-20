@@ -11,7 +11,7 @@ import { execute as executeCallbackUseCase } from "./ExecuteCallbackUseCase";
 import { execute as responseRemoveVariableUseCase } from "../../infrastructure/usecase/ResponseRemoveVariableUseCase";
 import { ViewBinderService } from "../../domain/service/ViewBinderService";
 import { LoadingService } from "../../domain/service/LoadingService";
-import { ScreenCaptureService } from "../../domain/service/ScreenCaptureService";
+import { ScreenOverlayService } from "../../domain/service/ScreenOverlayService";
 
 /**
  * @description 指定されたパス、もしくはURLのクラスを起動
@@ -36,7 +36,7 @@ export const execute = async (
          * 現時点の描画をキャプチャーして表示
          * Capture and display the current drawing
          */
-        await ScreenCaptureService.add();
+        await ScreenOverlayService.add();
 
         /**
          * ローディング表示を起動
@@ -44,13 +44,6 @@ export const execute = async (
          */
         await LoadingService.start();
     }
-
-    /**
-     * 現在の画面のViewとViewModelをunbind
-     * Unbind the View and ViewModel of the current screen
-     */
-    const context = $getContext();
-    await ViewBinderService.unbind(context);
 
     /**
      * 前の画面で取得したレスポンスデータを初期化
@@ -89,6 +82,7 @@ export const execute = async (
      * Execute request processing set by routing.json
      */
     const responses = await requestUseCase(application.currentName);
+    // await new Promise((resolve) => setTimeout(resolve, 3000));
 
     /**
      * レスポンス情報をマップに登録し、コールバックを実行
@@ -110,19 +104,12 @@ export const execute = async (
         }
     }
 
-    if (hasLoading) {
-        /**
-         * ローディング表示を終了
-         * End loading display
-         */
-        await LoadingService.end();
-
-        /**
-         * 前の画面のキャプチャーを終了
-         * End previous screen capture
-         */
-        ScreenCaptureService.dispose();
-    }
+    /**
+     * 現在の画面のViewとViewModelをunbind
+     * Unbind the View and ViewModel of the current screen
+     */
+    const context = $getContext();
+    await ViewBinderService.unbind(context);
 
     /**
      * ViewとViewModelを起動
@@ -137,4 +124,24 @@ export const execute = async (
     if (view && config.gotoView) {
         await executeCallbackUseCase(config.gotoView.callback, view);
     }
+
+    if (hasLoading) {
+        /**
+         * ローディング表示を終了
+         * End loading display
+         */
+        await LoadingService.end();
+
+        /**
+         * 前の画面のキャプチャーを終了
+         * End previous screen capture
+         */
+        ScreenOverlayService.dispose();
+    }
+
+    /**
+     * 画面表示時の処理を実行
+     * Execute processing when the screen is displayed
+     */
+    await view.onEnter();
 };

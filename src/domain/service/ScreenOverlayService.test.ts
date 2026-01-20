@@ -1,4 +1,4 @@
-import { ScreenCaptureService } from "./ScreenCaptureService";
+import { ScreenOverlayService } from "./ScreenOverlayService";
 import { MovieClip, Shape, BitmapData, stage } from "@next2d/display";
 import { Context } from "../../application/Context";
 import { $setContext, $getContext } from "../../application/variable/Context";
@@ -16,7 +16,7 @@ Object.defineProperty(window, "next2d", {
     })
 });
 
-describe("ScreenCaptureService Test", () =>
+describe("ScreenOverlayService Test", () =>
 {
     beforeEach(() =>
     {
@@ -33,7 +33,7 @@ describe("ScreenCaptureService Test", () =>
 
     describe("add", () =>
     {
-        it("should add capture shape to stage", async () =>
+        it("should add overlay shape to stage", async () =>
         {
             const root = new MovieClip();
             $setContext(new Context(root));
@@ -41,7 +41,7 @@ describe("ScreenCaptureService Test", () =>
             expect(root.numChildren).toBe(0);
             expect(root.mouseChildren).toBe(true);
             expect(root.mouseEnabled).toBe(true);
-            await ScreenCaptureService.add();
+            await ScreenOverlayService.add();
             expect(root.numChildren).toBe(1);
             expect(root.mouseChildren).toBe(false);
             expect(root.mouseEnabled).toBe(false);
@@ -56,10 +56,10 @@ describe("ScreenCaptureService Test", () =>
             } as unknown as Context;
             $setContext(mockContext);
 
-            await ScreenCaptureService.add();
+            await ScreenOverlayService.add();
         });
 
-        it("should capture and add bitmap when rectangle has size", async () =>
+        it("should add overlay and disable mouse when rectangle has size", async () =>
         {
             const root = new MovieClip();
             const shape = new Shape();
@@ -67,7 +67,7 @@ describe("ScreenCaptureService Test", () =>
             root.addChild(shape);
             $setContext(new Context(root));
 
-            await ScreenCaptureService.add();
+            await ScreenOverlayService.add();
 
             expect(root.mouseChildren).toBe(false);
             expect(root.mouseEnabled).toBe(false);
@@ -91,7 +91,7 @@ describe("ScreenCaptureService Test", () =>
             const root = new MovieClip();
             $setContext(new Context(root));
 
-            await ScreenCaptureService.add();
+            await ScreenOverlayService.add();
 
             expect(root.mouseChildren).toBe(false);
         });
@@ -114,17 +114,17 @@ describe("ScreenCaptureService Test", () =>
             const root = new MovieClip();
             $setContext(new Context(root));
 
-            await ScreenCaptureService.add();
+            await ScreenOverlayService.add();
 
             expect(root.mouseChildren).toBe(false);
         });
 
-        it("should draw shape with correct dimensions", async () =>
+        it("should draw overlay shape with correct dimensions", async () =>
         {
             const root = new MovieClip();
             $setContext(new Context(root));
 
-            await ScreenCaptureService.add();
+            await ScreenOverlayService.add();
 
             expect(root.numChildren).toBeGreaterThan(0);
         });
@@ -134,10 +134,10 @@ describe("ScreenCaptureService Test", () =>
             const root = new MovieClip();
             $setContext(new Context(root));
 
-            await ScreenCaptureService.add();
+            await ScreenOverlayService.add();
             const firstCount = root.numChildren;
 
-            await ScreenCaptureService.add();
+            await ScreenOverlayService.add();
 
             expect(root.numChildren).toBeGreaterThanOrEqual(firstCount);
         });
@@ -158,8 +158,8 @@ describe("ScreenCaptureService Test", () =>
             expect(root.numChildren).toBe(2);
             expect(root.mouseChildren).toBe(false);
             expect(root.mouseEnabled).toBe(false);
-            ScreenCaptureService.dispose();
-            expect(root.numChildren).toBe(0);
+            ScreenOverlayService.dispose();
+            expect(root.numChildren).toBe(2);
             expect(root.mouseChildren).toBe(true);
             expect(root.mouseEnabled).toBe(true);
         });
@@ -173,7 +173,7 @@ describe("ScreenCaptureService Test", () =>
             } as unknown as Context;
             $setContext(mockContext);
 
-            ScreenCaptureService.dispose();
+            ScreenOverlayService.dispose();
         });
 
         it("should handle already empty root", () =>
@@ -182,21 +182,21 @@ describe("ScreenCaptureService Test", () =>
             $setContext(new Context(root));
 
             expect(root.numChildren).toBe(0);
-            ScreenCaptureService.dispose();
+            ScreenOverlayService.dispose();
             expect(root.numChildren).toBe(0);
             expect(root.mouseChildren).toBe(true);
             expect(root.mouseEnabled).toBe(true);
         });
 
-        it("should remove children added by add method", async () =>
+        it("should remove overlay shape added by add method", async () =>
         {
             const root = new MovieClip();
             $setContext(new Context(root));
 
-            await ScreenCaptureService.add();
+            await ScreenOverlayService.add();
             expect(root.numChildren).toBeGreaterThan(0);
 
-            ScreenCaptureService.dispose();
+            ScreenOverlayService.dispose();
             expect(root.numChildren).toBe(0);
         });
     });
@@ -209,7 +209,7 @@ describe("ScreenCaptureService Test", () =>
             $setContext(new Context(root));
 
             // First call sets initial cache values
-            await ScreenCaptureService.add();
+            await ScreenOverlayService.add();
 
             // Modify stage properties to create non-zero tx
             const originalRendererWidth = stage.rendererWidth;
@@ -230,7 +230,7 @@ describe("ScreenCaptureService Test", () =>
             });
 
             // This should trigger the tx cache update branch
-            await ScreenCaptureService.add();
+            await ScreenOverlayService.add();
 
             // Restore original values
             Object.defineProperty(stage, "rendererWidth", {
@@ -253,7 +253,7 @@ describe("ScreenCaptureService Test", () =>
             $setContext(new Context(root));
 
             // First call sets initial cache values
-            await ScreenCaptureService.add();
+            await ScreenOverlayService.add();
 
             // Modify stage properties to create non-zero ty
             const originalRendererHeight = stage.rendererHeight;
@@ -274,7 +274,7 @@ describe("ScreenCaptureService Test", () =>
             });
 
             // This should trigger the ty cache update branch
-            await ScreenCaptureService.add();
+            await ScreenOverlayService.add();
 
             // Restore original values
             Object.defineProperty(stage, "rendererHeight", {

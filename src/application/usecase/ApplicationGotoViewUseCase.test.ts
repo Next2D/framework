@@ -6,8 +6,8 @@ import { $setConfig } from "../variable/Config";
 import { $setContext } from "../variable/Context";
 import { response } from "../../infrastructure/variable/Response";
 
-vi.mock("../../domain/service/ScreenCaptureService", () => ({
-    ScreenCaptureService: {
+vi.mock("../../domain/service/ScreenOverlayService", () => ({
+    ScreenOverlayService: {
         add: vi.fn().mockResolvedValue(undefined),
         dispose: vi.fn()
     }
@@ -40,7 +40,9 @@ vi.mock("./ExecuteCallbackUseCase", () => ({
 
 vi.mock("../../domain/service/ViewBinderService", () => ({
     ViewBinderService: {
-        bind: vi.fn().mockResolvedValue(null),
+        bind: vi.fn().mockResolvedValue({
+            onEnter: vi.fn().mockResolvedValue(undefined)
+        }),
         unbind: vi.fn().mockResolvedValue(undefined)
     }
 }));
@@ -156,7 +158,7 @@ describe("ApplicationGotoViewUseCase Test", () =>
         const { execute: queryStringParserService } = await import("../service/QueryStringParserService");
         const { execute: requestUseCase } = await import("../../infrastructure/usecase/RequestUseCase");
         const { LoadingService } = await import("../../domain/service/LoadingService");
-        const { ScreenCaptureService } = await import("../../domain/service/ScreenCaptureService");
+        const { ScreenOverlayService } = await import("../../domain/service/ScreenOverlayService");
 
         $setConfig({
             platform: "web",
@@ -179,10 +181,10 @@ describe("ApplicationGotoViewUseCase Test", () =>
 
         await execute(mockApplication, "home");
 
-        expect(ScreenCaptureService.add).toHaveBeenCalled();
+        expect(ScreenOverlayService.add).toHaveBeenCalled();
         expect(LoadingService.start).toHaveBeenCalled();
         expect(LoadingService.end).toHaveBeenCalled();
-        expect(ScreenCaptureService.dispose).toHaveBeenCalled();
+        expect(ScreenOverlayService.dispose).toHaveBeenCalled();
     });
 
     it("execute test case5: response with callback should execute callback", async () =>
@@ -234,7 +236,7 @@ describe("ApplicationGotoViewUseCase Test", () =>
         });
         vi.mocked(requestUseCase).mockResolvedValue([]);
 
-        const mockView = { name: "MockView" };
+        const mockView = { name: "MockView", onEnter: vi.fn().mockResolvedValue(undefined) };
         vi.mocked(ViewBinderService.bind).mockResolvedValue(mockView as any);
 
         await execute(mockApplication, "withCallback");

@@ -56,7 +56,7 @@ src/
 │   │   └── DefaultLoader.ts
 │   ├── service/            # Domain services
 │   │   ├── LoadingService.ts
-│   │   ├── ScreenCaptureService.ts
+│   │   ├── ScreenOverlayService.ts
 │   │   └── ViewBinderService.ts
 │   └── variable/           # Domain state
 ├── infrastructure/         # Infrastructure Layer
@@ -234,14 +234,19 @@ graph TD
     
     GotoView --> LoadingCheck{use loading?<br/>Default: true}
     
-    LoadingCheck -->|YES| LoadingStart[Start Loading]
-    LoadingCheck -->|NO| OnExit
-    LoadingStart --> OnExit
+    LoadingCheck -->|YES| ScreenOverlay[Screen Overlay]
+    LoadingCheck -->|NO| RemoveResponse
+    ScreenOverlay --> LoadingStart[Start Loading]
+    LoadingStart --> RemoveResponse
     
-    OnExit[Previous View: onExit] --> RemoveViewFromStage[Remove Previous View from Stage]
-    RemoveViewFromStage --> RemoveResponse[Remove Previous Response Data]
+    RemoveResponse[Remove Previous Response Data] --> ParseQuery[Parse Query String]
+    ParseQuery --> UpdateHistory{SPA mode?}
     
-    RemoveResponse --> RequestType[Request Type]
+    UpdateHistory -->|YES| PushState[Push History State]
+    UpdateHistory -->|NO| RequestType
+    PushState --> RequestType
+    
+    RequestType[Request Type]
     
     RequestType --> JSON[JSON: Get external JSON data]
     RequestType --> CONTENT[CONTENT: Get Animation Tool JSON]
@@ -260,23 +265,31 @@ graph TD
     Cached -->|YES| RegisterResponse
     GlobalData --> RegisterResponse
     
-    RegisterResponse[Register Response Data] --> ViewModelInit[ViewModel: initialize]
+    RegisterResponse[Register Response Data] --> RequestCallback{request callback?}
+    
+    RequestCallback -->|YES| ExecRequestCallback[Execute Request Callback]
+    RequestCallback -->|NO| UnbindView
+    ExecRequestCallback --> UnbindView
+    
+    UnbindView[Previous View: onExit & Unbind] --> BindView[New View/ViewModel: Bind]
+    BindView --> ViewModelInit[ViewModel: initialize]
     
     ViewModelInit --> ViewInit[View: initialize]
     ViewInit --> AddToStage[Add View to Stage]
-    AddToStage --> OnEnter[View: onEnter]
+    AddToStage --> GotoViewCallback{gotoView callback?}
     
-    OnEnter --> CallbackCheck{use callback?<br/>Default: empty}
-    
-    CallbackCheck -->|YES| CallbackStart[Start Callback]
-    CallbackCheck -->|NO| LoadingEndCheck
-    CallbackStart --> LoadingEndCheck
+    GotoViewCallback -->|YES| ExecGotoViewCallback[Execute gotoView Callback]
+    GotoViewCallback -->|NO| LoadingEndCheck
+    ExecGotoViewCallback --> LoadingEndCheck
     
     LoadingEndCheck{use loading?<br/>Default: true}
     
     LoadingEndCheck -->|YES| LoadingEnd[End Loading]
-    LoadingEndCheck -->|NO| StartDrawing
-    LoadingEnd --> StartDrawing
+    LoadingEndCheck -->|NO| OnEnter
+    LoadingEnd --> DisposeOverlay[Dispose Screen Overlay]
+    DisposeOverlay --> OnEnter
+    
+    OnEnter[View: onEnter] --> StartDrawing
     
     StartDrawing[Start Drawing] -->|Response| User
     

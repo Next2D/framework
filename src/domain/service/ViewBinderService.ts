@@ -44,25 +44,11 @@ export const ViewBinderService =
         await context.view.initialize();
 
         /**
-         * rootの子要素を全て削除（末尾から削除することでO(n)に最適化）
-         * Remove all child elements of root (optimized to O(n) by removing from end)
-         */
-        const root = context.root;
-        for (let idx = root.numChildren - 1; idx >= 0; --idx) {
-            root.removeChildAt(idx);
-        }
-
-        /**
          * stageの一番背面にviewをセット
          * Set the view at the very back of the stage
          */
+        const root = context.root;
         root.addChildAt(context.view, 0);
-
-        /**
-         * 画面表示時の処理を実行
-         * Execute processing when the screen is displayed
-         */
-        await context.view.onEnter();
 
         return context.view;
     },

@@ -26,7 +26,6 @@ describe("ViewBinderService Test", () =>
 
             let viewModelInitialized = false;
             let viewInitialized = false;
-            let viewEntered = false;
 
             class TestViewModel extends ViewModel
             {
@@ -45,7 +44,6 @@ describe("ViewBinderService Test", () =>
 
                 async onEnter ()
                 {
-                    viewEntered = true;
                 }
 
                 async onExit ()
@@ -63,14 +61,12 @@ describe("ViewBinderService Test", () =>
 
             expect(viewModelInitialized).toBe(false);
             expect(viewInitialized).toBe(false);
-            expect(viewEntered).toBe(false);
             expect(root.numChildren).toBe(0);
 
             await ViewBinderService.bind(context, "test");
 
             expect(viewModelInitialized).toBe(true);
             expect(viewInitialized).toBe(true);
-            expect(viewEntered).toBe(true);
             expect(root.numChildren).toBe(1);
             expect(context.view).toBeInstanceOf(TestView);
             expect(context.viewModel).toBeInstanceOf(TestViewModel);
@@ -135,7 +131,7 @@ describe("ViewBinderService Test", () =>
 
             await ViewBinderService.bind(context, "test");
 
-            expect(root.numChildren).toBe(1);
+            expect(root.numChildren).toBe(3);
             expect(context.view).toBeInstanceOf(TestView);
         });
     });

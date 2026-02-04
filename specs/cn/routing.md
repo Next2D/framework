@@ -1,10 +1,10 @@
-# ルーティング
+# 路由
 
-Next2D FrameworkはシングルページアプリケーションとしてURLでシーンを制御できます。ルーティングは`routing.json`で設定します。
+Next2D Framework 可以作为单页应用程序通过 URL 控制场景。路由在 `routing.json` 中配置。
 
-## 基本設定
+## 基本配置
 
-ルーティングのトッププロパティは英数字とスラッシュが使用できます。スラッシュをキーにCamelCaseでViewクラスにアクセスします。
+路由的顶级属性可以使用字母数字字符和斜杠。斜杠用作以驼峰命名法访问 View 类的键。
 
 ```json
 {
@@ -20,14 +20,14 @@ Next2D FrameworkはシングルページアプリケーションとしてURLで�
 }
 ```
 
-上記の場合:
-- `top` → `TopView`クラス
-- `home` → `HomeView`クラス
-- `quest/list` → `QuestListView`クラス
+在上面的示例中：
+- `top` → `TopView` 类
+- `home` → `HomeView` 类
+- `quest/list` → `QuestListView` 类
 
-## ルート定義
+## 路由定义
 
-### 基本的なルート
+### 基本路由
 
 ```json
 {
@@ -37,18 +37,18 @@ Next2D FrameworkはシングルページアプリケーションとしてURLで�
 }
 ```
 
-アクセス: `https://example.com/` または `https://example.com/top`
+访问：`https://example.com/` 或 `https://example.com/top`
 
-### セカンドレベルプロパティ
+### 二级属性
 
-| プロパティ | 型 | デフォルト | 説明 |
-|-----------|------|----------|------|
-| `private` | boolean | false | URLでの直接アクセスを制御。trueの場合、URLでアクセスするとTopViewが読み込まれる |
-| `requests` | array | null | Viewがbindされる前にリクエストを送信 |
+| 属性 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `private` | boolean | false | 控制直接 URL 访问。如果为 true，URL 访问将加载 TopView |
+| `requests` | array | null | 在 View 绑定之前发送请求 |
 
-### プライベートルート
+### 私有路由
 
-URLでの直接アクセスを禁止したい場合:
+要限制直接 URL 访问：
 
 ```json
 {
@@ -59,30 +59,30 @@ URLでの直接アクセスを禁止したい場合:
 }
 ```
 
-`private: true`の場合、URLで直接アクセスすると`TopView`にリダイレクトされます。プログラムからの`app.gotoView()`でのみアクセス可能です。
+当 `private: true` 时，直接 URL 访问会重定向到 `TopView`。只能通过 `app.gotoView()` 访问。
 
-## requestsの設定
+## requests 配置
 
-Viewがbindされる前にデータを取得できます。取得したデータは`app.getResponse()`で取得できます。
+可以在 View 绑定之前获取数据。检索的数据可通过 `app.getResponse()` 获取。
 
-### requests配列の設定項目
+### requests 数组设置
 
-| プロパティ | 型 | デフォルト | 説明 |
-|-----------|------|----------|------|
-| `type` | string | content | `json`、`content`、`custom`の固定値 |
-| `path` | string | empty | リクエスト先のパス |
-| `name` | string | empty | `response`にセットするキー名 |
-| `cache` | boolean | false | データをキャッシュするか |
-| `callback` | string \| array | null | リクエスト完了後のコールバッククラス |
-| `class` | string | empty | リクエストを実行するクラス（typeがcustomの場合のみ） |
-| `access` | string | public | 関数へのアクセス修飾子（`public`または`static`） |
-| `method` | string | empty | 実行する関数名（typeがcustomの場合のみ） |
+| 属性 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `type` | string | content | 固定值：`json`、`content`、`custom` |
+| `path` | string | empty | 请求目标路径 |
+| `name` | string | empty | 在 `response` 中设置的键名 |
+| `cache` | boolean | false | 是否缓存数据 |
+| `callback` | string \| array | null | 请求完成后的回调类 |
+| `class` | string | empty | 执行请求的类（仅 custom 类型） |
+| `access` | string | public | 函数访问修饰符（`public` 或 `static`） |
+| `method` | string | empty | 要执行的函数名（仅 custom 类型） |
 
-### typeの種類
+### 类型变体
 
 #### json
 
-外部JSONデータを取得:
+获取外部 JSON 数据：
 
 ```json
 {
@@ -100,7 +100,7 @@ Viewがbindされる前にデータを取得できます。取得したデータ
 
 #### content
 
-Animation ToolのJSONを取得:
+获取 Animation Tool JSON：
 
 ```json
 {
@@ -118,7 +118,7 @@ Animation ToolのJSONを取得:
 
 #### custom
 
-カスタムクラスでリクエストを実行:
+使用自定义类执行请求：
 
 ```json
 {
@@ -136,9 +136,9 @@ Animation ToolのJSONを取得:
 }
 ```
 
-### 変数の展開
+### 变量展开
 
-`{{***}}`で囲むと`config.json`の変数を取得できます:
+用 `{{***}}` 包围以从 `config.json` 获取变量：
 
 ```json
 {
@@ -146,9 +146,9 @@ Animation ToolのJSONを取得:
 }
 ```
 
-### キャッシュの利用
+### 使用缓存
 
-`cache: true`を設定すると、データがキャッシュされます。キャッシュしたデータは画面遷移しても初期化されません。
+设置 `cache: true` 会缓存数据。缓存的数据在画面转换中持久存在。
 
 ```json
 {
@@ -165,7 +165,7 @@ Animation ToolのJSONを取得:
 }
 ```
 
-キャッシュデータの取得:
+获取缓存的数据：
 
 ```typescript
 import { app } from "@next2d/framework";
@@ -176,9 +176,9 @@ if (cache.has("MasterData")) {
 }
 ```
 
-### コールバック
+### 回调
 
-リクエスト完了後にコールバックを実行:
+请求完成后执行回调：
 
 ```json
 {
@@ -195,45 +195,45 @@ if (cache.has("MasterData")) {
 }
 ```
 
-コールバッククラス:
+回调类：
 
 ```typescript
 export class HomeDataCallback
 {
     constructor(data: any)
     {
-        // 取得したデータが渡される
+        // 传递检索到的数据
     }
 
     execute(): void
     {
-        // コールバック処理
+        // 回调处理
     }
 }
 ```
 
-## 画面遷移
+## 画面转换
 
 ### app.gotoView()
 
-`app.gotoView()`で画面遷移を行います:
+使用 `app.gotoView()` 进行画面转换：
 
 ```typescript
 import { app } from "@next2d/framework";
 
-// 基本的な遷移
+// 基本转换
 await app.gotoView("home");
 
-// パスで遷移
+// 按路径转换
 await app.gotoView("quest/list");
 
-// クエリパラメータ付き
+// 带查询参数
 await app.gotoView("quest/detail?id=123");
 ```
 
-### UseCaseでの画面遷移
+### UseCase 中的画面转换
 
-画面遷移はUseCaseで行うことを推奨します:
+建议在 UseCase 中处理画面转换：
 
 ```typescript
 import { app } from "@next2d/framework";
@@ -247,7 +247,7 @@ export class NavigateToViewUseCase
 }
 ```
 
-ViewModelでの使用:
+在 ViewModel 中使用：
 
 ```typescript
 export class TopViewModel extends ViewModel
@@ -267,9 +267,9 @@ export class TopViewModel extends ViewModel
 }
 ```
 
-## レスポンスデータの取得
+## 获取响应数据
 
-`requests`で取得したデータは`app.getResponse()`で取得できます:
+`requests` 的数据可以通过 `app.getResponse()` 获取：
 
 ```typescript
 import { app } from "@next2d/framework";
@@ -285,11 +285,11 @@ async initialize(): Promise<void>
 }
 ```
 
-**注意:** `response`データは画面遷移すると初期化されます。画面を跨いで保持したいデータは`cache: true`を設定してください。
+**注意：** `response` 数据在画面转换时会重置。对于需要跨画面持久存在的数据，请使用 `cache: true`。
 
-## SPAモード
+## SPA 模式
 
-`config.json`の`all.spa`で設定します:
+在 `config.json` 的 `all.spa` 中配置：
 
 ```json
 {
@@ -299,12 +299,12 @@ async initialize(): Promise<void>
 }
 ```
 
-- `true`: URLでシーンを制御（History API使用）
-- `false`: URLによるシーン制御を無効化
+- `true`：通过 URL 控制场景（使用 History API）
+- `false`：禁用基于 URL 的场景控制
 
-## デフォルトのトップページ
+## 默认首页
 
-`config.json`で設定:
+在 `config.json` 中配置：
 
 ```json
 {
@@ -314,21 +314,21 @@ async initialize(): Promise<void>
 }
 ```
 
-設定がない場合は`TopView`クラスが起動します。
+如果未设置，将启动 `TopView` 类。
 
-## View/ViewModelの自動生成
+## 自动生成 View/ViewModel
 
-`routing.json`の設定から自動生成できます:
+从 `routing.json` 设置自动生成：
 
 ```bash
 npm run generate
 ```
 
-このコマンドは`routing.json`のトッププロパティを解析し、対応するViewとViewModelクラスを生成します。
+此命令解析 `routing.json` 中的顶级属性并生成相应的 View 和 ViewModel 类。
 
-## 設定例
+## 配置示例
 
-### 完全な routing.json の例
+### 完整 routing.json 示例
 
 ```json
 {
@@ -382,7 +382,7 @@ npm run generate
 }
 ```
 
-## 関連項目
+## 相关
 
-- [View/ViewModel](/ja/reference/framework/view)
-- [設定ファイル](/ja/reference/framework/config)
+- [View/ViewModel](/cn/reference/framework/view)
+- [配置](/cn/reference/framework/config)

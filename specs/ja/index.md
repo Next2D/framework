@@ -5,127 +5,158 @@ Next2D Frameworkは、Next2D Playerを用いたアプリケーション開発の
 ## 主な特徴
 
 - **MVVMパターン**: Model-View-ViewModelパターンによる関心の分離
+- **クリーンアーキテクチャ**: 依存性の逆転と疎結合な設計
 - **シングルページアプリケーション**: URLベースのシーン管理
-- **Open Animation Tool連携**: Open Animation Toolで作成したアセットとの連携
+- **Animation Tool連携**: Animation Toolで作成したアセットとの連携
 - **TypeScriptサポート**: 型安全な開発が可能
 - **アトミックデザイン**: 再利用可能なコンポーネント設計を推奨
 
-## MVVMアーキテクチャ
+## アーキテクチャ概要
 
-Next2D FrameworkはMVVM（Model-View-ViewModel）パターンを採用しています。
+このプロジェクトはクリーンアーキテクチャとMVVMパターンを組み合わせて実装されています。
 
 ```mermaid
-flowchart TB
-    subgraph User["User"]
-        direction TB
+graph TB
+    subgraph ViewLayer["View Layer"]
+        View["View"]
+        ViewModel["ViewModel"]
+        UI["UI Components"]
     end
 
-    subgraph View["View"]
-        direction TB
-        MC["MovieClip<br/>(Open Animation Tool)"]
-        subgraph Components["UI Components"]
-            BTN["Button"]
-            TF["TextField"]
-            SP["Sprite"]
-        end
+    subgraph InterfaceLayer["Interface Layer"]
+        IDraggable["IDraggable"]
+        ITextField["ITextField"]
+        IResponse["IResponse"]
     end
 
-    subgraph ViewModel["ViewModel"]
-        direction LR
-        Props["Properties"]
-        Methods["Methods"]
-        Commands["Commands"]
+    subgraph ApplicationLayer["Application Layer"]
+        UseCase["UseCase"]
     end
 
-    subgraph Model["Model"]
-        direction LR
-        API["API Client"]
-        Store["Data Store"]
-        Entity["Entities"]
+    subgraph DomainLayer["Domain Layer"]
+        DomainLogic["Domain Logic"]
+        DomainService["Service"]
     end
 
-    User -->|"Input"| View
-    View -->|"Data Binding<br/>Commands"| ViewModel
-    ViewModel -->|"Business Logic<br/>Data Access"| Model
-    Model -->|"Data"| ViewModel
-    ViewModel -->|"Update"| View
+    subgraph InfraLayer["Infrastructure Layer"]
+        Repository["Repository"]
+        ExternalAPI["External API"]
+    end
+
+    ViewLayer -.->|interface経由| InterfaceLayer
+    ViewLayer -.->|calls| ApplicationLayer
+    ApplicationLayer -.->|interface経由| InterfaceLayer
+    ApplicationLayer -.->|uses| DomainLayer
+    ApplicationLayer -.->|calls| InfraLayer
+    InfraLayer -.->|accesses| ExternalAPI
 ```
 
-### 各レイヤーの役割
+### レイヤーの責務
 
-| レイヤー | 役割 | 担当 |
+| レイヤー | パス | 役割 |
 |----------|------|------|
-| **View** | UI表示、ユーザー入力の受付 | デザイナー/アニメーター |
-| **ViewModel** | 表示ロジック、状態管理、Viewへのデータ提供 | プログラマー |
-| **Model** | ビジネスロジック、データアクセス、API通信 | プログラマー |
+| **View** | `view/*`, `ui/*` | 画面の構造と表示を担当 |
+| **ViewModel** | `view/*` | ViewとModelの橋渡し、イベントハンドリング |
+| **Interface** | `interface/*` | 抽象化レイヤー、型定義 |
+| **Application** | `model/application/*/usecase/*` | ビジネスロジックの実装（UseCase） |
+| **Domain** | `model/domain/*` | コアビジネスルール |
+| **Infrastructure** | `model/infrastructure/repository/*` | データアクセス、外部API連携 |
 
-### MVVMの利点
+### 依存関係の方向
 
-1. **関心の分離**: UI（View）とロジック（ViewModel/Model）が分離
-2. **テスト容易性**: ViewModelは単体テストが容易
-3. **チーム開発**: デザイナーとプログラマーが並行作業可能
-4. **再利用性**: ViewModelは異なるViewで再利用可能
+クリーンアーキテクチャの原則に従い、依存関係は常に内側（Domain層）に向かいます。
 
-## アトミックデザイン
+- **View層**: インターフェースを通じてApplication層を使用
+- **Application層**: インターフェースを通じてDomain層とInfrastructure層を使用
+- **Domain層**: 何にも依存しない（純粋なビジネスロジック）
+- **Infrastructure層**: Domain層のインターフェースを実装
 
-Next2D Frameworkでは、UIコンポーネントの設計にアトミックデザインを推奨しています。
-
-```mermaid
-flowchart TB
-    subgraph Pages["Pages (View)"]
-        subgraph Templates["Templates"]
-            subgraph Organisms["Organisms"]
-                subgraph Molecules["Molecules"]
-                    subgraph Atoms["Atoms"]
-                        Btn["Button"]
-                        Txt["Text"]
-                        Img["Image"]
-                        Icon["Icon"]
-                    end
-                end
-            end
-        end
-    end
-
-    style Pages fill:#e1f5fe
-    style Templates fill:#b3e5fc
-    style Organisms fill:#81d4fa
-    style Molecules fill:#4fc3f7
-    style Atoms fill:#29b6f6
-```
-
-### 各レベルの説明
-
-| レベル | 説明 | 例 |
-|--------|------|-----|
-| **Atoms** | 最小単位のUI要素 | ボタン、テキストフィールド、アイコン、ラベル |
-| **Molecules** | Atomsを組み合わせた機能単位 | 検索フォーム（入力+ボタン）、メニュー項目 |
-| **Organisms** | 独立した機能を持つUI領域 | ヘッダー、ナビゲーション、カード一覧 |
-| **Templates** | ページのレイアウト構造 | 2カラムレイアウト、ダッシュボードレイアウト |
-| **Pages** | 実際のコンテンツを含むページ | トップページ、詳細ページ（= View） |
-
-### Open Animation Toolでの実装
-
-Open Animation Toolでは、シンボルを階層構造で管理することでアトミックデザインを実現：
+## ディレクトリ構造
 
 ```
-Library
-├── atoms/
-│   ├── btn_primary.json      # プライマリボタン
-│   ├── btn_secondary.json    # セカンダリボタン
-│   ├── input_text.json       # テキスト入力
-│   └── icon_*.json           # 各種アイコン
-├── molecules/
-│   ├── search_form.json      # 検索フォーム
-│   ├── menu_item.json        # メニュー項目
-│   └── card_header.json      # カードヘッダー
-├── organisms/
-│   ├── header.json           # ヘッダー
-│   ├── navigation.json       # ナビゲーション
-│   └── card_list.json        # カード一覧
-└── templates/
-    ├── layout_main.json      # メインレイアウト
-    └── layout_detail.json    # 詳細レイアウト
+my-app/
+├── src/
+│   ├── config/                    # 設定ファイル
+│   │   ├── stage.json             # ステージ設定
+│   │   ├── config.json            # 環境設定
+│   │   ├── routing.json           # ルーティング設定
+│   │   └── Config.ts              # 設定の型定義とエクスポート
+│   │
+│   ├── interface/                 # インターフェース定義
+│   │   ├── IDraggable.ts          # ドラッグ可能なオブジェクト
+│   │   ├── ITextField.ts          # テキストフィールド
+│   │   ├── IHomeTextResponse.ts   # APIレスポンス型
+│   │   └── IViewName.ts           # 画面名の型定義
+│   │
+│   ├── view/                      # View & ViewModel
+│   │   ├── top/
+│   │   │   ├── TopView.ts         # 画面の構造定義
+│   │   │   └── TopViewModel.ts    # ビジネスロジックとの橋渡し
+│   │   └── home/
+│   │       ├── HomeView.ts
+│   │       └── HomeViewModel.ts
+│   │
+│   ├── model/
+│   │   ├── application/           # アプリケーション層
+│   │   │   ├── top/
+│   │   │   │   └── usecase/
+│   │   │   │       └── NavigateToViewUseCase.ts
+│   │   │   └── home/
+│   │   │       └── usecase/
+│   │   │           ├── StartDragUseCase.ts
+│   │   │           ├── StopDragUseCase.ts
+│   │   │           └── CenterTextFieldUseCase.ts
+│   │   │
+│   │   ├── domain/                # ドメイン層
+│   │   │   └── callback/
+│   │   │       ├── Background.ts
+│   │   │       └── Background/
+│   │   │           └── service/
+│   │   │               ├── BackgroundDrawService.ts
+│   │   │               └── BackgroundChangeScaleService.ts
+│   │   │
+│   │   └── infrastructure/        # インフラ層
+│   │       └── repository/
+│   │           └── HomeTextRepository.ts
+│   │
+│   ├── ui/                        # UIコンポーネント
+│   │   ├── animation/             # アニメーション定義
+│   │   │   └── top/
+│   │   │       └── TopBtnShowAnimation.ts
+│   │   │
+│   │   ├── component/             # アトミックデザイン
+│   │   │   ├── atom/              # 最小単位のコンポーネント
+│   │   │   │   ├── ButtonAtom.ts
+│   │   │   │   └── TextAtom.ts
+│   │   │   ├── molecule/          # Atomを組み合わせたコンポーネント
+│   │   │   │   ├── HomeBtnMolecule.ts
+│   │   │   │   └── TopBtnMolecule.ts
+│   │   │   ├── organism/          # 複数Moleculeの組み合わせ
+│   │   │   ├── template/          # ページテンプレート
+│   │   │   └── page/              # ページコンポーネント
+│   │   │       ├── top/
+│   │   │       │   └── TopPage.ts
+│   │   │       └── home/
+│   │   │           └── HomePage.ts
+│   │   │
+│   │   └── content/               # Animation Tool生成コンテンツ
+│   │       ├── TopContent.ts
+│   │       └── HomeContent.ts
+│   │
+│   ├── assets/                    # 静的アセット
+│   │
+│   ├── Packages.ts                # パッケージエクスポート
+│   └── index.ts                   # エントリーポイント
+│
+├── file/                          # Animation Tool出力ファイル
+│   └── sample.n2d
+│
+├── mock/                          # モックデータ
+│   ├── api/                       # APIモック
+│   ├── content/                   # コンテンツモック
+│   └── img/                       # 画像モック
+│
+└── package.json
 ```
 
 ## フレームワークフローチャート
@@ -214,6 +245,65 @@ graph TD
 | **View/ViewModel Bind** | 新しいView/ViewModelのバインド処理 |
 | **onEnter** | 画面表示完了後のコールバック |
 
+## 主要な設計パターン
+
+### 1. MVVM (Model-View-ViewModel)
+
+- **View**: 画面の構造と表示を担当。ビジネスロジックは持たない
+- **ViewModel**: ViewとModelの橋渡し。UseCaseを保持し、イベントを処理
+- **Model**: ビジネスロジックとデータアクセスを担当
+
+### 2. UseCaseパターン
+
+各ユーザーアクションに対して、専用のUseCaseクラスを作成:
+
+```typescript
+export class StartDragUseCase
+{
+    execute(target: IDraggable): void
+    {
+        target.startDrag();
+    }
+}
+```
+
+### 3. 依存性の逆転 (Dependency Inversion)
+
+具象クラスではなく、インターフェースに依存:
+
+```typescript
+// 良い例: インターフェースに依存
+import type { IDraggable } from "@/interface/IDraggable";
+
+function startDrag(target: IDraggable): void
+{
+    target.startDrag();
+}
+```
+
+### 4. Repositoryパターン
+
+データアクセスを抽象化し、エラーハンドリングも実装:
+
+```typescript
+export class HomeTextRepository
+{
+    static async get(): Promise<IHomeTextResponse>
+    {
+        try {
+            const response = await fetch(`${config.api.endPoint}api/home.json`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error("Failed to fetch:", error);
+            throw error;
+        }
+    }
+}
+```
+
 ## クイックスタート
 
 ### プロジェクトの作成
@@ -222,36 +312,34 @@ graph TD
 npx create-next2d-app my-app
 cd my-app
 npm install
-npm run dev
+npm start
 ```
 
-### ディレクトリ構造
+### View/ViewModelの自動生成
 
+```bash
+npm run generate
 ```
-my-app/
-├── src/
-│   ├── config/
-│   │   └── config.json       # 環境設定
-│   ├── view/
-│   │   └── TopView.ts        # Viewクラス
-│   ├── viewmodel/
-│   │   └── TopViewModel.ts   # ViewModelクラス
-│   ├── model/
-│   │   └── UserModel.ts      # Modelクラス
-│   └── index.ts              # エントリーポイント
-├── asset/
-│   └── content.json          # Open Animation Tool出力
-└── package.json
-```
+
+このコマンドは`routing.json`のトッププロパティを解析し、対応するViewとViewModelクラスを生成します。
+
+## ベストプラクティス
+
+1. **インターフェース優先**: 具象型ではなく、常にインターフェースに依存
+2. **単一責任の原則**: 各クラスは1つの責務のみを持つ
+3. **依存性注入**: コンストラクタで依存を注入
+4. **エラーハンドリング**: Repository層で適切にエラーを処理
+5. **型安全性**: `any`型を避け、明示的な型定義を使用
 
 ## 関連ドキュメント
 
 ### 基本
-- [View/ViewModel](./view.md) - 画面表示とデータバインディング
-- [ルーティング](./routing.md) - URLベースの画面遷移
-- [設定ファイル](./config.md) - 環境設定とステージ設定
+- [View/ViewModel](/ja/reference/framework/view) - 画面表示とデータバインディング
+- [ルーティング](/ja/reference/framework/routing) - URLベースの画面遷移
+- [設定ファイル](/ja/reference/framework/config) - 環境設定とステージ設定
+- [Animation Tool連携](/ja/reference/framework/animation-tool) - Animation Toolアセットの活用
 
 ### Next2D Player連携
-- [Next2D Player](../../player/specs/ja/index.md) - レンダリングエンジン
-- [MovieClip](../../player/specs/ja/movie-clip.md) - タイムラインアニメーション
-- [イベントシステム](../../player/specs/ja/events.md) - ユーザーインタラクション
+- [Next2D Player](/ja/reference/player) - レンダリングエンジン
+- [MovieClip](/ja/reference/player/movie-clip) - タイムラインアニメーション
+- [イベントシステム](/ja/reference/player/events) - ユーザーインタラクション

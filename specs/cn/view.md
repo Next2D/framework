@@ -1,32 +1,32 @@
-# View と ViewModel
+# View 和 ViewModel
 
-Next2D FrameworkはMVVM（Model-View-ViewModel）パターンを採用しています。1画面にViewとViewModelをワンセット作成するのが基本スタイルです。
+Next2D Framework 采用 MVVM（Model-View-ViewModel）模式。基本风格是每个画面创建一组 View 和 ViewModel。
 
-## アーキテクチャ
+## 架构
 
 ```mermaid
 graph TB
-    subgraph ViewLayer["View Layer"]
-        ViewRole["画面の構造と表示を担当"]
-        ViewRule["ビジネスロジックは持たない"]
+    subgraph ViewLayer["视图层"]
+        ViewRole["处理画面结构和显示"]
+        ViewRule["没有业务逻辑"]
     end
 
-    subgraph ViewModelLayer["ViewModel Layer"]
-        VMRole1["ViewとModelの橋渡し"]
-        VMRole2["UseCaseを保持"]
-        VMRole3["イベントハンドリング"]
+    subgraph ViewModelLayer["ViewModel 层"]
+        VMRole1["View 和 Model 之间的桥梁"]
+        VMRole2["持有 UseCase"]
+        VMRole3["事件处理"]
     end
 
-    subgraph ModelLayer["Model Layer"]
-        ModelRole1["ビジネスロジック（UseCase）"]
-        ModelRole2["データアクセス（Repository）"]
+    subgraph ModelLayer["Model 层"]
+        ModelRole1["业务逻辑（UseCase）"]
+        ModelRole2["数据访问（Repository）"]
     end
 
-    ViewLayer <-->|双方向| ViewModelLayer
+    ViewLayer <-->|双向| ViewModelLayer
     ViewModelLayer <--> ModelLayer
 ```
 
-## ディレクトリ構造
+## 目录结构
 
 ```
 src/
@@ -41,15 +41,15 @@ src/
 
 ## View
 
-Viewはメインコンテキストにアタッチされるコンテナです。Viewは表示構造のみを担当し、ビジネスロジックはViewModelに委譲します。
+View 是附加到主上下文的容器。View 只处理显示结构，将业务逻辑委托给 ViewModel。
 
-### Viewの責務
+### View 职责
 
-- **画面の構造定義** - UIコンポーネントの配置と座標設定
-- **イベントリスナーの登録** - ViewModelのメソッドと接続
-- **ライフサイクル管理** - `initialize`, `onEnter`, `onExit`
+- **画面结构定义** - UI 组件放置和坐标设置
+- **事件侦听器注册** - 与 ViewModel 方法的连接
+- **生命周期管理** - `initialize`、`onEnter`、`onExit`
 
-### 基本構造
+### 基本结构
 
 ```typescript
 import type { TopViewModel } from "./TopViewModel";
@@ -84,46 +84,46 @@ export class TopView extends View<TopViewModel>
 }
 ```
 
-### ライフサイクル
+### 生命周期
 
 ```mermaid
 sequenceDiagram
     participant Framework as Framework
     participant VM as ViewModel
     participant View as View
-    participant UI as UI Components
+    participant UI as UI 组件
 
-    Note over Framework,UI: 画面遷移開始
+    Note over Framework,UI: 画面转换开始
 
     Framework->>VM: new ViewModel()
     Framework->>VM: initialize()
-    Note over VM: ViewModelが先に初期化される
+    Note over VM: ViewModel 首先初始化
 
     Framework->>View: new View(vm)
     Framework->>View: initialize()
-    View->>UI: コンポーネント作成
-    View->>VM: イベントリスナー登録
+    View->>UI: 创建组件
+    View->>VM: 注册事件侦听器
 
     Framework->>View: onEnter()
-    View->>UI: アニメーション開始
+    View->>UI: 开始动画
 
-    Note over Framework,UI: ユーザーが画面を操作
+    Note over Framework,UI: 用户与画面交互
 
     Framework->>View: onExit()
-    View->>UI: クリーンアップ
+    View->>UI: 清理
 ```
 
-#### initialize() - 初期化
+#### initialize() - 初始化
 
-**呼び出しタイミング:**
-- Viewのインスタンスが生成された直後
-- 画面遷移時に1回だけ呼び出される
-- ViewModelの`initialize()`より**後**に実行される
+**何时调用：**
+- View 实例创建后立即
+- 画面转换期间只调用一次
+- 在 ViewModel 的 `initialize()` **之后**执行
 
-**主な用途:**
-- UIコンポーネントの生成と配置
-- イベントリスナーの登録
-- 子要素の追加（`addChild`）
+**主要用途：**
+- 创建和排列 UI 组件
+- 注册事件侦听器
+- 添加子元素（`addChild`）
 
 ```typescript
 async initialize(): Promise<void>
@@ -135,7 +135,7 @@ async initialize(): Promise<void>
     homeContent.x = 120;
     homeContent.y = 120;
 
-    // イベントをViewModelに委譲
+    // 将事件委托给 ViewModel
     homeContent.addEventListener(
         PointerEvent.POINTER_DOWN,
         this.vm.homeContentPointerDownEvent
@@ -145,37 +145,37 @@ async initialize(): Promise<void>
 }
 ```
 
-#### onEnter() - 画面表示時
+#### onEnter() - 画面显示时
 
-**呼び出しタイミング:**
-- `initialize()`の実行完了後
-- 画面が表示される直前
+**何时调用：**
+- `initialize()` 完成后
+- 画面显示前
 
-**主な用途:**
-- 入場アニメーションの開始
-- タイマーやインターバルの開始
-- フォーカス設定
+**主要用途：**
+- 开始入场动画
+- 启动计时器和间隔
+- 设置焦点
 
 ```typescript
 async onEnter(): Promise<void>
 {
     const topBtn = this.getChildByName("topBtn") as TopBtnMolecule;
     topBtn.playEntrance(() => {
-        console.log("アニメーション完了");
+        console.log("动画完成");
     });
 }
 ```
 
-#### onExit() - 画面非表示時
+#### onExit() - 画面隐藏时
 
-**呼び出しタイミング:**
-- 別の画面に遷移する直前
-- Viewが破棄される前
+**何时调用：**
+- 转换到另一个画面前
+- View 销毁前
 
-**主な用途:**
-- アニメーションの停止
-- タイマーやインターバルのクリア
-- リソースの解放
+**主要用途：**
+- 停止动画
+- 清除计时器和间隔
+- 释放资源
 
 ```typescript
 async onExit(): Promise<void>
@@ -189,16 +189,16 @@ async onExit(): Promise<void>
 
 ## ViewModel
 
-ViewModelはViewとModelの橋渡しを行います。UseCaseを保持し、Viewからのイベントを処理してビジネスロジックを実行します。
+ViewModel 充当 View 和 Model 之间的桥梁。它持有 UseCase 并处理来自 View 的事件以执行业务逻辑。
 
-### ViewModelの責務
+### ViewModel 职责
 
-- **イベント処理** - Viewからのイベントを受け取る
-- **UseCaseの実行** - ビジネスロジックを呼び出す
-- **依存性の管理** - UseCaseのインスタンスを保持
-- **状態管理** - 画面固有の状態を管理
+- **事件处理** - 从 View 接收事件
+- **UseCase 执行** - 调用业务逻辑
+- **依赖管理** - 持有 UseCase 实例
+- **状态管理** - 管理画面特定状态
 
-### 基本構造
+### 基本结构
 
 ```typescript
 import { ViewModel, app } from "@next2d/framework";
@@ -217,7 +217,7 @@ export class TopViewModel extends ViewModel
 
     async initialize(): Promise<void>
     {
-        // routing.jsonのrequestsで取得したデータを受け取る
+        // 从 routing.json 的 requests 接收数据
         const response = app.getResponse();
         this.topText = response.has("TopText")
             ? (response.get("TopText") as { word: string }).word
@@ -236,23 +236,23 @@ export class TopViewModel extends ViewModel
 }
 ```
 
-### ViewModelの初期化タイミング
+### ViewModel 初始化时机
 
-**重要: ViewModelの`initialize()`はViewの`initialize()`より前に呼び出されます。**
+**重要：ViewModel 的 `initialize()` 在 View 的 `initialize()` 之前调用。**
 
 ```
-1. ViewModel のインスタンス生成
+1. ViewModel 实例创建
    ↓
-2. ViewModel.initialize() ← ViewModelが先
+2. ViewModel.initialize() ← ViewModel 先
    ↓
-3. View のインスタンス生成（ViewModelを注入）
+3. View 实例创建（ViewModel 注入）
    ↓
 4. View.initialize()
    ↓
 5. View.onEnter()
 ```
 
-これにより、Viewの初期化時にはViewModelのデータが既に準備されています。
+这确保了 View 初始化时 ViewModel 数据已准备就绪。
 
 ```typescript
 // HomeViewModel.ts
@@ -262,7 +262,7 @@ export class HomeViewModel extends ViewModel
 
     async initialize(): Promise<void>
     {
-        // ViewModelのinitializeで事前にデータ取得
+        // 在 ViewModel 的 initialize 中获取数据
         const data = await HomeTextRepository.get();
         this.homeText = data.word;
     }
@@ -283,31 +283,31 @@ export class HomeView extends View<HomeViewModel>
 
     async initialize(): Promise<void>
     {
-        // この時点でvm.initialize()は既に完了している
+        // 此时，vm.initialize() 已经完成
         const text = this.vm.getHomeText();
 
-        // 取得済みのデータを使ってUIを構築
+        // 使用获取的数据构建 UI
         const textField = new TextAtom(text);
         this.addChild(textField);
     }
 }
 ```
 
-## 画面遷移
+## 画面转换
 
-画面遷移には`app.gotoView()`を使用します。
+使用 `app.gotoView()` 进行画面转换。
 
 ```typescript
 import { app } from "@next2d/framework";
 
-// 指定のViewに遷移
+// 导航到指定的 View
 await app.gotoView("home");
 
-// パラメータ付きで遷移
+// 带参数导航
 await app.gotoView("user/detail?id=123");
 ```
 
-### UseCaseでの画面遷移
+### UseCase 中的画面转换
 
 ```typescript
 import { app } from "@next2d/framework";
@@ -321,9 +321,9 @@ export class NavigateToViewUseCase
 }
 ```
 
-## レスポンスデータの取得
+## 获取响应数据
 
-`routing.json`で設定した`requests`のデータは`app.getResponse()`で取得できます。
+`routing.json` 中 `requests` 的数据可以通过 `app.getResponse()` 获取。
 
 ```typescript
 import { app } from "@next2d/framework";
@@ -339,9 +339,9 @@ async initialize(): Promise<void>
 }
 ```
 
-## キャッシュデータの取得
+## 获取缓存数据
 
-`cache: true`を設定したデータは`app.getCache()`で取得できます。
+`cache: true` 的数据可以通过 `app.getCache()` 获取。
 
 ```typescript
 import { app } from "@next2d/framework";
@@ -352,12 +352,12 @@ if (cache.has("MasterData")) {
 }
 ```
 
-## 設計原則
+## 设计原则
 
-### 1. 関心の分離
+### 1. 关注点分离
 
 ```typescript
-// 良い例: Viewは表示のみ、ViewModelはロジック
+// 好：View 只处理显示，ViewModel 处理逻辑
 class HomeView extends View<HomeViewModel>
 {
     async initialize(): Promise<void>
@@ -376,12 +376,12 @@ class HomeViewModel extends ViewModel
 }
 ```
 
-### 2. 依存性の逆転
+### 2. 依赖倒置
 
-ViewModelはインターフェースに依存し、具象クラスに依存しません。
+ViewModel 依赖接口，而不是具体类。
 
 ```typescript
-// 良い例: インターフェースに依存
+// 好：依赖接口
 homeContentPointerDownEvent(event: PointerEvent): void
 {
     const target = event.currentTarget as unknown as IDraggable;
@@ -389,11 +389,11 @@ homeContentPointerDownEvent(event: PointerEvent): void
 }
 ```
 
-### 3. イベントは必ずViewModelに委譲
+### 3. 始终将事件委托给 ViewModel
 
-View内でイベント処理を完結させず、必ずViewModelに委譲します。
+永远不要在 View 内部完全处理事件；始终委托给 ViewModel。
 
-## View/ViewModel作成のテンプレート
+## View/ViewModel 模板
 
 ### View
 
@@ -410,17 +410,17 @@ export class YourView extends View<YourViewModel>
 
     async initialize(): Promise<void>
     {
-        // UIコンポーネントの作成と配置
+        // 创建和排列 UI 组件
     }
 
     async onEnter(): Promise<void>
     {
-        // 画面表示時の処理
+        // 画面显示时
     }
 
     async onExit(): Promise<void>
     {
-        // 画面非表示時の処理
+        // 画面隐藏时
     }
 }
 ```
@@ -453,7 +453,7 @@ export class YourViewModel extends ViewModel
 }
 ```
 
-## 関連項目
+## 相关
 
-- [ルーティング](/ja/reference/framework/routing)
-- [設定ファイル](/ja/reference/framework/config)
+- [路由](/cn/reference/framework/routing)
+- [配置](/cn/reference/framework/config)

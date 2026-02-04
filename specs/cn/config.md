@@ -1,19 +1,19 @@
-# 設定ファイル
+# 配置文件
 
-Next2D Frameworkの設定は3つのJSONファイルで管理します。
+Next2D Framework 配置使用三个 JSON 文件管理。
 
-## ファイル構成
+## 文件结构
 
 ```
 src/config/
-├── stage.json     # 表示領域の設定
-├── config.json    # 環境設定
-└── routing.json   # ルーティング設定
+├── stage.json     # 显示区域设置
+├── config.json    # 环境设置
+└── routing.json   # 路由设置
 ```
 
 ## stage.json
 
-表示領域（Stage）の設定を行うJSONファイルです。
+用于设置显示区域（Stage）的 JSON 文件。
 
 ```json
 {
@@ -28,26 +28,26 @@ src/config/
 }
 ```
 
-### プロパティ
+### 属性
 
-| プロパティ | 型 | デフォルト | 説明 |
-|-----------|------|----------|------|
-| `width` | number | 240 | 表示領域の幅 |
-| `height` | number | 240 | 表示領域の高さ |
-| `fps` | number | 60 | 1秒間に何回描画するか（1〜60） |
-| `options` | object | null | オプション設定 |
+| 属性 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `width` | number | 240 | 显示区域宽度 |
+| `height` | number | 240 | 显示区域高度 |
+| `fps` | number | 60 | 每秒绘制次数（1-60） |
+| `options` | object | null | 选项设置 |
 
-### options設定
+### options 设置
 
-| プロパティ | 型 | デフォルト | 説明 |
-|-----------|------|----------|------|
-| `fullScreen` | boolean | false | Stageで設定した幅と高さを超えて画面全体に描画 |
-| `tagId` | string | null | IDを指定すると、指定したIDのエレメント内で描画を行う |
-| `bgColor` | string | "transparent" | 背景色を16進数で指定。デフォルトは無色透明 |
+| 属性 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `fullScreen` | boolean | false | 超出舞台宽高在整个屏幕上绘制 |
+| `tagId` | string | null | 指定后，绘制发生在具有该 ID 的元素内 |
+| `bgColor` | string | "transparent" | 十六进制背景颜色。默认为透明 |
 
 ## config.json
 
-環境ごとの設定を管理するファイルです。`local`、`dev`、`stg`、`prd`、`all`と区切られており、`all`以外は任意の環境名です。
+用于管理特定环境设置的文件。分为 `local`、`dev`、`stg`、`prd` 和 `all`，其中除 `all` 以外的任何环境名称都是任意的。
 
 ```json
 {
@@ -82,34 +82,34 @@ src/config/
 }
 ```
 
-### all設定
+### all 设置
 
-`all`はどの環境でも書き出される共通変数です。
+`all` 是在任何环境中导出的公共变量。
 
-| プロパティ | 型 | デフォルト | 説明 |
-|-----------|------|----------|------|
-| `spa` | boolean | true | Single Page ApplicationとしてURLでシーンを制御 |
-| `defaultTop` | string | "top" | ページトップのView。設定がない場合はTopViewクラスが起動 |
-| `loading.callback` | string | Loading | ローディング画面のクラス名。start関数とend関数を呼び出す |
-| `gotoView.callback` | string \| array | ["callback.Background"] | gotoView完了後のコールバッククラス |
+| 属性 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `spa` | boolean | true | 作为单页应用程序通过 URL 控制场景 |
+| `defaultTop` | string | "top" | 页面顶部的 View。如果未设置，将启动 TopView 类 |
+| `loading.callback` | string | Loading | 加载画面类名。调用 start 和 end 函数 |
+| `gotoView.callback` | string \| array | ["callback.Background"] | gotoView 完成后的回调类 |
 
-### platform設定
+### platform 设置
 
-ビルド時の`--platform`で指定した値がセットされます。
+构建时使用 `--platform` 指定的值会被设置。
 
-対応値: `macos`, `windows`, `linux`, `ios`, `android`, `web`
+支持的值：`macos`、`windows`、`linux`、`ios`、`android`、`web`
 
 ```typescript
 import { config } from "@/config/Config";
 
 if (config.platform === "ios") {
-    // iOS固有の処理
+    // iOS 特定处理
 }
 ```
 
 ## routing.json
 
-ルーティングの設定ファイルです。詳細は[ルーティング](/ja/reference/framework/routing)を参照してください。
+路由配置文件。详情请参阅[路由](/cn/reference/framework/routing)。
 
 ```json
 {
@@ -128,11 +128,11 @@ if (config.platform === "ios") {
 }
 ```
 
-## 設定値の取得
+## 获取配置值
 
-コード内で設定値を取得するには`config`オブジェクトを使用します。
+在代码中使用 `config` 对象获取配置值。
 
-### Config.tsの例
+### Config.ts 示例
 
 ```typescript
 import stageJson from "./stage.json";
@@ -168,25 +168,25 @@ export const config: IConfig = {
 };
 ```
 
-### 使用例
+### 使用示例
 
 ```typescript
 import { config } from "@/config/Config";
 
-// ステージ設定
+// 舞台设置
 const stageWidth = config.stage.width;
 const stageHeight = config.stage.height;
 
-// API設定
+// API 设置
 const apiEndPoint = config.api.endPoint;
 
-// SPA設定
+// SPA 设置
 const isSpa = config.spa;
 ```
 
-## ローディング画面
+## 加载画面
 
-`loading.callback`で設定したクラスの`start`関数と`end`関数が呼び出されます。
+调用 `loading.callback` 中设置的类的 `start` 和 `end` 函数。
 
 ```typescript
 export class Loading
@@ -196,26 +196,26 @@ export class Loading
     constructor()
     {
         this.shape = new Shape();
-        // ローディング表示の初期化
+        // 初始化加载显示
     }
 
     start(): void
     {
-        // ローディング開始時の処理
+        // 加载开始时的处理
         stage.addChild(this.shape);
     }
 
     end(): void
     {
-        // ローディング終了時の処理
+        // 加载结束时的处理
         this.shape.remove();
     }
 }
 ```
 
-## gotoViewコールバック
+## gotoView 回调
 
-`gotoView.callback`で設定したクラスの`execute`関数が呼び出されます。複数のクラスを配列で設定でき、async/awaitで順次実行されます。
+调用 `gotoView.callback` 中设置的类的 `execute` 函数。可以设置多个类作为数组，并使用 async/await 顺序执行。
 
 ```typescript
 import { app } from "@next2d/framework";
@@ -236,28 +236,28 @@ export class Background
         const view = context.view;
         if (!view) return;
 
-        // 背景を最背面に配置
+        // 将背景放在后面
         view.addChildAt(this.shape, 0);
     }
 }
 ```
 
-## ビルドコマンド
+## 构建命令
 
-環境を指定してビルド:
+带环境指定的构建：
 
 ```bash
-# ローカル環境
+# 本地环境
 npm run build -- --env=local
 
-# 開発環境
+# 开发环境
 npm run build -- --env=dev
 
-# 本番環境
+# 生产环境
 npm run build -- --env=prd
 ```
 
-プラットフォームを指定:
+指定平台：
 
 ```bash
 npm run build -- --platform=web
@@ -265,9 +265,9 @@ npm run build -- --platform=ios
 npm run build -- --platform=android
 ```
 
-## 設定例
+## 配置示例
 
-### 完全な設定ファイルの例
+### 完整配置文件示例
 
 #### stage.json
 
@@ -325,7 +325,7 @@ npm run build -- --platform=android
 }
 ```
 
-## 関連項目
+## 相关
 
-- [ルーティング](/ja/reference/framework/routing)
-- [View/ViewModel](/ja/reference/framework/view)
+- [路由](/cn/reference/framework/routing)
+- [View/ViewModel](/cn/reference/framework/view)

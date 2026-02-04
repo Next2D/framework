@@ -1,10 +1,10 @@
-# ルーティング
+# Routing
 
-Next2D FrameworkはシングルページアプリケーションとしてURLでシーンを制御できます。ルーティングは`routing.json`で設定します。
+Next2D Framework can control scenes via URL as a Single Page Application. Routing is configured in `routing.json`.
 
-## 基本設定
+## Basic Configuration
 
-ルーティングのトッププロパティは英数字とスラッシュが使用できます。スラッシュをキーにCamelCaseでViewクラスにアクセスします。
+The top properties for routing can use alphanumeric characters and slashes. The slash is used as a key to access View classes in CamelCase.
 
 ```json
 {
@@ -20,14 +20,14 @@ Next2D FrameworkはシングルページアプリケーションとしてURLで�
 }
 ```
 
-上記の場合:
-- `top` → `TopView`クラス
-- `home` → `HomeView`クラス
-- `quest/list` → `QuestListView`クラス
+In the above example:
+- `top` → `TopView` class
+- `home` → `HomeView` class
+- `quest/list` → `QuestListView` class
 
-## ルート定義
+## Route Definition
 
-### 基本的なルート
+### Basic Route
 
 ```json
 {
@@ -37,18 +37,18 @@ Next2D FrameworkはシングルページアプリケーションとしてURLで�
 }
 ```
 
-アクセス: `https://example.com/` または `https://example.com/top`
+Access: `https://example.com/` or `https://example.com/top`
 
-### セカンドレベルプロパティ
+### Second Level Properties
 
-| プロパティ | 型 | デフォルト | 説明 |
-|-----------|------|----------|------|
-| `private` | boolean | false | URLでの直接アクセスを制御。trueの場合、URLでアクセスするとTopViewが読み込まれる |
-| `requests` | array | null | Viewがbindされる前にリクエストを送信 |
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `private` | boolean | false | Controls direct URL access. If true, URL access loads TopView |
+| `requests` | array | null | Send requests before View is bound |
 
-### プライベートルート
+### Private Routes
 
-URLでの直接アクセスを禁止したい場合:
+To restrict direct URL access:
 
 ```json
 {
@@ -59,30 +59,30 @@ URLでの直接アクセスを禁止したい場合:
 }
 ```
 
-`private: true`の場合、URLで直接アクセスすると`TopView`にリダイレクトされます。プログラムからの`app.gotoView()`でのみアクセス可能です。
+When `private: true`, direct URL access redirects to `TopView`. Only accessible via `app.gotoView()`.
 
-## requestsの設定
+## requests Configuration
 
-Viewがbindされる前にデータを取得できます。取得したデータは`app.getResponse()`で取得できます。
+Data can be fetched before View is bound. Retrieved data is available via `app.getResponse()`.
 
-### requests配列の設定項目
+### requests Array Settings
 
-| プロパティ | 型 | デフォルト | 説明 |
-|-----------|------|----------|------|
-| `type` | string | content | `json`、`content`、`custom`の固定値 |
-| `path` | string | empty | リクエスト先のパス |
-| `name` | string | empty | `response`にセットするキー名 |
-| `cache` | boolean | false | データをキャッシュするか |
-| `callback` | string \| array | null | リクエスト完了後のコールバッククラス |
-| `class` | string | empty | リクエストを実行するクラス（typeがcustomの場合のみ） |
-| `access` | string | public | 関数へのアクセス修飾子（`public`または`static`） |
-| `method` | string | empty | 実行する関数名（typeがcustomの場合のみ） |
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `type` | string | content | Fixed values: `json`, `content`, `custom` |
+| `path` | string | empty | Request destination path |
+| `name` | string | empty | Key name to set in `response` |
+| `cache` | boolean | false | Whether to cache data |
+| `callback` | string \| array | null | Callback class after request completion |
+| `class` | string | empty | Class to execute request (custom type only) |
+| `access` | string | public | Function access modifier (`public` or `static`) |
+| `method` | string | empty | Function name to execute (custom type only) |
 
-### typeの種類
+### Type Variants
 
 #### json
 
-外部JSONデータを取得:
+Get external JSON data:
 
 ```json
 {
@@ -100,7 +100,7 @@ Viewがbindされる前にデータを取得できます。取得したデータ
 
 #### content
 
-Animation ToolのJSONを取得:
+Get Animation Tool JSON:
 
 ```json
 {
@@ -118,7 +118,7 @@ Animation ToolのJSONを取得:
 
 #### custom
 
-カスタムクラスでリクエストを実行:
+Execute request with custom class:
 
 ```json
 {
@@ -136,9 +136,9 @@ Animation ToolのJSONを取得:
 }
 ```
 
-### 変数の展開
+### Variable Expansion
 
-`{{***}}`で囲むと`config.json`の変数を取得できます:
+Enclose with `{{***}}` to get variables from `config.json`:
 
 ```json
 {
@@ -146,9 +146,9 @@ Animation ToolのJSONを取得:
 }
 ```
 
-### キャッシュの利用
+### Using Cache
 
-`cache: true`を設定すると、データがキャッシュされます。キャッシュしたデータは画面遷移しても初期化されません。
+Setting `cache: true` caches the data. Cached data persists through screen transitions.
 
 ```json
 {
@@ -165,7 +165,7 @@ Animation ToolのJSONを取得:
 }
 ```
 
-キャッシュデータの取得:
+Getting cached data:
 
 ```typescript
 import { app } from "@next2d/framework";
@@ -176,9 +176,9 @@ if (cache.has("MasterData")) {
 }
 ```
 
-### コールバック
+### Callbacks
 
-リクエスト完了後にコールバックを実行:
+Execute callback after request completion:
 
 ```json
 {
@@ -195,45 +195,45 @@ if (cache.has("MasterData")) {
 }
 ```
 
-コールバッククラス:
+Callback class:
 
 ```typescript
 export class HomeDataCallback
 {
     constructor(data: any)
     {
-        // 取得したデータが渡される
+        // Retrieved data is passed
     }
 
     execute(): void
     {
-        // コールバック処理
+        // Callback processing
     }
 }
 ```
 
-## 画面遷移
+## Screen Transition
 
 ### app.gotoView()
 
-`app.gotoView()`で画面遷移を行います:
+Use `app.gotoView()` for screen transitions:
 
 ```typescript
 import { app } from "@next2d/framework";
 
-// 基本的な遷移
+// Basic transition
 await app.gotoView("home");
 
-// パスで遷移
+// Transition by path
 await app.gotoView("quest/list");
 
-// クエリパラメータ付き
+// With query parameters
 await app.gotoView("quest/detail?id=123");
 ```
 
-### UseCaseでの画面遷移
+### Screen Transition in UseCase
 
-画面遷移はUseCaseで行うことを推奨します:
+Recommended to handle screen transitions in UseCase:
 
 ```typescript
 import { app } from "@next2d/framework";
@@ -247,7 +247,7 @@ export class NavigateToViewUseCase
 }
 ```
 
-ViewModelでの使用:
+Usage in ViewModel:
 
 ```typescript
 export class TopViewModel extends ViewModel
@@ -267,9 +267,9 @@ export class TopViewModel extends ViewModel
 }
 ```
 
-## レスポンスデータの取得
+## Getting Response Data
 
-`requests`で取得したデータは`app.getResponse()`で取得できます:
+Data from `requests` can be retrieved with `app.getResponse()`:
 
 ```typescript
 import { app } from "@next2d/framework";
@@ -285,11 +285,11 @@ async initialize(): Promise<void>
 }
 ```
 
-**注意:** `response`データは画面遷移すると初期化されます。画面を跨いで保持したいデータは`cache: true`を設定してください。
+**Note:** `response` data is reset on screen transition. Use `cache: true` for data that should persist across screens.
 
-## SPAモード
+## SPA Mode
 
-`config.json`の`all.spa`で設定します:
+Configure in `config.json`'s `all.spa`:
 
 ```json
 {
@@ -299,12 +299,12 @@ async initialize(): Promise<void>
 }
 ```
 
-- `true`: URLでシーンを制御（History API使用）
-- `false`: URLによるシーン制御を無効化
+- `true`: Control scenes via URL (uses History API)
+- `false`: Disable URL-based scene control
 
-## デフォルトのトップページ
+## Default Top Page
 
-`config.json`で設定:
+Configure in `config.json`:
 
 ```json
 {
@@ -314,21 +314,21 @@ async initialize(): Promise<void>
 }
 ```
 
-設定がない場合は`TopView`クラスが起動します。
+If not set, `TopView` class is launched.
 
-## View/ViewModelの自動生成
+## Auto-generating View/ViewModel
 
-`routing.json`の設定から自動生成できます:
+Auto-generate from `routing.json` settings:
 
 ```bash
 npm run generate
 ```
 
-このコマンドは`routing.json`のトッププロパティを解析し、対応するViewとViewModelクラスを生成します。
+This command parses top properties in `routing.json` and generates corresponding View and ViewModel classes.
 
-## 設定例
+## Configuration Example
 
-### 完全な routing.json の例
+### Complete routing.json Example
 
 ```json
 {
@@ -382,7 +382,7 @@ npm run generate
 }
 ```
 
-## 関連項目
+## Related
 
-- [View/ViewModel](/ja/reference/framework/view)
-- [設定ファイル](/ja/reference/framework/config)
+- [View/ViewModel](/en/reference/framework/view)
+- [Configuration](/en/reference/framework/config)

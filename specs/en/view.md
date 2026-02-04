@@ -1,32 +1,32 @@
-# View と ViewModel
+# View and ViewModel
 
-Next2D FrameworkはMVVM（Model-View-ViewModel）パターンを採用しています。1画面にViewとViewModelをワンセット作成するのが基本スタイルです。
+Next2D Framework adopts the MVVM (Model-View-ViewModel) pattern. The basic style is to create one set of View and ViewModel per screen.
 
-## アーキテクチャ
+## Architecture
 
 ```mermaid
 graph TB
     subgraph ViewLayer["View Layer"]
-        ViewRole["画面の構造と表示を担当"]
-        ViewRule["ビジネスロジックは持たない"]
+        ViewRole["Handles screen structure and display"]
+        ViewRule["No business logic"]
     end
 
     subgraph ViewModelLayer["ViewModel Layer"]
-        VMRole1["ViewとModelの橋渡し"]
-        VMRole2["UseCaseを保持"]
-        VMRole3["イベントハンドリング"]
+        VMRole1["Bridge between View and Model"]
+        VMRole2["Holds UseCases"]
+        VMRole3["Event handling"]
     end
 
     subgraph ModelLayer["Model Layer"]
-        ModelRole1["ビジネスロジック（UseCase）"]
-        ModelRole2["データアクセス（Repository）"]
+        ModelRole1["Business logic (UseCase)"]
+        ModelRole2["Data access (Repository)"]
     end
 
-    ViewLayer <-->|双方向| ViewModelLayer
+    ViewLayer <-->|Bidirectional| ViewModelLayer
     ViewModelLayer <--> ModelLayer
 ```
 
-## ディレクトリ構造
+## Directory Structure
 
 ```
 src/
@@ -41,15 +41,15 @@ src/
 
 ## View
 
-Viewはメインコンテキストにアタッチされるコンテナです。Viewは表示構造のみを担当し、ビジネスロジックはViewModelに委譲します。
+View is a container attached to the main context. View handles only the display structure and delegates business logic to the ViewModel.
 
-### Viewの責務
+### View Responsibilities
 
-- **画面の構造定義** - UIコンポーネントの配置と座標設定
-- **イベントリスナーの登録** - ViewModelのメソッドと接続
-- **ライフサイクル管理** - `initialize`, `onEnter`, `onExit`
+- **Screen structure definition** - UI component placement and coordinate settings
+- **Event listener registration** - Connection with ViewModel methods
+- **Lifecycle management** - `initialize`, `onEnter`, `onExit`
 
-### 基本構造
+### Basic Structure
 
 ```typescript
 import type { TopViewModel } from "./TopViewModel";
@@ -84,7 +84,7 @@ export class TopView extends View<TopViewModel>
 }
 ```
 
-### ライフサイクル
+### Lifecycle
 
 ```mermaid
 sequenceDiagram
@@ -93,37 +93,37 @@ sequenceDiagram
     participant View as View
     participant UI as UI Components
 
-    Note over Framework,UI: 画面遷移開始
+    Note over Framework,UI: Screen transition starts
 
     Framework->>VM: new ViewModel()
     Framework->>VM: initialize()
-    Note over VM: ViewModelが先に初期化される
+    Note over VM: ViewModel initializes first
 
     Framework->>View: new View(vm)
     Framework->>View: initialize()
-    View->>UI: コンポーネント作成
-    View->>VM: イベントリスナー登録
+    View->>UI: Create components
+    View->>VM: Register event listeners
 
     Framework->>View: onEnter()
-    View->>UI: アニメーション開始
+    View->>UI: Start animations
 
-    Note over Framework,UI: ユーザーが画面を操作
+    Note over Framework,UI: User interacts with screen
 
     Framework->>View: onExit()
-    View->>UI: クリーンアップ
+    View->>UI: Clean up
 ```
 
-#### initialize() - 初期化
+#### initialize() - Initialization
 
-**呼び出しタイミング:**
-- Viewのインスタンスが生成された直後
-- 画面遷移時に1回だけ呼び出される
-- ViewModelの`initialize()`より**後**に実行される
+**When Called:**
+- Immediately after View instance is created
+- Called only once during screen transition
+- Executed **after** ViewModel's `initialize()`
 
-**主な用途:**
-- UIコンポーネントの生成と配置
-- イベントリスナーの登録
-- 子要素の追加（`addChild`）
+**Primary Usage:**
+- Create and arrange UI components
+- Register event listeners
+- Add child elements (`addChild`)
 
 ```typescript
 async initialize(): Promise<void>
@@ -135,7 +135,7 @@ async initialize(): Promise<void>
     homeContent.x = 120;
     homeContent.y = 120;
 
-    // イベントをViewModelに委譲
+    // Delegate events to ViewModel
     homeContent.addEventListener(
         PointerEvent.POINTER_DOWN,
         this.vm.homeContentPointerDownEvent
@@ -145,37 +145,37 @@ async initialize(): Promise<void>
 }
 ```
 
-#### onEnter() - 画面表示時
+#### onEnter() - On Screen Shown
 
-**呼び出しタイミング:**
-- `initialize()`の実行完了後
-- 画面が表示される直前
+**When Called:**
+- After `initialize()` completes
+- Just before the screen is displayed
 
-**主な用途:**
-- 入場アニメーションの開始
-- タイマーやインターバルの開始
-- フォーカス設定
+**Primary Usage:**
+- Start entrance animations
+- Start timers and intervals
+- Set focus
 
 ```typescript
 async onEnter(): Promise<void>
 {
     const topBtn = this.getChildByName("topBtn") as TopBtnMolecule;
     topBtn.playEntrance(() => {
-        console.log("アニメーション完了");
+        console.log("Animation completed");
     });
 }
 ```
 
-#### onExit() - 画面非表示時
+#### onExit() - On Screen Hidden
 
-**呼び出しタイミング:**
-- 別の画面に遷移する直前
-- Viewが破棄される前
+**When Called:**
+- Just before transitioning to another screen
+- Before View is destroyed
 
-**主な用途:**
-- アニメーションの停止
-- タイマーやインターバルのクリア
-- リソースの解放
+**Primary Usage:**
+- Stop animations
+- Clear timers and intervals
+- Release resources
 
 ```typescript
 async onExit(): Promise<void>
@@ -189,16 +189,16 @@ async onExit(): Promise<void>
 
 ## ViewModel
 
-ViewModelはViewとModelの橋渡しを行います。UseCaseを保持し、Viewからのイベントを処理してビジネスロジックを実行します。
+ViewModel acts as a bridge between View and Model. It holds UseCases and processes events from View to execute business logic.
 
-### ViewModelの責務
+### ViewModel Responsibilities
 
-- **イベント処理** - Viewからのイベントを受け取る
-- **UseCaseの実行** - ビジネスロジックを呼び出す
-- **依存性の管理** - UseCaseのインスタンスを保持
-- **状態管理** - 画面固有の状態を管理
+- **Event processing** - Receive events from View
+- **UseCase execution** - Call business logic
+- **Dependency management** - Hold UseCase instances
+- **State management** - Manage screen-specific state
 
-### 基本構造
+### Basic Structure
 
 ```typescript
 import { ViewModel, app } from "@next2d/framework";
@@ -217,7 +217,7 @@ export class TopViewModel extends ViewModel
 
     async initialize(): Promise<void>
     {
-        // routing.jsonのrequestsで取得したデータを受け取る
+        // Receive data from routing.json requests
         const response = app.getResponse();
         this.topText = response.has("TopText")
             ? (response.get("TopText") as { word: string }).word
@@ -236,23 +236,23 @@ export class TopViewModel extends ViewModel
 }
 ```
 
-### ViewModelの初期化タイミング
+### ViewModel Initialization Timing
 
-**重要: ViewModelの`initialize()`はViewの`initialize()`より前に呼び出されます。**
+**Important: ViewModel's `initialize()` is called before View's `initialize()`.**
 
 ```
-1. ViewModel のインスタンス生成
+1. ViewModel instance created
    ↓
-2. ViewModel.initialize() ← ViewModelが先
+2. ViewModel.initialize() ← ViewModel first
    ↓
-3. View のインスタンス生成（ViewModelを注入）
+3. View instance created (ViewModel injected)
    ↓
 4. View.initialize()
    ↓
 5. View.onEnter()
 ```
 
-これにより、Viewの初期化時にはViewModelのデータが既に準備されています。
+This ensures ViewModel data is ready when View initializes.
 
 ```typescript
 // HomeViewModel.ts
@@ -262,7 +262,7 @@ export class HomeViewModel extends ViewModel
 
     async initialize(): Promise<void>
     {
-        // ViewModelのinitializeで事前にデータ取得
+        // Fetch data in ViewModel's initialize
         const data = await HomeTextRepository.get();
         this.homeText = data.word;
     }
@@ -283,31 +283,31 @@ export class HomeView extends View<HomeViewModel>
 
     async initialize(): Promise<void>
     {
-        // この時点でvm.initialize()は既に完了している
+        // At this point, vm.initialize() is already complete
         const text = this.vm.getHomeText();
 
-        // 取得済みのデータを使ってUIを構築
+        // Build UI using fetched data
         const textField = new TextAtom(text);
         this.addChild(textField);
     }
 }
 ```
 
-## 画面遷移
+## Screen Transition
 
-画面遷移には`app.gotoView()`を使用します。
+Use `app.gotoView()` for screen transitions.
 
 ```typescript
 import { app } from "@next2d/framework";
 
-// 指定のViewに遷移
+// Navigate to specified View
 await app.gotoView("home");
 
-// パラメータ付きで遷移
+// Navigate with parameters
 await app.gotoView("user/detail?id=123");
 ```
 
-### UseCaseでの画面遷移
+### Screen Transition in UseCase
 
 ```typescript
 import { app } from "@next2d/framework";
@@ -321,9 +321,9 @@ export class NavigateToViewUseCase
 }
 ```
 
-## レスポンスデータの取得
+## Getting Response Data
 
-`routing.json`で設定した`requests`のデータは`app.getResponse()`で取得できます。
+Data from `requests` in `routing.json` can be retrieved with `app.getResponse()`.
 
 ```typescript
 import { app } from "@next2d/framework";
@@ -339,9 +339,9 @@ async initialize(): Promise<void>
 }
 ```
 
-## キャッシュデータの取得
+## Getting Cache Data
 
-`cache: true`を設定したデータは`app.getCache()`で取得できます。
+Data with `cache: true` can be retrieved with `app.getCache()`.
 
 ```typescript
 import { app } from "@next2d/framework";
@@ -352,12 +352,12 @@ if (cache.has("MasterData")) {
 }
 ```
 
-## 設計原則
+## Design Principles
 
-### 1. 関心の分離
+### 1. Separation of Concerns
 
 ```typescript
-// 良い例: Viewは表示のみ、ViewModelはロジック
+// Good: View handles display only, ViewModel handles logic
 class HomeView extends View<HomeViewModel>
 {
     async initialize(): Promise<void>
@@ -376,12 +376,12 @@ class HomeViewModel extends ViewModel
 }
 ```
 
-### 2. 依存性の逆転
+### 2. Dependency Inversion
 
-ViewModelはインターフェースに依存し、具象クラスに依存しません。
+ViewModel depends on interfaces, not concrete classes.
 
 ```typescript
-// 良い例: インターフェースに依存
+// Good: Depend on interfaces
 homeContentPointerDownEvent(event: PointerEvent): void
 {
     const target = event.currentTarget as unknown as IDraggable;
@@ -389,11 +389,11 @@ homeContentPointerDownEvent(event: PointerEvent): void
 }
 ```
 
-### 3. イベントは必ずViewModelに委譲
+### 3. Always Delegate Events to ViewModel
 
-View内でイベント処理を完結させず、必ずViewModelに委譲します。
+Never handle events entirely within View; always delegate to ViewModel.
 
-## View/ViewModel作成のテンプレート
+## View/ViewModel Templates
 
 ### View
 
@@ -410,17 +410,17 @@ export class YourView extends View<YourViewModel>
 
     async initialize(): Promise<void>
     {
-        // UIコンポーネントの作成と配置
+        // Create and arrange UI components
     }
 
     async onEnter(): Promise<void>
     {
-        // 画面表示時の処理
+        // On screen shown
     }
 
     async onExit(): Promise<void>
     {
-        // 画面非表示時の処理
+        // On screen hidden
     }
 }
 ```
@@ -453,7 +453,7 @@ export class YourViewModel extends ViewModel
 }
 ```
 
-## 関連項目
+## Related
 
-- [ルーティング](/ja/reference/framework/routing)
-- [設定ファイル](/ja/reference/framework/config)
+- [Routing](/en/reference/framework/routing)
+- [Configuration](/en/reference/framework/config)

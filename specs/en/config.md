@@ -1,19 +1,19 @@
-# 設定ファイル
+# Configuration Files
 
-Next2D Frameworkの設定は3つのJSONファイルで管理します。
+Next2D Framework configuration is managed with three JSON files.
 
-## ファイル構成
+## File Structure
 
 ```
 src/config/
-├── stage.json     # 表示領域の設定
-├── config.json    # 環境設定
-└── routing.json   # ルーティング設定
+├── stage.json     # Display area settings
+├── config.json    # Environment settings
+└── routing.json   # Routing settings
 ```
 
 ## stage.json
 
-表示領域（Stage）の設定を行うJSONファイルです。
+JSON file for setting the display area (Stage).
 
 ```json
 {
@@ -28,26 +28,26 @@ src/config/
 }
 ```
 
-### プロパティ
+### Properties
 
-| プロパティ | 型 | デフォルト | 説明 |
-|-----------|------|----------|------|
-| `width` | number | 240 | 表示領域の幅 |
-| `height` | number | 240 | 表示領域の高さ |
-| `fps` | number | 60 | 1秒間に何回描画するか（1〜60） |
-| `options` | object | null | オプション設定 |
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `width` | number | 240 | Display area width |
+| `height` | number | 240 | Display area height |
+| `fps` | number | 60 | Drawings per second (1-60) |
+| `options` | object | null | Option settings |
 
-### options設定
+### options Settings
 
-| プロパティ | 型 | デフォルト | 説明 |
-|-----------|------|----------|------|
-| `fullScreen` | boolean | false | Stageで設定した幅と高さを超えて画面全体に描画 |
-| `tagId` | string | null | IDを指定すると、指定したIDのエレメント内で描画を行う |
-| `bgColor` | string | "transparent" | 背景色を16進数で指定。デフォルトは無色透明 |
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `fullScreen` | boolean | false | Draw on entire screen beyond Stage width/height |
+| `tagId` | string | null | When specified, drawing occurs within the element with that ID |
+| `bgColor` | string | "transparent" | Background color in hexadecimal. Default is transparent |
 
 ## config.json
 
-環境ごとの設定を管理するファイルです。`local`、`dev`、`stg`、`prd`、`all`と区切られており、`all`以外は任意の環境名です。
+File for managing environment-specific settings. Divided into `local`, `dev`, `stg`, `prd`, and `all`, where any environment name except `all` is arbitrary.
 
 ```json
 {
@@ -82,34 +82,34 @@ src/config/
 }
 ```
 
-### all設定
+### all Settings
 
-`all`はどの環境でも書き出される共通変数です。
+`all` is a common variable exported in any environment.
 
-| プロパティ | 型 | デフォルト | 説明 |
-|-----------|------|----------|------|
-| `spa` | boolean | true | Single Page ApplicationとしてURLでシーンを制御 |
-| `defaultTop` | string | "top" | ページトップのView。設定がない場合はTopViewクラスが起動 |
-| `loading.callback` | string | Loading | ローディング画面のクラス名。start関数とend関数を呼び出す |
-| `gotoView.callback` | string \| array | ["callback.Background"] | gotoView完了後のコールバッククラス |
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `spa` | boolean | true | Control scenes via URL as Single Page Application |
+| `defaultTop` | string | "top" | View for page top. TopView class launches if not set |
+| `loading.callback` | string | Loading | Loading screen class name. Calls start and end functions |
+| `gotoView.callback` | string \| array | ["callback.Background"] | Callback class after gotoView completion |
 
-### platform設定
+### platform Settings
 
-ビルド時の`--platform`で指定した値がセットされます。
+The value specified with `--platform` at build time is set.
 
-対応値: `macos`, `windows`, `linux`, `ios`, `android`, `web`
+Supported values: `macos`, `windows`, `linux`, `ios`, `android`, `web`
 
 ```typescript
 import { config } from "@/config/Config";
 
 if (config.platform === "ios") {
-    // iOS固有の処理
+    // iOS-specific processing
 }
 ```
 
 ## routing.json
 
-ルーティングの設定ファイルです。詳細は[ルーティング](/ja/reference/framework/routing)を参照してください。
+Routing configuration file. See [Routing](/en/reference/framework/routing) for details.
 
 ```json
 {
@@ -128,11 +128,11 @@ if (config.platform === "ios") {
 }
 ```
 
-## 設定値の取得
+## Getting Configuration Values
 
-コード内で設定値を取得するには`config`オブジェクトを使用します。
+Use the `config` object to get configuration values in code.
 
-### Config.tsの例
+### Config.ts Example
 
 ```typescript
 import stageJson from "./stage.json";
@@ -168,25 +168,25 @@ export const config: IConfig = {
 };
 ```
 
-### 使用例
+### Usage Example
 
 ```typescript
 import { config } from "@/config/Config";
 
-// ステージ設定
+// Stage settings
 const stageWidth = config.stage.width;
 const stageHeight = config.stage.height;
 
-// API設定
+// API settings
 const apiEndPoint = config.api.endPoint;
 
-// SPA設定
+// SPA setting
 const isSpa = config.spa;
 ```
 
-## ローディング画面
+## Loading Screen
 
-`loading.callback`で設定したクラスの`start`関数と`end`関数が呼び出されます。
+The `start` and `end` functions of the class set in `loading.callback` are called.
 
 ```typescript
 export class Loading
@@ -196,26 +196,26 @@ export class Loading
     constructor()
     {
         this.shape = new Shape();
-        // ローディング表示の初期化
+        // Initialize loading display
     }
 
     start(): void
     {
-        // ローディング開始時の処理
+        // Processing when loading starts
         stage.addChild(this.shape);
     }
 
     end(): void
     {
-        // ローディング終了時の処理
+        // Processing when loading ends
         this.shape.remove();
     }
 }
 ```
 
-## gotoViewコールバック
+## gotoView Callback
 
-`gotoView.callback`で設定したクラスの`execute`関数が呼び出されます。複数のクラスを配列で設定でき、async/awaitで順次実行されます。
+The `execute` function of classes set in `gotoView.callback` is called. Multiple classes can be set as an array and executed sequentially with async/await.
 
 ```typescript
 import { app } from "@next2d/framework";
@@ -236,28 +236,28 @@ export class Background
         const view = context.view;
         if (!view) return;
 
-        // 背景を最背面に配置
+        // Place background at the back
         view.addChildAt(this.shape, 0);
     }
 }
 ```
 
-## ビルドコマンド
+## Build Commands
 
-環境を指定してビルド:
+Build with environment specification:
 
 ```bash
-# ローカル環境
+# Local environment
 npm run build -- --env=local
 
-# 開発環境
+# Development environment
 npm run build -- --env=dev
 
-# 本番環境
+# Production environment
 npm run build -- --env=prd
 ```
 
-プラットフォームを指定:
+Specify platform:
 
 ```bash
 npm run build -- --platform=web
@@ -265,9 +265,9 @@ npm run build -- --platform=ios
 npm run build -- --platform=android
 ```
 
-## 設定例
+## Configuration Examples
 
-### 完全な設定ファイルの例
+### Complete Configuration File Examples
 
 #### stage.json
 
@@ -325,7 +325,7 @@ npm run build -- --platform=android
 }
 ```
 
-## 関連項目
+## Related
 
-- [ルーティング](/ja/reference/framework/routing)
-- [View/ViewModel](/ja/reference/framework/view)
+- [Routing](/en/reference/framework/routing)
+- [View/ViewModel](/en/reference/framework/view)

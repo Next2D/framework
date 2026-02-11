@@ -24,3 +24,4 @@ dist-ssr
 *.sw?
 
 coverage
+package-lock.json

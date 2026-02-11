@@ -1,4 +1,19 @@
+/**
+ * @description ローディング処理のインターフェース
+ *              Interface for loading operations
+ *
+ * @interface
+ */
 export interface ILoading {
-    start: Function;
-    end: Function;
+    /**
+     * @description ローディング開始処理
+     *              Start loading process
+     */
+    start: () => Promise<void> | void;
+
+    /**
+     * @description ローディング終了処理
+     *              End loading process
+     */
+    end: () => Promise<void> | void;
 }

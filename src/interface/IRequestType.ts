@@ -1,1 +1,1 @@
-export type IRequestType = "json" | "content" | "custom" | "cluster";
+export type IRequestType = "json" | "content" | "custom" | "cluster" | (string & {});

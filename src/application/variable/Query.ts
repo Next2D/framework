@@ -1,5 +1,5 @@
 /**
- * @type {Map<string, any>}
+ * @type {Map<string, string>}
  * @protected
  */
-export const query: Map<string, any> = new Map();
+export const query: Map<string, string> = new Map();

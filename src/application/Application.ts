@@ -1,12 +1,12 @@
 import type { IConfig } from "../interface/IConfig";
 import type { IPackages } from "../interface/IPackages";
 import type { Context } from "./Context";
-import { execute as applicationInitializeService } from "./Application/service/ApplicationInitializeService";
-import { execute as applicationGotoViewUseCase } from "./Application/usecase/ApplicationGotoViewUseCase";
-import { execute as contextRunService } from "./Context/service/ContextRunService";
+import { execute as applicationInitializeUseCase } from "./usecase/ApplicationInitializeUseCase";
+import { execute as applicationGotoViewUseCase } from "./usecase/ApplicationGotoViewUseCase";
+import { execute as contextRunUseCase } from "./usecase/ContextRunUseCase";
 import { $getConfig } from "./variable/Config";
 import { $getContext } from "./variable/Context";
-import { response } from "../infrastructure/Response/variable/Response";
+import { response } from "../infrastructure/variable/Response";
 import { cache } from "./variable/Cache";
 
 /**
@@ -57,7 +57,7 @@ export class Application
      */
     initialize (config: IConfig, packages: IPackages): Application
     {
-        return applicationInitializeService(this, config, packages);
+        return applicationInitializeUseCase(this, config, packages);
     }
 
     /**
@@ -70,7 +70,7 @@ export class Application
      */
     async run (): Promise<void>
     {
-        await contextRunService($getConfig());
+        await contextRunUseCase($getConfig());
     }
 
     /**
@@ -105,11 +105,11 @@ export class Application
      * @description configで設定したリクエストのレスポンスマップを返却します
      *              Returns the response map of the request set in config
      *
-     * @return {Map<string, any>}
+     * @return {Map<string, unknown>}
      * @method
      * @public
      */
-    getResponse (): Map<string, any>
+    getResponse (): Map<string, unknown>
     {
         return response;
     }
@@ -118,11 +118,11 @@ export class Application
      * @description キャッシュのMapオブジェクトを返却します
      *              Returns the Map object of the cache
      *
-     * @return {Map<string, any>}
+     * @return {Map<string, unknown>}
      * @method
      * @public
      */
-    getCache (): Map<string, any>
+    getCache (): Map<string, unknown>
     {
         return cache;
     }

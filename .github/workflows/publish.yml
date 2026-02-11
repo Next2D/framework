@@ -5,21 +5,22 @@ on:
     branches:
       - main
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
-          node-version: "22.x"
+          node-version: 24
           registry-url: "https://registry.npmjs.org"
+      - run: npm install -g npm@latest
       - run: npm run create:package
       - run: npm install
       - run: npm run release
-      - run: cd ~/work/framework/framework/dist && npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
+      - run: npm publish
+        working-directory: ./dist

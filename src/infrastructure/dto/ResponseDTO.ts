@@ -1,0 +1,52 @@
+/**
+ * @description 外部データをObjectに変換(DTO)、可変性のない使い捨てのクラス
+ *              Converts external data to Objects (DTO), non-variable, disposable class
+ *
+ * @class
+ */
+export class ResponseDTO<T = unknown>
+{
+    /**
+     * @description キャッシュのキー名
+     *              Key name of cache
+     *
+     * @type {string}
+     * @readonly
+     * @public
+     */
+    public readonly name: string;
+
+    /**
+     * @description レスポンスデータ
+     *              response data
+     *
+     * @type {T}
+     * @readonly
+     * @public
+     */
+    public readonly response: T;
+
+    /**
+     * @description コールバッククラス名
+     *              Callback class name
+     *
+     * @type {string | string[] | undefined}
+     * @readonly
+     * @public
+     */
+    public readonly callback?: string | string[];
+
+    /**
+     * @param {string} name
+     * @param {T} response
+     * @param {string | string[]} [callback]
+     * @constructor
+     * @public
+     */
+    constructor (name: string, response: T, callback?: string | string[])
+    {
+        this.name     = name;
+        this.response = response;
+        this.callback = callback;
+    }
+}

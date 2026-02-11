@@ -19,6 +19,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
+    "rootDir": "./src",
     "outDir": "./dist/src",
     "types": [
       "vitest/globals"

@@ -1,22 +1,26 @@
 import type { Context } from "../Context";
 
 /**
- * @type {Context}
- * @public
+ * @type {Context | null}
+ * @private
  */
-let $context: Context;
+let $context: Context | null = null;
 
 /**
  * @description コンテキストを取得します
  *              Get the context
  *
  * @return {Context}
+ * @throws {Error} コンテキストが初期化されていない場合
  * @method
  * @protected
  */
 export const $getContext = (): Context =>
 {
-    return $context as NonNullable<Context>;
+    if (!$context) {
+        throw new Error("Context is not initialized. Call run() first.");
+    }
+    return $context;
 };
 
 /**

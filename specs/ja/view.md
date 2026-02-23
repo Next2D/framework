@@ -295,7 +295,15 @@ export class HomeView extends View<HomeViewModel>
 
 ## 画面遷移
 
-画面遷移には`app.gotoView()`を使用します。
+画面遷移には`app.gotoView(name?: string)`を使用します。戻り値は`Promise<void>`で、遷移先の`requests`実行、View/ViewModelの再バインド、`onEnter()`実行までの非同期処理を待機できます。
+
+`gotoView`のポイント:
+
+- `name`の型は`string`です（省略可能、デフォルト値は`""`）。
+- `name`には`routing.json`のキー（例: `home`、`quest/list`）を渡します。`?id=123`のようなクエリ文字列も付与できます。
+- 引数を省略した場合は現在のURLから遷移先を解決します（SPAの`popstate`時など）。
+- 遷移開始時に前画面の`response`マップは初期化され、遷移先の`requests`結果が`name`キーで再格納されます。
+- `config.json`で`all.spa: true`の場合、通常遷移ではHistory API（`pushState`）でURL履歴が更新されます。
 
 ```typescript
 import { app } from "@next2d/framework";
@@ -321,9 +329,34 @@ export class NavigateToViewUseCase
 }
 ```
 
+## コンテキストの取得
+
+`app.getContext()`は現在の実行コンテキスト（`Context`）を返します。`Context`には次の参照が含まれます。
+
+- `root`: Stage配下のルート`Sprite`
+- `view`: 現在バインドされているView（遷移中や起動直後は`null`の場合あり）
+- `viewModel`: 現在バインドされているViewModel（遷移中や起動直後は`null`の場合あり）
+
+```typescript
+import { app } from "@next2d/framework";
+
+const context = app.getContext();
+const root = context.root;
+
+if (context.view && context.viewModel) {
+    // 現在表示中のView / ViewModelにアクセス
+}
+```
+
 ## レスポンスデータの取得
 
-`routing.json`で設定した`requests`のデータは`app.getResponse()`で取得できます。
+`app.getResponse()`は`Map<string, unknown>`を返します。`routing.json`の`requests`で`name`を設定したレスポンスが、現在の画面遷移単位で格納されます。
+
+`getResponse`のポイント:
+
+- 1回の`gotoView`で取得したデータの一時ストアです。
+- 次の`gotoView`開始時に前回の内容はクリアされます。
+- 値の型は`unknown`なので、利用側で型ガードまたは型アサーションを行います。
 
 ```typescript
 import { app } from "@next2d/framework";
@@ -341,7 +374,13 @@ async initialize(): Promise<void>
 
 ## キャッシュデータの取得
 
-`cache: true`を設定したデータは`app.getCache()`で取得できます。
+`app.getCache()`は`Map<string, unknown>`を返します。`requests`で`cache: true`を設定したデータが遷移を跨いで保持されるため、マスターデータなどの再利用に向いています。
+
+`getCache`のポイント:
+
+- `requests`の`cache: true`かつ`name`キーを持つデータが保存対象です。
+- 同じキーが存在する場合、リクエスト処理側はキャッシュ値を優先利用できます。
+- キャッシュは自動クリアされないため、不要になったら`delete`や`clear`で明示的に管理します。
 
 ```typescript
 import { app } from "@next2d/framework";

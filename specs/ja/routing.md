@@ -149,6 +149,12 @@ Animation ToolのJSONを取得:
 ### キャッシュの利用
 
 `cache: true`を設定すると、データがキャッシュされます。キャッシュしたデータは画面遷移しても初期化されません。
+`app.getCache()`は`Map<string, unknown>`を返し、`requests`の`name`をキーにアクセスできます。
+
+キャッシュ利用時のポイント:
+
+- 同じキーのデータが既にある場合は、リクエスト処理側がキャッシュ値を優先利用できます。
+- キャッシュは自動クリアされないため、不要なデータは`delete`/`clear`で明示的に管理します。
 
 ```json
 {
@@ -216,7 +222,15 @@ export class HomeDataCallback
 
 ### app.gotoView()
 
-`app.gotoView()`で画面遷移を行います:
+`app.gotoView(name?: string)`で画面遷移を行います。戻り値は`Promise<void>`で、遷移先`requests`の完了、View/ViewModelの再バインド、`onEnter()`まで待機できます。
+
+`gotoView`のポイント:
+
+- `name`の型は`string`です（省略可能、デフォルト値は`""`）。
+- `name`には`routing.json`のキー（例: `home`、`quest/list`）を指定します。
+- `?id=123`のようなクエリ文字列を含めて渡せます。
+- 引数を省略した場合は、現在のURLから遷移先が解決されます（SPAの`popstate`時）。
+- 遷移開始時に前回の`response`マップはクリアされます。
 
 ```typescript
 import { app } from "@next2d/framework";
@@ -267,9 +281,26 @@ export class TopViewModel extends ViewModel
 }
 ```
 
+### app.getContext()
+
+`app.getContext()`で実行中の`Context`を取得できます。`root`（ルート`Sprite`）、`view`、`viewModel`への参照を持ち、遷移中は`view`/`viewModel`が`null`の場合があります。
+
+```typescript
+import { app } from "@next2d/framework";
+
+const context = app.getContext();
+const root = context.root;
+```
+
 ## レスポンスデータの取得
 
-`requests`で取得したデータは`app.getResponse()`で取得できます:
+`app.getResponse()`は`Map<string, unknown>`を返します。`requests`で`name`を設定したレスポンスを、現在の画面遷移単位で取得できます。
+
+`getResponse`のポイント:
+
+- 1回の`gotoView`で取得したデータの一時ストアです。
+- 次の`gotoView`開始時に内容は初期化されます。
+- 値の型は`unknown`なので、型ガードまたは型アサーションを行って利用します。
 
 ```typescript
 import { app } from "@next2d/framework";

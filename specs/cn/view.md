@@ -295,7 +295,15 @@ export class HomeView extends View<HomeViewModel>
 
 ## 画面转换
 
-使用 `app.gotoView()` 进行画面转换。
+使用 `app.gotoView(name?: string)` 进行画面转换。返回值是 `Promise<void>`，可用于等待完整的转换流程（请求执行、View/ViewModel 重新绑定、`onEnter()` 调用）。
+
+`gotoView` 要点：
+
+- `name` 参数类型是 `string`（可省略，默认值为 `""`）。
+- `name` 传入 `routing.json` 的键（如 `home`、`quest/list`），也支持 `?id=123` 这类查询字符串。
+- 省略 `name` 时，会从当前 URL 解析目标路由（常用于 SPA 的 `popstate` 流程）。
+- 转换开始时会先清空上一画面的 `response`，然后将新请求结果按 `name` 键重新写入。
+- 当 `config.json` 中设置 `all.spa: true` 时，普通转换会通过 `pushState` 更新浏览器历史。
 
 ```typescript
 import { app } from "@next2d/framework";
@@ -321,9 +329,34 @@ export class NavigateToViewUseCase
 }
 ```
 
+## 获取上下文
+
+`app.getContext()` 返回当前运行时的 `Context`，包含：
+
+- `root`：Stage 下的根 `Sprite`
+- `view`：当前绑定的 View（转换中或启动初期可能为 `null`）
+- `viewModel`：当前绑定的 ViewModel（转换中或启动初期可能为 `null`）
+
+```typescript
+import { app } from "@next2d/framework";
+
+const context = app.getContext();
+const root = context.root;
+
+if (context.view && context.viewModel) {
+    // 访问当前 View / ViewModel
+}
+```
+
 ## 获取响应数据
 
-`routing.json` 中 `requests` 的数据可以通过 `app.getResponse()` 获取。
+`app.getResponse()` 返回 `Map<string, unknown>`。`routing.json` 的 `requests` 中设置了 `name` 的响应，会按当前一次画面转换写入该 Map。
+
+`getResponse` 要点：
+
+- 它是单次 `gotoView` 的临时数据容器。
+- 开始下一次 `gotoView` 时，上一轮内容会被清空。
+- 值类型为 `unknown`，业务侧应使用类型守卫或类型断言后再读取。
 
 ```typescript
 import { app } from "@next2d/framework";
@@ -341,7 +374,13 @@ async initialize(): Promise<void>
 
 ## 获取缓存数据
 
-`cache: true` 的数据可以通过 `app.getCache()` 获取。
+`app.getCache()` 返回 `Map<string, unknown>`。在 `requests` 中设置 `cache: true` 的数据会跨画面保留，适合主数据等可复用数据。
+
+`getCache` 要点：
+
+- 同时具备 `cache: true` 和 `name` 的请求会进入缓存。
+- 当相同键已存在时，请求处理可优先复用缓存值。
+- 缓存不会自动清理；不再需要时请显式 `delete` 或 `clear`。
 
 ```typescript
 import { app } from "@next2d/framework";

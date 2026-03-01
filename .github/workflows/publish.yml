@@ -31,7 +31,7 @@ jobs:
           registry-url: "https://registry.npmjs.org"
       - run: npm install -g npm@latest
       - run: npm run create:package
-      - run: npm ci
+      - run: npm install
       - run: npm run release
       - run: npm publish
         working-directory: ./dist

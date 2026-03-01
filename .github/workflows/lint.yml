@@ -22,7 +22,7 @@ jobs:
           node-version: 24
           registry-url: "https://registry.npmjs.org"
       - run: npm install -g npm@latest
-      - run: npm ci
+      - run: npm install
       - run: npm run lint
 
   windows-browser-test:
@@ -36,5 +36,5 @@ jobs:
           node-version: 24
           registry-url: "https://registry.npmjs.org"
       - run: npm install -g npm@latest
-      - run: npm ci
+      - run: npm install
       - run: npm run lint

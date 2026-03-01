@@ -295,7 +295,15 @@ export class HomeView extends View<HomeViewModel>
 
 ## Screen Transition
 
-Use `app.gotoView()` for screen transitions.
+Use `app.gotoView(name?: string)` for screen transitions. It returns `Promise<void>`, so you can await the full transition flow (request execution, View/ViewModel rebind, and `onEnter()`).
+
+Key points for `gotoView`:
+
+- The `name` parameter type is `string` (optional, default is `""`).
+- Pass a `routing.json` key such as `home` or `quest/list`. Query strings like `?id=123` are also supported.
+- If `name` is omitted, the destination is resolved from the current URL (used in SPA `popstate` flows).
+- At transition start, the previous `response` map is cleared, then new request results are stored by their `name` keys.
+- When `all.spa: true` in `config.json`, normal transitions update browser history via `pushState`.
 
 ```typescript
 import { app } from "@next2d/framework";
@@ -321,9 +329,34 @@ export class NavigateToViewUseCase
 }
 ```
 
+## Getting Context
+
+`app.getContext()` returns the current runtime `Context`. It includes:
+
+- `root`: Root `Sprite` under Stage
+- `view`: Currently bound View (can be `null` during transition or right after startup)
+- `viewModel`: Currently bound ViewModel (can be `null` during transition or right after startup)
+
+```typescript
+import { app } from "@next2d/framework";
+
+const context = app.getContext();
+const root = context.root;
+
+if (context.view && context.viewModel) {
+    // Access current View / ViewModel
+}
+```
+
 ## Getting Response Data
 
-Data from `requests` in `routing.json` can be retrieved with `app.getResponse()`.
+`app.getResponse()` returns `Map<string, unknown>`. Response values whose `name` is defined in `routing.json` `requests` are stored for the current transition.
+
+Key points for `getResponse`:
+
+- It is a per-transition temporary store for data fetched in one `gotoView`.
+- The map is cleared when the next `gotoView` starts.
+- Values are `unknown`, so consumers should apply type guards or type assertions.
 
 ```typescript
 import { app } from "@next2d/framework";
@@ -341,7 +374,13 @@ async initialize(): Promise<void>
 
 ## Getting Cache Data
 
-Data with `cache: true` can be retrieved with `app.getCache()`.
+`app.getCache()` returns `Map<string, unknown>`. Data from `requests` with `cache: true` is kept across transitions, which is useful for reusable data such as master data.
+
+Key points for `getCache`:
+
+- Requests with both `cache: true` and `name` are eligible for cache storage.
+- If the same key already exists, request processing can reuse cached data.
+- Cache is not auto-cleared; manage it explicitly with `delete` or `clear` when needed.
 
 ```typescript
 import { app } from "@next2d/framework";

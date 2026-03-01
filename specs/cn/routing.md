@@ -149,6 +149,12 @@ Next2D Framework 可以作为单页应用程序通过 URL 控制场景。路由�
 ### 使用缓存
 
 设置 `cache: true` 会缓存数据。缓存的数据在画面转换中持久存在。
+`app.getCache()` 返回 `Map<string, unknown>`，可通过每个请求的 `name` 键访问。
+
+缓存使用要点：
+
+- 如果同一键已存在，请求处理可优先复用缓存值。
+- 缓存不会自动清理，不再需要时请显式使用 `delete` 或 `clear`。
 
 ```json
 {
@@ -216,7 +222,15 @@ export class HomeDataCallback
 
 ### app.gotoView()
 
-使用 `app.gotoView()` 进行画面转换：
+使用 `app.gotoView(name?: string)` 进行画面转换。其返回 `Promise<void>`，可等待请求完成、View/ViewModel 重新绑定以及 `onEnter()` 执行完成。
+
+`gotoView` 要点：
+
+- `name` 参数类型是 `string`（可省略，默认值为 `""`）。
+- `name` 使用 `routing.json` 的键，例如 `home`、`quest/list`。
+- 支持附带 `?id=123` 这类查询字符串。
+- 省略 `name` 时，会从当前 URL 解析目标路由（SPA 的 `popstate` 流程）。
+- 开始新转换时会清空上一轮的 `response` 数据。
 
 ```typescript
 import { app } from "@next2d/framework";
@@ -267,9 +281,26 @@ export class TopViewModel extends ViewModel
 }
 ```
 
+### app.getContext()
+
+使用 `app.getContext()` 获取当前运行中的 `Context`。其中包含 `root`（根 `Sprite`）、`view`、`viewModel` 引用。转换过程中 `view` 与 `viewModel` 可能暂时为 `null`。
+
+```typescript
+import { app } from "@next2d/framework";
+
+const context = app.getContext();
+const root = context.root;
+```
+
 ## 获取响应数据
 
-`requests` 的数据可以通过 `app.getResponse()` 获取：
+`app.getResponse()` 返回 `Map<string, unknown>`。它保存当前一次转换中 `requests` 里定义了 `name` 的响应数据。
+
+`getResponse` 要点：
+
+- 它是一次 `gotoView` 周期内的临时数据容器。
+- 开始下一次 `gotoView` 时会重置。
+- 值类型为 `unknown`，使用前请做类型守卫或类型断言。
 
 ```typescript
 import { app } from "@next2d/framework";

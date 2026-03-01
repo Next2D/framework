@@ -149,6 +149,12 @@ Enclose with `{{***}}` to get variables from `config.json`:
 ### Using Cache
 
 Setting `cache: true` caches the data. Cached data persists through screen transitions.
+`app.getCache()` returns `Map<string, unknown>`, and values are accessed by each request `name`.
+
+Key points for cache usage:
+
+- If the same key already exists, request processing can reuse cached values.
+- Cache is not auto-cleared, so remove unused entries explicitly with `delete` or `clear`.
 
 ```json
 {
@@ -216,7 +222,15 @@ export class HomeDataCallback
 
 ### app.gotoView()
 
-Use `app.gotoView()` for screen transitions:
+Use `app.gotoView(name?: string)` for screen transitions. It returns `Promise<void>` so you can await request completion, View/ViewModel rebind, and `onEnter()`.
+
+Key points for `gotoView`:
+
+- The `name` parameter type is `string` (optional, default is `""`).
+- `name` is a `routing.json` key such as `home` or `quest/list`.
+- You can include query strings such as `?id=123`.
+- If `name` is omitted, the destination is resolved from the current URL (SPA `popstate` flow).
+- Previous transition `response` data is cleared when a new transition starts.
 
 ```typescript
 import { app } from "@next2d/framework";
@@ -267,9 +281,26 @@ export class TopViewModel extends ViewModel
 }
 ```
 
+### app.getContext()
+
+Use `app.getContext()` to get the active `Context`. It provides references to `root` (root `Sprite`), `view`, and `viewModel`. During transitions, `view` and `viewModel` can temporarily be `null`.
+
+```typescript
+import { app } from "@next2d/framework";
+
+const context = app.getContext();
+const root = context.root;
+```
+
 ## Getting Response Data
 
-Data from `requests` can be retrieved with `app.getResponse()`:
+`app.getResponse()` returns `Map<string, unknown>`. It stores response values whose `name` is defined in `requests` for the current transition.
+
+Key points for `getResponse`:
+
+- It is a temporary store for one `gotoView` cycle.
+- The map is reset when the next `gotoView` starts.
+- Values are `unknown`; use type guards or type assertions before use.
 
 ```typescript
 import { app } from "@next2d/framework";

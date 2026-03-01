@@ -10,8 +10,19 @@ permissions:
   contents: read
 
 jobs:
+  lint:
+    uses: ./.github/workflows/lint.yml
+
+  integration:
+    uses: ./.github/workflows/integration.yml
+
   publish:
+    needs: [lint, integration]
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      id-token: write
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6

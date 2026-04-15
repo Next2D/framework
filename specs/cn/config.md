@@ -11,9 +11,11 @@ src/config/
 └── routing.json   # 路由设置
 ```
 
+---
+
 ## stage.json
 
-用于设置显示区域（Stage）的 JSON 文件。
+用于配置显示区域（Stage）的 JSON 文件。应用启动时读取一次，作为 Stage 的初始参数使用。
 
 ```json
 {
@@ -32,22 +34,30 @@ src/config/
 
 | 属性 | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
-| `width` | number | 240 | 显示区域宽度 |
-| `height` | number | 240 | 显示区域高度 |
-| `fps` | number | 60 | 每秒绘制次数（1-60） |
-| `options` | object | null | 选项设置 |
+| `width` | number | 240 | 显示区域宽度（像素）。作为渲染画布的基准宽度使用 |
+| `height` | number | 240 | 显示区域高度（像素）。作为渲染画布的基准高度使用 |
+| `fps` | number | 60 | 每秒渲染次数。有效范围为 1〜60 |
+| `options` | object | null | 附加选项设置。可省略 |
 
 ### options 设置
 
 | 属性 | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
-| `fullScreen` | boolean | false | 超出舞台宽高在整个屏幕上绘制 |
-| `tagId` | string | null | 指定后，绘制发生在具有该 ID 的元素内 |
-| `bgColor` | string | "transparent" | 十六进制背景颜色。默认为透明 |
+| `fullScreen` | boolean | false | 设为 `true` 时，Stage 扩展为填充整个窗口。设为 `false` 时，以 `width`・`height` 指定的尺寸固定渲染 |
+| `tagId` | string \| null | null | 用作渲染目标的 HTML 元素 ID。画布在指定 ID 的元素内部创建。为 `null` 时直接在 `<body>` 下创建 |
+| `bgColor` | string | "transparent" | 以十六进制颜色代码指定背景色（例：`"#1461A0"`）。指定 `"transparent"` 则为透明 |
+
+> [!WARNING]
+> `stage.json` 中有效的属性仅有 `width`・`height`・`fps`・`options`。
+> `align`・`scaleMode` 等与 Stage 显示相关的设置，在 `stage.json` 中并不存在。
+> 如需这些设置，请在 `config.json` 中定义。
+> 上述以外的属性将被框架完全忽略，不做任何处理。
+
+---
 
 ## config.json
 
-用于管理特定环境设置的文件。分为 `local`、`dev`、`stg`、`prd` 和 `all`，其中除 `all` 以外的任何环境名称都是任意的。
+用于管理各环境设置的文件。构建时，与 `--env` 选项指定的环境名匹配的对象和 `all` 对象合并后，作为整个应用可引用的设置展开。
 
 ```json
 {
@@ -82,20 +92,68 @@ src/config/
 }
 ```
 
-### all 设置
+### 环境键规格
 
-`all` 是在任何环境中导出的公共变量。
+`local`・`dev`・`stg`・`prd` 等键名可任意指定（`all` 除外）。构建时，与 `--env=<环境名>` 匹配的键的对象将被读取。
+
+| 键 | 说明 |
+|----|------|
+| `all` | 在所有环境下均会读取的公共设置 |
+| 其他 | 仅在键名与构建时 `--env` 指定值匹配时读取的设置 |
+
+### all 设置（框架保留属性）
+
+以下属性由框架自动处理。
 
 | 属性 | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
-| `spa` | boolean | true | 作为单页应用程序通过 URL 控制场景 |
-| `defaultTop` | string | "top" | 页面顶部的 View。如果未设置，将启动 TopView 类 |
-| `loading.callback` | string | Loading | 加载画面类名。调用 start 和 end 函数 |
-| `gotoView.callback` | string \| array | ["callback.Background"] | gotoView 完成后的回调类 |
+| `spa` | boolean | true | 设为 `true` 时，作为单页应用程序运行，与浏览器 URL 联动管理 View 切换 |
+| `defaultTop` | string | "top" | 应用启动时最先显示的 View 名称。未指定时启动 `TopView` 类 |
+| `loading.callback` | string | "Loading" | 用作加载画面的类名。该类的 `start()` 和 `end()` 会被自动调用 |
+| `gotoView.callback` | string \| string[] | — | View 切换完成后调用的回调类名。可以数组形式指定多个，按 async/await 顺序执行 |
+
+### 用户自定义属性
+
+除框架保留属性外，可在任意环境键中添加任意属性。添加的属性在构建后可通过 `config` 对象引用。
+
+端点 URL、功能开关、显示设置等需要按环境区分的值，可在此处统一管理。
+
+```json
+{
+    "local": {
+        "api": {
+            "endPoint": "http://localhost:3000/"
+        }
+    },
+    "prd": {
+        "api": {
+            "endPoint": "https://api.example.com/"
+        }
+    },
+    "all": {
+        "spa": true,
+        "defaultTop": "top",
+        "align": "TL",
+        "scaleMode": "noScale"
+    }
+}
+```
+
+```typescript
+import { config } from "@/config/Config";
+
+// 访问用户自定义属性
+const align     = config.align;     // "TL"
+const scaleMode = config.scaleMode; // "noScale"
+```
+
+> [!WARNING]
+> `config.json` 中框架自动处理的属性仅有 `spa`・`defaultTop`・`loading`・`gotoView`。
+> 其他属性不会被框架直接处理，但可通过 `config` 对象在应用代码中自由引用。
 
 ### platform 设置
 
-构建时使用 `--platform` 指定的值会被设置。
+构建时通过 `--platform` 指定的值会被自动设置。无需在配置文件中填写，为只读项。
 
 支持的值：`macos`、`windows`、`linux`、`ios`、`android`、`web`
 
@@ -103,9 +161,11 @@ src/config/
 import { config } from "@/config/Config";
 
 if (config.platform === "ios") {
-    // iOS 特定处理
+    // iOS 专用处理
 }
 ```
+
+---
 
 ## routing.json
 
@@ -128,53 +188,21 @@ if (config.platform === "ios") {
 }
 ```
 
+---
+
 ## 获取配置值
 
-在代码中使用 `config` 对象获取配置值。
+`Config.ts` 是执行 `npm start` 时自动生成的文件，无需手动创建或编辑。
 
-### Config.ts 示例
-
-```typescript
-import stageJson from "./stage.json";
-import configJson from "./config.json";
-
-interface IStageConfig {
-    width: number;
-    height: number;
-    fps: number;
-    options: {
-        fullScreen: boolean;
-        tagId: string | null;
-        bgColor: string;
-    };
-}
-
-interface IConfig {
-    stage: IStageConfig;
-    api: {
-        endPoint: string;
-    };
-    content: {
-        endPoint: string;
-    };
-    spa: boolean;
-    defaultTop: string;
-    platform: string;
-}
-
-export const config: IConfig = {
-    stage: stageJson,
-    ...configJson
-};
-```
+在代码中通过导入自动生成的 `config` 对象来获取配置值。
 
 ### 使用示例
 
 ```typescript
 import { config } from "@/config/Config";
 
-// 舞台设置
-const stageWidth = config.stage.width;
+// Stage 设置
+const stageWidth  = config.stage.width;
 const stageHeight = config.stage.height;
 
 // API 设置
@@ -184,9 +212,11 @@ const apiEndPoint = config.api.endPoint;
 const isSpa = config.spa;
 ```
 
+---
+
 ## 加载画面
 
-调用 `loading.callback` 中设置的类的 `start` 和 `end` 函数。
+`loading.callback` 中设置的类的 `start()` 和 `end()` 方法会被自动调用。
 
 ```typescript
 export class Loading
@@ -213,9 +243,11 @@ export class Loading
 }
 ```
 
+---
+
 ## gotoView 回调
 
-调用 `gotoView.callback` 中设置的类的 `execute` 函数。可以设置多个类作为数组，并使用 async/await 顺序执行。
+`gotoView.callback` 中设置的类的 `execute()` 方法会被调用。可以数组形式指定多个类，按 async/await 顺序执行。
 
 ```typescript
 import { app } from "@next2d/framework";
@@ -236,11 +268,13 @@ export class Background
         const view = context.view;
         if (!view) return;
 
-        // 将背景放在后面
+        // 将背景放置在最底层
         view.addChildAt(this.shape, 0);
     }
 }
 ```
+
+---
 
 ## 构建命令
 
@@ -264,6 +298,8 @@ npm run build -- --platform=web
 npm run build -- --platform=ios
 npm run build -- --platform=android
 ```
+
+---
 
 ## 配置示例
 
@@ -320,10 +356,14 @@ npm run build -- --platform=android
         },
         "gotoView": {
             "callback": ["callback.Background"]
-        }
+        },
+        "align": "TL",
+        "scaleMode": "noScale"
     }
 }
 ```
+
+---
 
 ## 相关
 

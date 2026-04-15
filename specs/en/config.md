@@ -11,9 +11,11 @@ src/config/
 └── routing.json   # Routing settings
 ```
 
+---
+
 ## stage.json
 
-JSON file for setting the display area (Stage).
+JSON file for configuring the display area (Stage). It is read once at application startup and used as the initial parameters for the Stage.
 
 ```json
 {
@@ -32,22 +34,30 @@ JSON file for setting the display area (Stage).
 
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
-| `width` | number | 240 | Display area width |
-| `height` | number | 240 | Display area height |
-| `fps` | number | 60 | Drawings per second (1-60) |
-| `options` | object | null | Option settings |
+| `width` | number | 240 | Display area width in pixels. Used as the base width of the rendering canvas |
+| `height` | number | 240 | Display area height in pixels. Used as the base height of the rendering canvas |
+| `fps` | number | 60 | Number of renders per second. Valid range is 1–60 |
+| `options` | object | null | Additional option settings. Can be omitted |
 
 ### options Settings
 
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
-| `fullScreen` | boolean | false | Draw on entire screen beyond Stage width/height |
-| `tagId` | string | null | When specified, drawing occurs within the element with that ID |
-| `bgColor` | string | "transparent" | Background color in hexadecimal. Default is transparent |
+| `fullScreen` | boolean | false | When `true`, the Stage expands to fill the entire window. When `false`, rendering is fixed to the size specified by `width` and `height` |
+| `tagId` | string \| null | null | ID of the HTML element to use as the rendering target. The canvas is created inside the element with the specified ID. When `null`, the canvas is created directly under `<body>` |
+| `bgColor` | string | "transparent" | Background color as a hexadecimal color code (e.g. `"#1461A0"`). Use `"transparent"` for a transparent background |
+
+> [!WARNING]
+> The only valid properties in `stage.json` are `width`, `height`, `fps`, and `options`.
+> Properties such as `align` and `scaleMode` — even though they relate to Stage display — do not exist in `stage.json`.
+> If you need these settings, define them in `config.json`.
+> Any properties not listed above are completely ignored by the framework.
+
+---
 
 ## config.json
 
-File for managing environment-specific settings. Divided into `local`, `dev`, `stg`, `prd`, and `all`, where any environment name except `all` is arbitrary.
+File for managing environment-specific settings. At build time, the object matching the environment name specified with `--env` is merged with the `all` object and made available throughout the application.
 
 ```json
 {
@@ -82,20 +92,68 @@ File for managing environment-specific settings. Divided into `local`, `dev`, `s
 }
 ```
 
-### all Settings
+### Environment Key Specification
 
-`all` is a common variable exported in any environment.
+Key names such as `local`, `dev`, `stg`, and `prd` are arbitrary (except `all`). The object whose key matches `--env=<environment>` at build time is loaded.
+
+| Key | Description |
+|-----|-------------|
+| `all` | Settings loaded in all environments |
+| Others | Settings loaded only when the key matches the `--env` value at build time |
+
+### all Settings (Framework Reserved Properties)
+
+The following properties are automatically processed by the framework.
 
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
-| `spa` | boolean | true | Control scenes via URL as Single Page Application |
-| `defaultTop` | string | "top" | View for page top. TopView class launches if not set |
-| `loading.callback` | string | Loading | Loading screen class name. Calls start and end functions |
-| `gotoView.callback` | string \| array | ["callback.Background"] | Callback class after gotoView completion |
+| `spa` | boolean | true | When `true`, the application behaves as a Single Page Application and manages View transitions in sync with the browser URL |
+| `defaultTop` | string | "top" | Name of the View to display first when the application starts. If not specified, the `TopView` class is launched |
+| `loading.callback` | string | "Loading" | Class name to use as the loading screen. The class's `start()` and `end()` methods are called automatically |
+| `gotoView.callback` | string \| string[] | — | Callback class name(s) to call after a View transition completes. Multiple classes can be specified as an array and are executed sequentially with async/await |
+
+### User-Defined Properties
+
+In addition to the framework reserved properties, you can add any properties to any environment key. Added properties are accessible from the `config` object after the build.
+
+Use this to manage values that need to differ per environment, such as endpoint URLs, feature flags, and display settings.
+
+```json
+{
+    "local": {
+        "api": {
+            "endPoint": "http://localhost:3000/"
+        }
+    },
+    "prd": {
+        "api": {
+            "endPoint": "https://api.example.com/"
+        }
+    },
+    "all": {
+        "spa": true,
+        "defaultTop": "top",
+        "align": "TL",
+        "scaleMode": "noScale"
+    }
+}
+```
+
+```typescript
+import { config } from "@/config/Config";
+
+// Accessing user-defined properties
+const align     = config.align;     // "TL"
+const scaleMode = config.scaleMode; // "noScale"
+```
+
+> [!WARNING]
+> The only properties automatically processed by the framework in `config.json` are `spa`, `defaultTop`, `loading`, and `gotoView`.
+> All other properties are not processed directly by the framework, but can be freely accessed from application code via the `config` object.
 
 ### platform Settings
 
-The value specified with `--platform` at build time is set.
+The value specified with `--platform` at build time is automatically set. It does not need to be written in the configuration file and is read-only.
 
 Supported values: `macos`, `windows`, `linux`, `ios`, `android`, `web`
 
@@ -106,6 +164,8 @@ if (config.platform === "ios") {
     // iOS-specific processing
 }
 ```
+
+---
 
 ## routing.json
 
@@ -128,45 +188,13 @@ Routing configuration file. See [Routing](/en/reference/framework/routing) for d
 }
 ```
 
+---
+
 ## Getting Configuration Values
 
-Use the `config` object to get configuration values in code.
+`Config.ts` is auto-generated when running `npm start`. You do not need to create or edit it manually.
 
-### Config.ts Example
-
-```typescript
-import stageJson from "./stage.json";
-import configJson from "./config.json";
-
-interface IStageConfig {
-    width: number;
-    height: number;
-    fps: number;
-    options: {
-        fullScreen: boolean;
-        tagId: string | null;
-        bgColor: string;
-    };
-}
-
-interface IConfig {
-    stage: IStageConfig;
-    api: {
-        endPoint: string;
-    };
-    content: {
-        endPoint: string;
-    };
-    spa: boolean;
-    defaultTop: string;
-    platform: string;
-}
-
-export const config: IConfig = {
-    stage: stageJson,
-    ...configJson
-};
-```
+To get configuration values in code, import and use the auto-generated `config` object.
 
 ### Usage Example
 
@@ -174,7 +202,7 @@ export const config: IConfig = {
 import { config } from "@/config/Config";
 
 // Stage settings
-const stageWidth = config.stage.width;
+const stageWidth  = config.stage.width;
 const stageHeight = config.stage.height;
 
 // API settings
@@ -184,9 +212,11 @@ const apiEndPoint = config.api.endPoint;
 const isSpa = config.spa;
 ```
 
+---
+
 ## Loading Screen
 
-The `start` and `end` functions of the class set in `loading.callback` are called.
+The `start()` and `end()` methods of the class set in `loading.callback` are called automatically.
 
 ```typescript
 export class Loading
@@ -213,9 +243,11 @@ export class Loading
 }
 ```
 
+---
+
 ## gotoView Callback
 
-The `execute` function of classes set in `gotoView.callback` is called. Multiple classes can be set as an array and executed sequentially with async/await.
+The `execute()` method of classes set in `gotoView.callback` is called. Multiple classes can be specified as an array and are executed sequentially with async/await.
 
 ```typescript
 import { app } from "@next2d/framework";
@@ -242,6 +274,8 @@ export class Background
 }
 ```
 
+---
+
 ## Build Commands
 
 Build with environment specification:
@@ -264,6 +298,8 @@ npm run build -- --platform=web
 npm run build -- --platform=ios
 npm run build -- --platform=android
 ```
+
+---
 
 ## Configuration Examples
 
@@ -320,10 +356,14 @@ npm run build -- --platform=android
         },
         "gotoView": {
             "callback": ["callback.Background"]
-        }
+        },
+        "align": "TL",
+        "scaleMode": "noScale"
     }
 }
 ```
+
+---
 
 ## Related
 

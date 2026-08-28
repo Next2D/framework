@@ -48,10 +48,22 @@ src/config/
 | `bgColor` | string | "transparent" | 背景色を16進数カラーコードで指定（例: `"#1461A0"`）。`"transparent"` を指定すると透明になる |
 
 > [!WARNING]
-> `stage.json` で有効なプロパティは上記の `width`・`height`・`fps`・`options` のみです。
-> `align`・`scaleMode` などステージ表示に関わる設定であっても、`stage.json` には存在しないプロパティです。
-> これらの設定が必要な場合は `config.json` に記述してください。
-> 上記以外のプロパティを記述しても、フレームワークは一切処理しません。
+> `stage.json` で設定できるのは上記の `width`・`height`・`fps`・`options`（`fullScreen` / `tagId` / `bgColor`）の**み**です。
+> **Next2D Player は Flash Player の派生ではありません。** Flash 由来のオプション（`scaleMode`・`align`・`quality`・`wmode` など）は存在せず、記述してもフレームワークが一切処理しません（サイレントに無視されます）。
+> 上記のホワイトリストにないプロパティは**設定ミス**です。削除し、下表の代替方法を使ってください。
+
+### ❌ stage.json で設定できないもの（よくある間違い）
+
+| ❌ プロパティ | 状態 | 代わりにやること |
+|--------------|------|------------------|
+| `scaleMode` / `align` | 存在しない（Flash の概念） | 画面いっぱいに合わせたい場合は `options.fullScreen: true` |
+| `quality` | 存在しない（Flash の概念） | `fps` の調整や `cacheAsBitmap` 等のパフォーマンス手法を使う |
+| `wmode` | 存在しない（Flash 埋め込みの概念） | Next2D には対応する設定がない |
+| `allowFullScreen` | 不正な名前 | `options.fullScreen` を使う |
+| `backgroundColor`（トップレベル） | 不正な位置 | `options.bgColor` を使う |
+| その他の任意のプロパティ | 無視される | 上記のホワイトリストにないものはすべて無効。コード側（`stage` オブジェクト等）で実現する |
+
+> 補足: `config.json` に `scaleMode`・`align` 等を**ユーザ定義の設定**として書いてコード側で `config.xxx` から読み取り、**自分で実装する**ことは可能です（例: `config.scaleMode` を読んでコードでステージを調整する）。ただしフレームワークは自動的に何も処理しません。`stage.json` 側に書くのは禁止です。
 
 ---
 

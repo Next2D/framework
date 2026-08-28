@@ -48,10 +48,20 @@ JSON file for configuring the display area (Stage). It is read once at applicati
 | `bgColor` | string | "transparent" | Background color as a hexadecimal color code (e.g. `"#1461A0"`). Use `"transparent"` for a transparent background |
 
 > [!WARNING]
-> The only valid properties in `stage.json` are `width`, `height`, `fps`, and `options`.
-> Properties such as `align` and `scaleMode` — even though they relate to Stage display — do not exist in `stage.json`.
-> If you need these settings, define them in `config.json`.
-> Any properties not listed above are completely ignored by the framework.
+> The only properties you can set in `stage.json` are `width`, `height`, `fps`, and `options` (`fullScreen` / `tagId` / `bgColor`).
+> **Next2D Player is NOT a Flash Player derivative.** Flash-era options (`scaleMode`, `align`, `quality`, `wmode`, etc.) do not exist and are silently ignored by the framework.
+> Any property not in the whitelist above is a **configuration mistake** — remove it and use the alternatives below.
+
+### ❌ What cannot be set in stage.json (common mistakes)
+
+| ❌ Property | Status | What to do instead |
+|-------------|--------|--------------------|
+| `scaleMode` / `align` | Does not exist (Flash concept) | Use `options.fullScreen: true` to fill the window. Or define it in `config.json` as a user setting and implement it in code (the framework does not process it) |
+| `quality` | Does not exist (Flash concept) | Adjust `fps`, use `cacheAsBitmap` and other performance techniques |
+| `wmode` | Does not exist (Flash embedding concept) | No equivalent setting in Next2D |
+| `allowFullScreen` | Wrong name | Use `options.fullScreen` |
+| `backgroundColor` (top level) | Wrong location | Use `options.bgColor` |
+| Any other property | Ignored | Anything not in the whitelist is invalid. Implement it in code (e.g. via the `stage` object) |
 
 ---
 

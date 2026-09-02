@@ -48,10 +48,20 @@ src/config/
 | `bgColor` | string | "transparent" | 以十六进制颜色代码指定背景色（例：`"#1461A0"`）。指定 `"transparent"` 则为透明 |
 
 > [!WARNING]
-> `stage.json` 中有效的属性仅有 `width`・`height`・`fps`・`options`。
-> `align`・`scaleMode` 等与 Stage 显示相关的设置，在 `stage.json` 中并不存在。
-> 如需这些设置，请在 `config.json` 中定义。
-> 上述以外的属性将被框架完全忽略，不做任何处理。
+> `stage.json` 中只能设置 `width`・`height`・`fps`・`options`（`fullScreen` / `tagId` / `bgColor`）。
+> **Next2D Player 并非 Flash Player 的衍生。** Flash 系选项（`scaleMode`・`align`・`quality`・`wmode` 等）不存在，写入后框架会完全忽略（静默无效）。
+> 白名单以外的属性属于**配置错误**——请删除并改用下表中的替代方法。
+
+### ❌ stage.json 中不能设置的项（常见错误）
+
+| ❌ 属性 | 状态 | 替代方法 |
+|---------|------|----------|
+| `scaleMode` / `align` | 不存在（Flash 概念） | 需要铺满窗口时使用 `options.fullScreen: true`。或在 `config.json` 中定义为用户设置并在代码中自行实现（框架不会处理） |
+| `quality` | 不存在（Flash 概念） | 调整 `fps`，或使用 `cacheAsBitmap` 等性能手段 |
+| `wmode` | 不存在（Flash 嵌入概念） | Next2D 无对应设置 |
+| `allowFullScreen` | 名称错误 | 使用 `options.fullScreen` |
+| `backgroundColor`（顶层） | 位置错误 | 使用 `options.bgColor` |
+| 其他任意属性 | 被忽略 | 白名单以外一律无效。请在代码中（如 `stage` 对象）实现 |
 
 ---
 

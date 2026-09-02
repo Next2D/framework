@@ -8,7 +8,7 @@ import { TextFieldContent } from "./application/content/TextFieldContent";
 import { VideoContent } from "./application/content/VideoContent";
 
 // output build version
-console.log("%c Next2D Framework %c 4.0.7 %c https://next2d.app",
+console.log("%c Next2D Framework %c 4.0.8 %c https://next2d.app",
     "color: #fff; background: #5f5f5f",
     "color: #fff; background: #4bc729",
     "");

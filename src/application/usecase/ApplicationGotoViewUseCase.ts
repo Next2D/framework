@@ -8,6 +8,10 @@ import {
     getRequests
 } from "../../infrastructure/usecase/RequestUseCase";
 import { execute as executeCallbackUseCase } from "./ExecuteCallbackUseCase";
+import {
+    execute as loadingEndOnExitFrameUseCase,
+    cancel as cancelLoadingEndOnExitFrameUseCase
+} from "./LoadingEndOnExitFrameUseCase";
 import { execute as responseRemoveVariableUseCase } from "../../infrastructure/usecase/ResponseRemoveVariableUseCase";
 import { ViewBinderService } from "../../domain/service/ViewBinderService";
 import { LoadingService } from "../../domain/service/LoadingService";
@@ -30,6 +34,12 @@ export const execute = async (
 
     const config = $getConfig();
     const hasLoading = !!config.loading;
+
+    /**
+     * 前の遷移で待機中のローディング終了処理を解除
+     * Cancel the pending loading end process of the previous transition
+     */
+    cancelLoadingEndOnExitFrameUseCase();
 
     if (hasLoading) {
         /**
@@ -118,6 +128,14 @@ export const execute = async (
     const view = await ViewBinderService.bind(context, application.currentName);
 
     /**
+     * bind後の最初のEXIT_FRAMEでローディング表示と画面キャプチャーを終了
+     * End loading display and screen capture on the first EXIT_FRAME after bind
+     */
+    const loadingEnded: Promise<void> = hasLoading
+        ? loadingEndOnExitFrameUseCase()
+        : Promise.resolve();
+
+    /**
      * コールバック設定があれば実行
      * Execute callback settings if any.
      */
@@ -125,19 +143,11 @@ export const execute = async (
         await executeCallbackUseCase(config.gotoView.callback, view);
     }
 
-    if (hasLoading) {
-        /**
-         * ローディング表示を終了
-         * End loading display
-         */
-        await LoadingService.end();
-
-        /**
-         * 前の画面のキャプチャーを終了
-         * End previous screen capture
-         */
-        ScreenOverlayService.dispose();
-    }
+    /**
+     * ローディングの終了を待機
+     * Wait for the loading to end
+     */
+    await loadingEnded;
 
     /**
      * 画面表示時の処理を実行

@@ -21,6 +21,11 @@ vi.mock("../../domain/service/LoadingService", () => ({
     }
 }));
 
+vi.mock("./LoadingEndOnExitFrameUseCase", () => ({
+    execute: vi.fn().mockResolvedValue(undefined),
+    cancel: vi.fn()
+}));
+
 vi.mock("../../infrastructure/usecase/ResponseRemoveVariableUseCase", () => ({
     execute: vi.fn()
 }));
@@ -179,12 +184,75 @@ describe("ApplicationGotoViewUseCase Test", () =>
         });
         vi.mocked(requestUseCase).mockResolvedValue([]);
 
+        const {
+            execute: loadingEndOnExitFrameUseCase,
+            cancel: cancelLoadingEndOnExitFrameUseCase
+        } = await import("./LoadingEndOnExitFrameUseCase");
+        const { ViewBinderService } = await import("../../domain/service/ViewBinderService");
+
+        const mockView = { onEnter: vi.fn().mockResolvedValue(undefined) };
+        vi.mocked(ViewBinderService.bind).mockResolvedValue(mockView as any);
+
         await execute(mockApplication, "home");
 
+        expect(cancelLoadingEndOnExitFrameUseCase).toHaveBeenCalled();
         expect(ScreenOverlayService.add).toHaveBeenCalled();
         expect(LoadingService.start).toHaveBeenCalled();
-        expect(LoadingService.end).toHaveBeenCalled();
-        expect(ScreenOverlayService.dispose).toHaveBeenCalled();
+        expect(loadingEndOnExitFrameUseCase).toHaveBeenCalledTimes(1);
+
+        // bind後に登録し、ローディング終了後にonEnterが呼ばれる
+        const bindOrder     = vi.mocked(ViewBinderService.bind).mock.invocationCallOrder[0];
+        const registerOrder = vi.mocked(loadingEndOnExitFrameUseCase).mock.invocationCallOrder[0];
+        const enterOrder    = mockView.onEnter.mock.invocationCallOrder[0];
+        expect(bindOrder).toBeLessThan(registerOrder);
+        expect(registerOrder).toBeLessThan(enterOrder);
+
+        // 終了処理はEXIT_FRAME側に委譲されている
+        expect(LoadingService.end).not.toHaveBeenCalled();
+        expect(ScreenOverlayService.dispose).not.toHaveBeenCalled();
+    });
+
+    it("execute test case4-2: onEnter waits for loading end on EXIT_FRAME", async () =>
+    {
+        const { execute: queryStringParserService } = await import("../service/QueryStringParserService");
+        const { execute: requestUseCase } = await import("../../infrastructure/usecase/RequestUseCase");
+        const { execute: loadingEndOnExitFrameUseCase } = await import("./LoadingEndOnExitFrameUseCase");
+        const { ViewBinderService } = await import("../../domain/service/ViewBinderService");
+
+        $setConfig({
+            platform: "web",
+            spa: false,
+            stage: {
+                width: 800,
+                height: 600,
+                fps: 60
+            },
+            loading: {
+                callback: async () => null
+            }
+        });
+
+        vi.mocked(queryStringParserService).mockReturnValue({
+            name: "home",
+            queryString: ""
+        });
+        vi.mocked(requestUseCase).mockResolvedValue([]);
+
+        const mockView = { onEnter: vi.fn().mockResolvedValue(undefined) };
+        vi.mocked(ViewBinderService.bind).mockResolvedValue(mockView as any);
+
+        let endLoading: () => void = () => {};
+        vi.mocked(loadingEndOnExitFrameUseCase).mockReturnValueOnce(
+            new Promise<void>((resolve) => { endLoading = resolve })
+        );
+
+        const promise = execute(mockApplication, "home");
+        await new Promise((resolve) => setTimeout(resolve, 0));
+        expect(mockView.onEnter).not.toHaveBeenCalled();
+
+        endLoading();
+        await promise;
+        expect(mockView.onEnter).toHaveBeenCalledTimes(1);
     });
 
     it("execute test case5: response with callback should execute callback", async () =>
